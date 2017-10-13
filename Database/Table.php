@@ -243,15 +243,13 @@ class Table {
 			$this->_field_meta['created'] = new Object(array(
 				'name'    => 'created',
 				'type'    => 'date',
-				'null'    => true,
-				'default' => false
+				'null'    => true
 			));
 
 			$this->_field_meta['updated'] = new Object(array(
 				'name'    => 'updated',
 				'type'    => 'date',
-				'null'    => true,
-				'default' => false
+				'null'    => true
 			));
 		}
 

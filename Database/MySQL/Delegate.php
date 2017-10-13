@@ -40,11 +40,8 @@ class Delegate extends AbstractDelegate {
 			if ($field_meta->auto)
 				$type .= " AUTO_INCREMENT";
 
-			if ($field_meta->get('default')) {
-				$default = $this->quoteString($field_meta->default);
-
+			if (($default = $this->_createFieldDefault($field_meta)) !== false)
 				$type .= " DEFAULT $default";
-			}
 
 			$lines[] = "$field $type";
 
@@ -98,6 +95,23 @@ class Delegate extends AbstractDelegate {
 				break;
 			case 'date':
 				return 'DATETIME';
+			default:
+				return false;
+		}
+	}
+
+	protected function _createFieldDefault($field_meta) {
+		if (is_null($field_meta->default))
+			return false;
+
+		switch ($field_meta->type) {
+			case 'bool':
+				return $field_meta->default ? 1 : 0;
+			case 'int':
+			case 'float':
+				return (float) $field_meta->default;
+			case 'date':
+			case 'string':
 			default:
 				return false;
 		}
