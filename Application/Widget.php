@@ -7,6 +7,8 @@ use Plutonium\Visible;
 use Plutonium\Object;
 use Plutonium\Loader;
 
+use Plutonium\Database\Table;
+
 class Widget extends Component implements Visible {
 	protected static $_path = null;
 
@@ -100,7 +102,22 @@ class Widget extends Component implements Visible {
 	}
 
 	public function install() {
-		// TODO method stub
+		$table = Table::getInstance('widgets');
+
+		$widgets = $table->find(array(
+			'slug' => $this->name
+		));
+
+		if (empty($widgets)) {
+			$meta = new Object(self::getMetadata($this->name));
+			$meta->def('package', ucfirst($this->name) . ' Module');
+
+			$table->make(array(
+				'name'    => $meta['package'],
+				'slug'    => $this->name,
+				'descrip' => $meta['description']
+			))->save();
+		}
 	}
 
 	public function display() {

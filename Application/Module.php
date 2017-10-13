@@ -103,11 +103,13 @@ class Module extends Component implements Executable, Visible {
 		));
 
 		if (empty($modules)) {
+			$meta = new Object(self::getMetadata($this->name));
+			$meta->def('package', ucfirst($this->name) . ' Module');
+
 			$table->make(array(
-				'name'    => ucfirst($this->name),
+				'name'    => $meta['package'],
 				'slug'    => $this->name,
-				'descrip' => 'A new module',
-				'default' => 0
+				'descrip' => $meta['description']
 			))->save();
 		}
 
