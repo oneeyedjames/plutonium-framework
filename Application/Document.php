@@ -1,12 +1,12 @@
 <?php
 
-namespace Plutonium;
+namespace Plutonium\Application;
 
+use Plutonium\Object;
 use Plutonium\Loader;
-use Plutonium\Visible;
-use Plutonium\Application\Application;
+use Plutonium\Renderable;
 
-abstract class Document extends Object implements Visible {
+abstract class Document extends Object implements Renderable {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -26,11 +26,7 @@ abstract class Document extends Object implements Visible {
 
 	protected $_application = null;
 
-	protected $_type = null;
-	protected $_lang = null;
-
-	protected $_title   = null;
-	protected $_descrip = null;
+	protected $_title = null;
 
 	public function __construct($args) {
 		$this->_application = $args->application;

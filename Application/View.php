@@ -2,9 +2,9 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\Visible;
+use Plutonium\Renderable;
 
-class View implements Visible {
+class View implements Renderable {
 	protected $_name   = null;
 	protected $_vars   = null;
 	protected $_layout = null;
@@ -49,7 +49,7 @@ class View implements Visible {
 		}
 	}
 
-	public function display() {
+	public function render() {
 		$path   = $this->_module->path;
 		$name   = strtolower($this->_name);
 		$layout = strtolower($this->_layout);
