@@ -2,15 +2,13 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\Component;
 use Plutonium\Executable;
-use Plutonium\Visible;
 use Plutonium\Object;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
-class Module extends Component implements Executable, Visible {
+class Module extends ApplicationComponent implements Executable {
 	protected static $_path = null;
 
 	protected static $_default_resource = null;
@@ -122,6 +120,10 @@ class Module extends Component implements Executable, Visible {
 		}
 	}
 
+	public function uninstall() {
+		// TODO method stub
+	}
+
 	public function initialize() {
 		switch ($this->request->method) {
 			case 'POST':
@@ -151,8 +153,8 @@ class Module extends Component implements Executable, Visible {
 		$this->getController()->execute();
 	}
 
-	public function display() {
-		return $this->_output = $this->getView()->display();
+	public function render() {
+		return $this->_output = $this->getView()->render();
 	}
 
 	public function getRouter() {

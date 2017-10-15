@@ -4,7 +4,6 @@ namespace Plutonium\Application;
 
 use Plutonium\Executable;
 use Plutonium\Object;
-use Plutonium\Document;
 
 use Plutonium\Http\Session;
 use Plutonium\Http\Request;
@@ -128,17 +127,17 @@ class Application implements Executable {
 	public function execute() {
 		$this->module->execute();
 
-		$this->response->setModuleOutput($this->module->display());
+		$this->response->setModuleOutput($this->module->render());
 
 		foreach ($this->widgets as $location => $widgets) {
 			foreach ($widgets as $position => $widget) {
-				$this->response->setWidgetOutput($location, $widget->display());
+				$this->response->setWidgetOutput($location, $widget->render());
 			}
 		}
 
-		$this->response->setThemeOutput($this->theme->display());
+		$this->response->setThemeOutput($this->theme->render());
 
-		$this->document->display();
+		echo $this->document->render();
 	}
 
 	public function addWidget($location, $name) {

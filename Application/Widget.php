@@ -2,14 +2,12 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\Component;
-use Plutonium\Visible;
 use Plutonium\Object;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
-class Widget extends Component implements Visible {
+class Widget extends ApplicationComponent {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -120,7 +118,11 @@ class Widget extends Component implements Visible {
 		}
 	}
 
-	public function display() {
+	public function uninstall() {
+		// TODO method stub
+	}
+
+	public function render() {
 		$request = $this->application->request;
 
 		$name   = strtolower($this->name);
