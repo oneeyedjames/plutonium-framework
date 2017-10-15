@@ -2,6 +2,8 @@
 
 namespace Plutonium\Application;
 
+use Plutonium\Object;
+
 class Router {
 	protected $_module = null;
 
@@ -10,20 +12,17 @@ class Router {
 	}
 
 	public function match($path) {
+		$vars = new Object();
+
 		$path = empty($path) ? array() : explode(FS, trim($path, FS));
-		$vars = array();
 
 		if (isset($path[0]))
-			$vars['resource'] = $path[0];
+			$vars->resource = $path[0];
 
 		if (isset($path[1])) {
 			if (is_numeric($path[1])) {
 				$vars['id'] = intval($path[1]);
-
-				if (isset($path[2]))
-					$vars['layout'] = $path[2];
-				else
-					$vars['layout'] = 'details';
+				$vars['layout'] = isset($path[2]) ? $path[2] : 'item';
 			} else {
 				$vars['layout'] = $path[1];
 			}
