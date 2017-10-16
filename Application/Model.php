@@ -18,6 +18,8 @@ class Model {
 		switch ($key) {
 			case 'name':
 				return $this->_name;
+			case 'module':
+				return $this->_module;
 		}
 	}
 

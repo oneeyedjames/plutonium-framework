@@ -26,6 +26,8 @@ class View implements Renderable {
 		switch ($key) {
 			case 'name':
 				return $this->_name;
+			case 'module':
+				return $this->_module;
 			case 'layout':
 				return $this->_layout;
 			case 'format':
