@@ -75,7 +75,7 @@ class Table {
 			else
 				$path = Module::getPath() . DS . strtolower($module);
 
-			$file = $path . DS . 'models' . DS . 'tables' . DS . $name . '.xml';
+			$file = $path . DS . 'models' . DS . $name . '.xml';
 
 			if (is_file($file)) {
 				$cfg = new Object();
