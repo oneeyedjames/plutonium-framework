@@ -314,8 +314,8 @@ class Table {
 		return new Row($this, $data, $xref_data);
 	}
 
-	public function find($args = null) {
-		return $this->_delegate->select($args);
+	public function find($args = null, $sort = null, $limit = 0, $offset = 0) {
+		return $this->_delegate->select($args, $sort, $limit, $offset);
 	}
 
 	public function find_xref($xref, $args = null) {

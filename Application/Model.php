@@ -23,8 +23,8 @@ class Model {
 		}
 	}
 
-	public function find($args = null) {
-		return $this->getTable()->find($args);
+	public function find($args = null, $sort = null, $limit = 0, $offset = 0) {
+		return $this->getTable()->find($args, $sort, $limit, $offset);
 	}
 
 	public function save($data) {
