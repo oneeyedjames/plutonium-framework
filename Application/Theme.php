@@ -141,6 +141,14 @@ class Theme extends ApplicationComponent {
 		$file = self::getPath() . DS . $name . DS
 		      . 'layouts' . DS . $layout . '.' . $format . '.php';
 
+		if (!is_file($file)) {
+			$message = sprintf("Resource does not exist: %s.", $file);
+			trigger_error($message, E_USER_WARNING);
+
+			$file = self::getPath() . DS . $name . DS
+			      . 'layouts' . DS . 'default.' . $format . '.php';
+		}
+
 		if (is_file($file)) {
 			ob_start();
 

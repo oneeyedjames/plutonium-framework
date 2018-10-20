@@ -137,7 +137,7 @@ class Module extends ApplicationComponent implements Executable {
 				break;
 		}
 
-		$vars = $this->getRouter()->match($this->request->path);
+		$vars = $this->getRouter()->match($this->request->uri);
 
 		foreach ($vars as $key => $value)
 			$this->request->set($key, $value);
