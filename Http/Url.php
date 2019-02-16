@@ -2,9 +2,9 @@
 
 namespace Plutonium\Http;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 
-class Url extends Object {
+class Url extends AccessObject {
 	protected static $_scheme = null;
 	protected static $_domain = null;
 	protected static $_path   = null;

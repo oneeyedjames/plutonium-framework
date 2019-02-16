@@ -5,7 +5,7 @@ namespace Plutonium;
 use Plutonium\Filter\TypeFilter;
 use Plutonium\Filter\StringFilter;
 
-class FilterObject extends Object {
+class FilterObject extends AccessObject {
 	protected $_filters = array();
 
 	public function __construct($data = null) {

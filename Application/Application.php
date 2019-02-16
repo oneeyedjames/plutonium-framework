@@ -3,7 +3,7 @@
 namespace Plutonium\Application;
 
 use Plutonium\Executable;
-use Plutonium\Object;
+use Plutonium\AccessObject;
 
 use Plutonium\Http\Session;
 use Plutonium\Http\Request;
@@ -101,7 +101,7 @@ class Application implements Executable {
 		if (is_null($this->_document) && !is_null($config)) {
 			$format = !is_null($request) ? $request->get('format', 'html') : 'html';
 
-			$args = new Object(array(
+			$args = new AccessObject(array(
 				'application' => $this,
 				'locale'      => $config->locale,
 				'timezone'    => $config->timezone

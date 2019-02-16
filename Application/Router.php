@@ -2,7 +2,7 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 
 class Router {
 	protected $_module = null;
@@ -12,7 +12,7 @@ class Router {
 	}
 
 	public function match($path) {
-		$vars = new Object();
+		$vars = new AccessObject();
 
 		$path = empty($path) ? array() : explode(FS, trim($path, FS));
 

@@ -2,7 +2,7 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
@@ -56,7 +56,7 @@ class Theme extends ApplicationComponent {
 		$name = strtolower($name);
 		$type = ucfirst($name) . 'Theme';
 		$file = self::getPath() . DS . $name . DS . 'theme.php';
-		$args = new Object(array(
+		$args = new AccessObject(array(
 			'application' => $application,
 			'name' => $name
 		));
@@ -84,7 +84,7 @@ class Theme extends ApplicationComponent {
 
 		$this->_layout = 'default';
 		$this->_format = 'html';
-		$this->_params = new Object();
+		$this->_params = new AccessObject();
 	}
 
 	public function __get($key) {
@@ -116,7 +116,7 @@ class Theme extends ApplicationComponent {
 		));
 
 		if (empty($themes)) {
-			$meta = new Object(self::getMetadata($this->name));
+			$meta = new AccessObject(self::getMetadata($this->name));
 			$meta->def('package', ucfirst($this->name) . ' Module');
 
 			$table->make(array(

@@ -3,7 +3,7 @@
 namespace Plutonium\Application;
 
 use Plutonium\Executable;
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
@@ -59,7 +59,7 @@ class Module extends ApplicationComponent implements Executable {
 		$name = strtolower($name);
 		$type = ucfirst($name) . 'Module';
 		$file = self::getPath() . DS . $name . DS . 'module.php';
-		$args = new Object(array(
+		$args = new AccessObject(array(
 			'application' => $application,
 			'name'        => $name
 		));
@@ -101,7 +101,7 @@ class Module extends ApplicationComponent implements Executable {
 		));
 
 		if (empty($modules)) {
-			$meta = new Object(self::getMetadata($this->name));
+			$meta = new AccessObject(self::getMetadata($this->name));
 			$meta->def('package', ucfirst($this->name) . ' Module');
 
 			$table->make(array(
@@ -140,7 +140,7 @@ class Module extends ApplicationComponent implements Executable {
 		$vars = $this->getRouter()->match($this->request->uri);
 
 		foreach ($vars as $key => $value)
-			$this->request->set($key, $value);
+			$this->request->def($key, $value);
 
 		$this->request->def('resource', self::$_default_resource);
 
@@ -174,7 +174,7 @@ class Module extends ApplicationComponent implements Executable {
 			$type = ucfirst($name) . 'Controller';
 			$file = $this->path . DS . 'controllers' . DS . $name . '.php';
 
-			$args = new Object(array(
+			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));
@@ -192,7 +192,7 @@ class Module extends ApplicationComponent implements Executable {
 			$type = ucfirst($name) . 'Model';
 			$file = $this->path . DS . 'models' . DS . $name . '.php';
 
-			$args = new Object(array(
+			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));
@@ -209,7 +209,7 @@ class Module extends ApplicationComponent implements Executable {
 			$type = ucfirst($name) . 'View';
 			$file = $this->path . DS . 'views' . DS . $name . DS . 'view.php';
 
-			$args = new Object(array(
+			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));

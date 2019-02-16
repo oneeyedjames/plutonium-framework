@@ -4,7 +4,7 @@ namespace Plutonium\Database;
 
 use function Plutonium\Functions\is_assoc;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 
 class Row {
 	protected $_table = null;
@@ -22,7 +22,7 @@ class Row {
 		$this->_revs  = array_fill_keys(array_keys($table->table_revs), null);
 		$this->_xrefs = array_fill_keys(array_keys($table->table_xrefs), null);
 
-		$this->_xref_data = new Object();
+		$this->_xref_data = new AccessObject();
 
 		$this->bind($data);
 
@@ -136,7 +136,7 @@ class Row {
 	}
 
 	public function bind($data) {
-		if (is_assoc($data) || $data instanceof Object)
+		if (is_assoc($data) || $data instanceof AccessObject)
 			foreach ($data as $key => $value) $this->$key = $value;
 	}
 

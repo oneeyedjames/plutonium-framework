@@ -2,7 +2,7 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
@@ -60,7 +60,7 @@ class Widget extends ApplicationComponent {
 		$name = strtolower($name);
 		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
-		$args = new Object(array(
+		$args = new AccessObject(array(
 			'application' => $application,
 			'name' => $name
 		));
@@ -81,8 +81,8 @@ class Widget extends ApplicationComponent {
 		$this->_vars   = array();
 		$this->_layout = 'default';
 		$this->_format = 'html';
-		$this->_params = $args->params instanceof Object ? $args->params
-					   : new Object($args->params);
+		$this->_params = $args->params instanceof AccessObject ? $args->params
+					   : new AccessObject($args->params);
 	}
 
 	public function __get($key) {
@@ -107,7 +107,7 @@ class Widget extends ApplicationComponent {
 		));
 
 		if (empty($widgets)) {
-			$meta = new Object(self::getMetadata($this->name));
+			$meta = new AccessObject(self::getMetadata($this->name));
 			$meta->def('package', ucfirst($this->name) . ' Module');
 
 			$table->make(array(

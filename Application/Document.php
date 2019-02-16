@@ -2,11 +2,11 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Loader;
 use Plutonium\Renderable;
 
-abstract class Document extends Object implements Renderable {
+abstract class Document extends AccessObject implements Renderable {
 	protected static $_path = null;
 
 	public static function getPath() {
