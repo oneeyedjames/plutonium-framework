@@ -2,7 +2,7 @@
 
 namespace Plutonium\Database\MySQL;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 
 use Plutonium\Database\AbstractDelegate;
 
@@ -46,7 +46,7 @@ class Delegate extends AbstractDelegate {
 			$lines[] = "$field $type";
 
 			if ($field_meta->index || $field_meta->unique) {
-				$indexes[] = new Object(array(
+				$indexes[] = new AccessObject(array(
 					'name'   => $field_meta->name,
 					'unique' => $field_meta->unique
 				));

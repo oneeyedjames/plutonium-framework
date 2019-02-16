@@ -2,7 +2,7 @@
 
 namespace Plutonium\Http;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Accessible;
 
 class Request implements Accessible {
@@ -79,7 +79,7 @@ class Request implements Accessible {
 	}
 
 	// public function parseHost($host, $base) {
-	// 	$args = new Object();
+	// 	$args = new AccessObject();
 	//
 	// 	if ($base == $host) return $args;
 	//

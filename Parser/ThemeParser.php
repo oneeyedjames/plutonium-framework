@@ -2,7 +2,7 @@
 
 namespace Plutonium\Parser;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 
 class ThemeParser extends AbstractParser {
 	public function headTag($args) {
@@ -10,7 +10,7 @@ class ThemeParser extends AbstractParser {
 	}
 
 	public function moduleTag($args) {
-		$out_args = new Object(array(
+		$out_args = new AccessObject(array(
 			'module_start' => $this->_application->theme->module_start,
 			'module_close' => $this->_application->theme->module_close
 		));
@@ -19,7 +19,7 @@ class ThemeParser extends AbstractParser {
 	}
 
 	public function widgetsTag($args) {
-		$out_args = new Object(array(
+		$out_args = new AccessObject(array(
 			'widget_start' => $this->_application->theme->widget_start,
 			'widget_close' => $this->_application->theme->widget_close,
 			'widget_delim' => $this->_application->theme->widget_delim

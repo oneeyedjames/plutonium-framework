@@ -2,7 +2,7 @@
 
 namespace Plutonium\Http;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 
 class Response {
 	protected $_theme_output  = null;
@@ -19,7 +19,7 @@ class Response {
 
 	public function getModuleOutput($args = null) {
 		if (is_null($args))
-			$args = new Object();
+			$args = new AccessObject();
 
 		return $args->get('module_start', '')
 			 . $this->_module_output
@@ -36,7 +36,7 @@ class Response {
 
 	public function getWidgetOutput($location, $args = null) {
 		if (is_null($args))
-			$args = new Object();
+			$args = new AccessObject();
 
 		if (isset($this->_widget_output[$location])) {
 			$outputs = array();

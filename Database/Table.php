@@ -2,7 +2,7 @@
 
 namespace Plutonium\Database;
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Application\Application;
 use Plutonium\Application\Module;
 
@@ -24,19 +24,19 @@ class Table {
 		if (empty($alias))  $alias  = $cfg->name;
 		if (empty($prefix)) $prefix = $cfg->prefix;
 
-		$xref_cfg = new Object(array(
+		$xref_cfg = new AccessObject(array(
 			'driver'     => $cfg->driver,
 			'prefix'     => $cfg->prefix,
 			'suffix'     => 'xref',
 			'name'       => $alias . '_' . $name,
 			'timestamps' => $node->getAttribute('timestamps'),
 			'refs'       => array(
-				new Object(array(
+				new AccessObject(array(
 					'name'   => $alias,
 					'table'  => $cfg->name,
 					'prefix' => $cfg->prefix
 				)),
-				new Object(array(
+				new AccessObject(array(
 					'name'   => $name,
 					'table'  => $table,
 					'prefix' => $prefix
@@ -48,7 +48,7 @@ class Table {
 
 		$subnodes = $xpath->query('field', $node);
 		foreach ($subnodes as $subnode) {
-			$fields[] = new Object(array(
+			$fields[] = new AccessObject(array(
 				'name' => $subnode->getAttribute('name'),
 				'type' => $subnode->getAttribute('type'),
 				'size' => $subnode->getAttribute('size')
@@ -78,7 +78,7 @@ class Table {
 			$file = $path . DS . 'models' . DS . $name . '.xml';
 
 			if (is_file($file)) {
-				$cfg = new Object();
+				$cfg = new AccessObject();
 				$cfg->driver = AbstractAdapter::getInstance()->driver;
 
 				$doc = new DOMDocument();
@@ -103,7 +103,7 @@ class Table {
 
 				$nodes = $xpath->query('/table/field');
 				foreach ($nodes as $field) {
-					$fields[] = new Object(array(
+					$fields[] = new AccessObject(array(
 						'name'   => $field->getAttribute('name'),
 						'type'   => $field->getAttribute('type'),
 						'size'   => $field->getAttribute('size'),
@@ -117,7 +117,7 @@ class Table {
 
 				$nodes = $xpath->query('/table/ref');
 				foreach ($nodes as $node) {
-					$ref = new Object(array(
+					$ref = new AccessObject(array(
 						'name'   => $node->getAttribute('name'),
 						'table'  => $node->getAttribute('table'),
 						'prefix' => $node->getAttribute('prefix')
@@ -125,7 +125,7 @@ class Table {
 
 					$refs[] = $ref;
 
-					self::$_refs[$ref->table][$ref->alias] = new Object(array(
+					self::$_refs[$ref->table][$ref->alias] = new AccessObject(array(
 						'table' => $cfg->name,
 						'alias' => $ref->name
 					));
@@ -210,12 +210,12 @@ class Table {
 
 		$this->_table_name = implode('_', $table_name);
 
-		$this->_table_meta = new Object(array(
+		$this->_table_meta = new AccessObject(array(
 			'timestamps' => $config->timestamps == 'yes'
 		));
 
 		if ($config->suffix != 'xref') {
-			$this->_field_meta['id'] = new Object(array(
+			$this->_field_meta['id'] = new AccessObject(array(
 				'name'     => 'id',
 				'type'     => 'int',
 				'null'     => false,
@@ -229,7 +229,7 @@ class Table {
 
 			$field_name = $ref->name . '_id';
 
-			$this->_field_meta[$field_name] = new Object(array(
+			$this->_field_meta[$field_name] = new AccessObject(array(
 				'name'     => $field_name,
 				'type'     => 'int',
 				'null'     => false,
@@ -240,13 +240,13 @@ class Table {
 		}
 
 		if ($config->timestamps == 'yes') {
-			$this->_field_meta['created'] = new Object(array(
+			$this->_field_meta['created'] = new AccessObject(array(
 				'name'    => 'created',
 				'type'    => 'date',
 				'null'    => true
 			));
 
-			$this->_field_meta['updated'] = new Object(array(
+			$this->_field_meta['updated'] = new AccessObject(array(
 				'name'    => 'updated',
 				'type'    => 'date',
 				'null'    => true
@@ -254,7 +254,7 @@ class Table {
 		}
 
 		foreach ($config->fields as $field) {
-			$this->_field_meta[$field->name] = new Object(array(
+			$this->_field_meta[$field->name] = new AccessObject(array(
 				'name'     => $field->name,
 				'type'     => $field->type,
 				'size'     => $field->size,
