@@ -66,7 +66,6 @@ class Theme extends ApplicationComponent {
 
 	protected $_layout = null;
 	protected $_format = null;
-	protected $_params = null;
 	protected $_output = null;
 
 	protected $_message_start = '<div class="pu-message">';
@@ -84,25 +83,22 @@ class Theme extends ApplicationComponent {
 
 		$this->_layout = 'default';
 		$this->_format = 'html';
-		$this->_params = new AccessObject();
 	}
 
 	public function __get($key) {
 		switch ($key) {
 			case 'message_start':
-				return $this->_message_start;
 			case 'message_close':
-				return $this->_message_close;
 			case 'module_start':
-				return $this->_module_start;
 			case 'module_close':
-				return $this->_module_close;
 			case 'widget_start':
-				return $this->_widget_start;
 			case 'widget_close':
-				return $this->_widget_close;
 			case 'widget_delim':
-				return $this->_widget_delim;
+			case 'layout':
+			case 'format':
+				return $this->{"_$key"};
+			case 'output':
+				return $this->render();
 			default:
 				return parent::__get($key);
 		}
@@ -132,34 +128,36 @@ class Theme extends ApplicationComponent {
 	}
 
 	public function render() {
-		$request = $this->application->request;
+		if (is_null($this->_output)) {
+			$request = $this->application->request;
 
-		$name   = strtolower($this->name);
-		$layout = strtolower($request->get('layout', $this->_layout));
-		$format = strtolower($request->get('format', $this->_format));
-
-		$file = self::getPath() . DS . $name . DS
-		      . 'layouts' . DS . $layout . '.' . $format . '.php';
-
-		if (!is_file($file)) {
-			$message = sprintf("Resource does not exist: %s.", $file);
-			trigger_error($message, E_USER_WARNING);
+			$name   = strtolower($this->name);
+			$layout = strtolower($request->get('layout', $this->layout));
+			$format = strtolower($request->get('format', $this->format));
 
 			$file = self::getPath() . DS . $name . DS
-			      . 'layouts' . DS . 'default.' . $format . '.php';
-		}
+			      . 'layouts' . DS . $layout . '.' . $format . '.php';
 
-		if (is_file($file)) {
-			ob_start();
+			if (!is_file($file)) {
+				$message = sprintf("Resource does not exist: %s.", $file);
+				trigger_error($message, E_USER_WARNING);
 
-			include $file;
+				$file = self::getPath() . DS . $name . DS
+				      . 'layouts' . DS . 'default.' . $format . '.php';
+			}
 
-			$this->_output = ob_get_contents();
+			if (is_file($file)) {
+				ob_start();
 
-			ob_end_clean();
-		} else {
-			$message = sprintf("Resource does not exist: %s.", $file);
-			trigger_error($message, E_USER_ERROR);
+				include $file;
+
+				$this->_output = ob_get_contents();
+
+				ob_end_clean();
+			} else {
+				$message = sprintf("Resource does not exist: %s.", $file);
+				trigger_error($message, E_USER_ERROR);
+			}
 		}
 
 		return $this->_output;

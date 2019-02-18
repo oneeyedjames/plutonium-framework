@@ -3,12 +3,13 @@
 namespace Plutonium\Application;
 
 use Plutonium\Executable;
+use Plutonium\Renderable;
 use Plutonium\AccessObject;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
-class Module extends ApplicationComponent implements Executable {
+class Module extends ApplicationComponent implements Executable, Renderable {
 	protected static $_path = null;
 
 	protected static $_default_resource = null;
@@ -68,7 +69,6 @@ class Module extends ApplicationComponent implements Executable {
 	}
 
 	protected $_resource = null;
-	protected $_output   = null;
 
 	protected $_router = null;
 
@@ -154,7 +154,7 @@ class Module extends ApplicationComponent implements Executable {
 	}
 
 	public function render() {
-		return $this->_output = $this->getView()->render();
+		return $this->getView()->render();
 	}
 
 	public function getRouter() {
