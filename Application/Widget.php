@@ -72,7 +72,6 @@ class Widget extends ApplicationComponent {
 
 	protected $_layout = null;
 	protected $_format = null;
-	protected $_params = null;
 	protected $_output = null;
 
 	public function __construct($args) {
@@ -81,8 +80,6 @@ class Widget extends ApplicationComponent {
 		$this->_vars   = array();
 		$this->_layout = 'default';
 		$this->_format = 'html';
-		$this->_params = $args->params instanceof AccessObject ? $args->params
-					   : new AccessObject($args->params);
 	}
 
 	public function __get($key) {
@@ -90,6 +87,11 @@ class Widget extends ApplicationComponent {
 			case 'application':
 			case 'name':
 				return parent::__get($key);
+			case 'layout':
+			case 'format':
+				return $this->{"_$key"};
+			case 'output':
+				return $this->render();
 			default:
 				return $this->getVar($key);
 		}
@@ -123,26 +125,28 @@ class Widget extends ApplicationComponent {
 	}
 
 	public function render() {
-		$request = $this->application->request;
+		if (is_null($this->_output)) {
+			$request = $this->application->request;
 
-		$name   = strtolower($this->name);
-		$layout = strtolower($this->_layout);
-		$format = strtolower($request->get('format', $this->_format));
+			$name   = strtolower($this->name);
+			$layout = strtolower($this->layout);
+			$format = strtolower($request->get('format', $this->format));
 
-		$file = self::getPath() . DS . $name . DS
-		      . 'layouts' . DS . $layout . '.' . $format . '.php';
+			$file = self::getPath() . DS . $name . DS
+			      . 'layouts' . DS . $layout . '.' . $format . '.php';
 
-		if (is_file($file)) {
-			ob_start();
+			if (is_file($file)) {
+				ob_start();
 
-			include $file;
+				include $file;
 
-			$this->_output = ob_get_contents();
+				$this->_output = ob_get_contents();
 
-			ob_end_clean();
-		} else {
-			$message = sprintf("Resource does not exist: %s.", $file);
-			trigger_error($message, E_USER_ERROR);
+				ob_end_clean();
+			} else {
+				$message = sprintf("Resource does not exist: %s.", $file);
+				trigger_error($message, E_USER_ERROR);
+			}
 		}
 
 		return $this->_output;

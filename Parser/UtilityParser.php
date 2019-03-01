@@ -15,7 +15,7 @@ class UtilityParser extends AbstractParser {
 		$regex = '/^(date|time|datetime)_format_(long|short|system)$/';
 
 		if (preg_match($regex, $format))
-			$format = $this->_application->locale->localize($format);
+			$format = $this->application->locale->localize($format);
 
 		return strftime($format, $time);
 	}

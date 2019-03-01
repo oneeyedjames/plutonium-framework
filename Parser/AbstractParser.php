@@ -11,6 +11,14 @@ abstract class AbstractParser {
 		$this->_application = $application;
 	}
 
+	public function __get($key) {
+		switch ($key) {
+			case 'namespace':
+			case 'application':
+				return $this->{"_$key"};
+		}
+	}
+
 	public function parse($tmpl) {
 		$pattern = '/<(?<ns>\w+):(?<tag>\w+)\s?(?<args>[^<>]*)>/msi';
 		$matches = array();

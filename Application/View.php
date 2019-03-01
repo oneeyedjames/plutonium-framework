@@ -25,13 +25,12 @@ class View implements Renderable {
 	public function __get($key) {
 		switch ($key) {
 			case 'name':
-				return $this->_name;
 			case 'module':
-				return $this->_module;
 			case 'layout':
-				return $this->_layout;
 			case 'format':
-				return $this->_format;
+				return $this->{"_$key"};
+			case 'output':
+				return $this->render();
 			default:
 				return $this->getVar($key);
 		}
@@ -52,30 +51,32 @@ class View implements Renderable {
 	}
 
 	public function render() {
-		$path   = $this->_module->path;
-		$name   = strtolower($this->_name);
-		$layout = strtolower($this->_layout);
-		$format = strtolower($this->_format);
+		if (is_null($this->_output)) {
+			$path   = $this->_module->path;
+			$name   = strtolower($this->_name);
+			$layout = strtolower($this->_layout);
+			$format = strtolower($this->_format);
 
-		$method = $layout . 'Layout';
+			$method = $layout . 'Layout';
 
-		if (method_exists($this, $method))
-			call_user_func(array($this, $method));
+			if (method_exists($this, $method))
+				call_user_func(array($this, $method));
 
-		$file = $path . DS . 'views' . DS . $name . DS
-			  . 'layouts' . DS . $layout . '.' . $format . '.php';
+			$file = $path . DS . 'views' . DS . $name . DS
+				  . 'layouts' . DS . $layout . '.' . $format . '.php';
 
-		if (is_file($file)) {
-			ob_start();
+			if (is_file($file)) {
+				ob_start();
 
-			include $file;
+				include $file;
 
-			$this->_output = ob_get_contents();
+				$this->_output = ob_get_contents();
 
-			ob_end_clean();
-		} else {
-			$message = sprintf("Resource does not exist: %s.", $file);
-			trigger_error($message, E_USER_ERROR);
+				ob_end_clean();
+			} else {
+				$message = sprintf("Resource does not exist: %s.", $file);
+				trigger_error($message, E_USER_ERROR);
+			}
 		}
 
 		return $this->_output;
