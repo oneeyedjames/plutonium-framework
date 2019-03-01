@@ -30,27 +30,27 @@ class Session implements Accessible {
 		$this->del($key);
 	}
 
-	public function get($key, $default = null, $namespace = 'default') {
-		return $this->has($key, $namespace) ? $this->_namespaces[$namespace][$key] : $default;
+	public function get($key, $default = null, $ns = 'pu') {
+		return $this->has($key, $ns) ? $this->_namespaces[$ns][$key] : $default;
 	}
 
-	public function set($key, $value = null, $namespace = 'default') {
-		$this->_namespaces[$namespace][$key] = $value;
+	public function set($key, $value = null, $ns = 'pu') {
+		$this->_namespaces[$ns][$key] = $value;
 	}
 
-	public function def($key, $value = null, $namespace = 'default') {
-		if (!$this->has($key, $namespace)) $this->set($key, $value, $namespace);
+	public function def($key, $value = null, $ns = 'pu') {
+		if (!$this->has($key, $ns)) $this->set($key, $value, $ns);
 	}
 
-	public function has($key, $namespace = 'default') {
-		return isset($this->_namespaces[$namespace][$key]);
+	public function has($key, $ns = 'pu') {
+		return isset($this->_namespaces[$ns][$key]);
 	}
 
-	public function del($key, $namespace = 'default') {
-		unset($this->_namespaces[$namespace][$key]);
+	public function del($key, $ns = 'pu') {
+		unset($this->_namespaces[$ns][$key]);
 	}
 
-	public function toArray($namespace = 'default') {
-		return isset($this->_namespaces[$namespace]) ? $this->_namespaces[$namespace] : array();
+	public function toArray($ns = 'pu') {
+		return isset($this->_namespaces[$ns]) ? $this->_namespaces[$ns] : array();
 	}
 }

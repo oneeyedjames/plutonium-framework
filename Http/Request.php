@@ -23,7 +23,7 @@ class Request implements Accessible {
 		$this->_uri    = $_SERVER['REQUEST_URI'];
 		$this->_method = $_SERVER['REQUEST_METHOD'];
 		$this->_hashes = array(
-			'default' => $_REQUEST,
+			'request' => $_REQUEST,
 			'get'     => $_GET,
 			'post'    => $_POST,
 			//'files'   => $_FILES,
@@ -47,7 +47,7 @@ class Request implements Accessible {
 				break;
 			case 'PUT':
 				parse_str(file_get_contents('php://input'), $query);
-				$this->_hashes['default'] = array_merge_recursive($_REQUEST, $query);
+				$this->_hashes['request'] = array_merge_recursive($_REQUEST, $query);
 				break;
 		}
 
@@ -222,27 +222,27 @@ class Request implements Accessible {
 		}
 	}
 
-	public function has($key, $hash = 'default') {
+	public function has($key, $hash = 'request') {
 		return isset($this->_hashes[$hash][$key]);
 	}
 
-	public function get($key, $default = null, $hash = 'default') {
+	public function get($key, $default = null, $hash = 'request') {
 		return $this->has($key, $hash) ? $this->_hashes[$hash][$key] : $default;
 	}
 
-	public function set($key, $value = null, $hash = 'default') {
+	public function set($key, $value = null, $hash = 'request') {
 		$this->_hashes[$hash][$key] = $value;
 	}
 
-	public function def($key, $value = null, $hash = 'default') {
+	public function def($key, $value = null, $hash = 'request') {
 		if (!$this->has($key, $hash)) $this->set($key, $value, $hash);
 	}
 
-	public function del($key, $hash = 'default') {
+	public function del($key, $hash = 'request') {
 		unset($this->_hashes[$hash][$key]);
 	}
 
-	public function toArray($hash = 'default') {
+	public function toArray($hash = 'request') {
 		return isset($this->_hashes[$hash]) ? $this->_hashes[$hash] : null;
 	}
 }
