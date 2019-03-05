@@ -5,6 +5,8 @@ namespace Plutonium\Application;
 use Plutonium\Executable;
 use Plutonium\AccessObject;
 
+use Plutonium\Event\Broadcaster;
+
 use Plutonium\Http\Session;
 use Plutonium\Http\Request;
 use Plutonium\Http\Response;
@@ -23,6 +25,8 @@ class Application implements Executable {
 
 	protected $_config = null;
 
+	protected $_broadcaster = null;
+
 	protected $_theme   = null;
 	protected $_module  = null;
 	protected $_widgets = array();
@@ -37,6 +41,8 @@ class Application implements Executable {
 
 	public function __construct($config) {
 		$this->_config = $config;
+
+		$this->_broadcaster = new Broadcaster();
 	}
 
 	public function __get($key) {
@@ -142,5 +148,13 @@ class Application implements Executable {
 
 	public function addWidget($location, $name) {
 		$this->_widgets[$location][] = Widget::newInstance($this, $name);
+	}
+
+	public function addEventListener($listener) {
+		$this->_broadcaster->register($listener);
+	}
+
+	public function broadcastEvent($event) {
+		$this->_broadcaster->broadcast($event);
 	}
 }
