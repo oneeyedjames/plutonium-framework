@@ -128,10 +128,12 @@ class Application implements Executable {
 
 	public function initialize() {
 		$this->module->initialize();
+		$this->broadcastEvent('app_init', $this);
 	}
 
 	public function execute() {
 		$this->module->execute();
+		$this->broadcastEvent('app_exec', $this);
 
 		$this->response->setModuleOutput($this->module->render());
 
@@ -154,7 +156,7 @@ class Application implements Executable {
 		$this->_broadcaster->register($listener);
 	}
 
-	public function broadcastEvent($event) {
-		$this->_broadcaster->broadcast($event);
+	public function broadcastEvent($event, $data = null) {
+		$this->_broadcaster->broadcast($event, $data);
 	}
 }
