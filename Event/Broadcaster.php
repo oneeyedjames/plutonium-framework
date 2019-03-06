@@ -7,13 +7,18 @@ class Broadcaster {
 
 	public function register($listener) {
 		if ($listener instanceof Listener) {
-			self::$_listeners[] = $listener;
+			$this->_listeners[] = $listener;
 		}
 	}
 
-	public function broadcast($event) {
-		for (self::$_listeners as $listener) {
-			$listener->onEvent($event);
+	public function broadcast($event, $data = null) {
+		if (is_string($event))
+			$event = new Event($event, $data);
+
+		if ($event instanceof Event) {
+			foreach ($this->_listeners as $listener) {
+				$listener->onEvent($event);
+			}
 		}
 	}
 }
