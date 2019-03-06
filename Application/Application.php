@@ -153,7 +153,7 @@ class Application implements Executable {
 	}
 
 	public function addEventListener($listener) {
-		$this->_broadcaster->register($listener);
+		$this->_broadcaster->addListener($listener);
 	}
 
 	public function broadcastEvent($event, $data = null) {

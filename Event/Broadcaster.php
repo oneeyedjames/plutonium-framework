@@ -5,7 +5,7 @@ namespace Plutonium\Event;
 class Broadcaster {
 	protected $_listeners = [];
 
-	public function register($listener) {
+	public function addListener($listener) {
 		if ($listener instanceof Listener) {
 			$this->_listeners[] = $listener;
 		}

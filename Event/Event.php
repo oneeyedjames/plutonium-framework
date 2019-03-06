@@ -6,7 +6,7 @@ class Event {
 	protected $_name;
 	protected $_data;
 
-	public function __construct($name, $data) {
+	public function __construct($name, $data = null) {
 		$this->_name = $name;
 		$this->_data = $data;
 	}
