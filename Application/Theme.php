@@ -140,7 +140,7 @@ class Theme extends ApplicationComponent {
 
 			if (!is_file($file)) {
 				$message = sprintf("Resource does not exist: %s.", $file);
-				trigger_error($message, E_USER_WARNING);
+				trigger_error($message, E_USER_NOTICE);
 
 				$file = self::getPath() . DS . $name . DS
 				      . 'layouts' . DS . 'default.' . $format . '.php';
