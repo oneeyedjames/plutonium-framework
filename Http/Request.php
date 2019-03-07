@@ -52,7 +52,12 @@ class Request implements Accessible {
 		}
 
 		foreach ($_SERVER as $key => $value) {
-			if (stripos($key, 'HTTP_') === 0) {
+			if (strtoupper($key) == 'HTTP_HOST') {
+				list($host, $port) = array_pad(explode(':', $value, 2), 2, 80);
+
+				$this->set('Host', $host, 'headers');
+				$this->set('Port', intval($port), 'headers');
+			} elseif (stripos($key, 'HTTP_') === 0) {
 				$words = str_replace('_', ' ', substr($key, 5));
 				$words = ucwords(strtolower($words));
 				$words = str_replace(' ', '-', $words);
