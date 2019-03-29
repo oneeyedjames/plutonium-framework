@@ -136,15 +136,26 @@ class Theme extends ApplicationComponent {
 			$layout = strtolower($request->get('layout', $this->layout));
 			$format = strtolower($request->get('format', $this->format));
 
-			$file = self::getPath() . DS . $name . DS
-			      . 'layouts' . DS . $layout . '.' . $format . '.php';
+			$path = 'layouts' . DS . $layout . '.' . $format . '.php';
+			$phar = self::getPath() . DS . $name . '.phar';
+			$file = self::getPath() . DS . $name . DS . $path;
 
-			if (!is_file($file)) {
+			if (is_file($phar)) {
+				$file = 'phar://' . $phar . DS . $path;
+
+				if (!is_file($file)) {
+					$message = sprintf("Resource does not exist: %s.", $file);
+					trigger_error($message, E_USER_NOTICE);
+
+					$path = 'layouts' . DS . 'default.' . $format . '.php';
+					$file = 'phar://' . $phar . DS . $path;
+				}
+			} elseif (!is_file($file)) {
 				$message = sprintf("Resource does not exist: %s.", $file);
 				trigger_error($message, E_USER_NOTICE);
 
-				$file = self::getPath() . DS . $name . DS
-				      . 'layouts' . DS . 'default.' . $format . '.php';
+				$path = 'layouts' . DS . 'default.' . $format . '.php';
+				$file = self::getPath() . DS . $name . DS . $path;
 			}
 
 			if (is_file($file)) {
