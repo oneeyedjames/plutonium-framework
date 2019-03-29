@@ -58,6 +58,7 @@ class Widget extends ApplicationComponent {
 
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
+		$phar = self::getPath() . DS . $name . '.phar';
 		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
 		$args = new AccessObject(array(
@@ -65,7 +66,7 @@ class Widget extends ApplicationComponent {
 			'name' => $name
 		));
 
-		return Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass([$phar, $file], $type, __CLASS__, $args);
 	}
 
 	protected $_vars = null;

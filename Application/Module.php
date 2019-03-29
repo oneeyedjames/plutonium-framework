@@ -9,7 +9,7 @@ use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
-class Module extends ApplicationComponent implements Executable, Renderable {
+class Module extends ApplicationComponent implements Executable {
 	protected static $_path = null;
 
 	protected static $_default_resource = null;
@@ -58,14 +58,15 @@ class Module extends ApplicationComponent implements Executable, Renderable {
 
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
-		$type = ucfirst($name) . 'Module';
+		$phar = self::getPath() . DS . $name . '.phar';
 		$file = self::getPath() . DS . $name . DS . 'module.php';
+		$type = ucfirst($name) . 'Module';
 		$args = new AccessObject(array(
 			'application' => $application,
 			'name'        => $name
 		));
 
-		return Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass([$phar, $file], $type, __CLASS__, $args);
 	}
 
 	protected $_resource = null;

@@ -54,14 +54,15 @@ class Theme extends ApplicationComponent {
 
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
-		$type = ucfirst($name) . 'Theme';
+		$phar = self::getPath() . DS . $name . '.phar';
 		$file = self::getPath() . DS . $name . DS . 'theme.php';
+		$type = ucfirst($name) . 'Theme';
 		$args = new AccessObject(array(
 			'application' => $application,
 			'name' => $name
 		));
 
-		return Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass([$phar, $file], $type, __CLASS__, $args);
 	}
 
 	protected $_layout = null;
