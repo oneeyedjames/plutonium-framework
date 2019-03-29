@@ -52,8 +52,6 @@ class View implements Renderable {
 
 	public function render() {
 		if (is_null($this->_output)) {
-			$path   = $this->_module->path;
-			$name   = strtolower($this->_name);
 			$layout = strtolower($this->_layout);
 			$format = strtolower($this->_format);
 
@@ -62,8 +60,13 @@ class View implements Renderable {
 			if (method_exists($this, $method))
 				call_user_func(array($this, $method));
 
-			$file = $path . DS . 'views' . DS . $name . DS
-				  . 'layouts' . DS . $layout . '.' . $format . '.php';
+			$name = strtolower($this->_name);
+			$path = 'views' . DS . $name . DS . 'layouts'
+			      . DS . $layout . '.' . $format . '.php';
+			$file = $this->_module->path . DS . $path;
+			$phar = $this->_module->path . '.phar';
+
+			if (is_file($phar)) $file = 'phar://' . $phar . DS . $path;
 
 			if (is_file($file)) {
 				ob_start();
