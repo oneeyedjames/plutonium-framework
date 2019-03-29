@@ -162,8 +162,10 @@ class Module extends ApplicationComponent implements Executable {
 		if (is_null($this->_router)) {
 			$type = ucfirst($this->name) . 'Router';
 			$file = $this->path . DS . 'router.php';
+			$phar = $this->path . '.phar';
 
-			$this->_router = Loader::getClass($file, $type, 'Plutonium\Application\Router', $this);
+			$this->_router = Loader::getClass([$phar, $file],
+				$type, 'Plutonium\Application\Router', $this);
 		}
 
 		return $this->_router;
@@ -173,14 +175,17 @@ class Module extends ApplicationComponent implements Executable {
 		if (is_null($this->_controller)) {
 			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'Controller';
-			$file = $this->path . DS . 'controllers' . DS . $name . '.php';
+			$path = 'controllers' . DS . $name . '.php';
+			$file = $this->path . DS . $path;
+			$phar = $this->path . '.phar';
 
 			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_controller = Loader::getClass($file, $type, 'Plutonium\Application\Controller', $args);
+			$this->_controller = Loader::getClass([$phar, $file],
+				$type, 'Plutonium\Application\Controller', $args);
 		}
 
 		return $this->_controller;
@@ -191,14 +196,17 @@ class Module extends ApplicationComponent implements Executable {
 
 		if (empty($this->_models[$name])) {
 			$type = ucfirst($name) . 'Model';
-			$file = $this->path . DS . 'models' . DS . $name . '.php';
+			$path = 'models' . DS . $name . '.php';
+			$file = $this->path . DS . $path;
+			$phar = $this->path . '.phar';
 
 			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_models[$name] = Loader::getClass($file, $type, 'Plutonium\Application\Model', $args);
+			$this->_models[$name] = Loader::getClass([$phar, $file],
+				$type, 'Plutonium\Application\Model', $args);
 		}
 
 		return $this->_models[$name];
@@ -208,14 +216,17 @@ class Module extends ApplicationComponent implements Executable {
 		if (is_null($this->_view)) {
 			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'View';
-			$file = $this->path . DS . 'views' . DS . $name . DS . 'view.php';
+			$path = 'views' . DS . $name . DS . 'view.php';
+			$file = $this->path . DS . $path;
+			$phar = $this->path . '.phar';
 
 			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_view = Loader::getClass($file, $type, 'Plutonium\Application\View', $args);
+			$this->_view = Loader::getClass([$phar, $file],
+				$type, 'Plutonium\Application\View', $args);
 		}
 
 		return $this->_view;
