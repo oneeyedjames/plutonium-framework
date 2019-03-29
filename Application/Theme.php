@@ -137,8 +137,8 @@ class Theme extends ApplicationComponent {
 			$format = strtolower($request->get('format', $this->format));
 
 			$path = 'layouts' . DS . $layout . '.' . $format . '.php';
-			$phar = self::getPath() . DS . $name . '.phar';
 			$file = self::getPath() . DS . $name . DS . $path;
+			$phar = self::getPath() . DS . $name . '.phar';
 
 			if (is_file($phar)) {
 				$file = 'phar://' . $phar . DS . $path;
