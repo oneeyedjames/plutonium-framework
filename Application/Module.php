@@ -97,9 +97,7 @@ class Module extends ApplicationComponent implements Executable {
 	public function install() {
 		$table = Table::getInstance('modules');
 
-		$modules = $table->find(array(
-			'slug' => $this->name
-		));
+		$modules = $table->find(['slug' => $this->name]);
 
 		if (empty($modules)) {
 			$meta = new AccessObject(self::getMetadata($this->name));
@@ -112,11 +110,31 @@ class Module extends ApplicationComponent implements Executable {
 			))->save();
 		}
 
-		$path = self::getPath() . DS . $this->name
-			  . DS . 'models' . DS . 'tables' . DS . '*.xml';
+		$models = [];
 
-		foreach (glob($path) as $file) {
-			$table = $this->getModel(basename($file, '.xml'))->getTable();
+		$phar = self::getPath() . DS . $this->name . '.phar';
+
+		if (is_file($phar)) {
+			if (($dir = opendir('phar://' . $phar . DS . 'models')) !== false) {
+				while (($file = readdir($dir)) !== false) {
+					$name = pathinfo($file, PATHINFO_FILENAME);
+					$ext = pathinfo($file, PATHINFO_EXTENSION);
+
+					if ($ext == 'xml') $models[] = $name;
+				}
+
+				closedir($dir);
+			}
+		} else {
+			$path = self::getPath() . DS . $this->name
+				  . DS . 'models' . DS . '*.xml';
+
+			foreach (glob($path) as $file)
+				$models[] = basename($file, '.xml');
+		}
+
+		foreach ($models as $name) {
+			$table = $this->getModel($name)->getTable();
 			$table->create();
 		}
 	}
