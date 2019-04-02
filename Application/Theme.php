@@ -108,9 +108,7 @@ class Theme extends ApplicationComponent {
 	public function install() {
 		$table = Table::getInstance('themes');
 
-		$themes = $table->find(array(
-			'slug' => $this->name
-		));
+		$themes = $table->find(['slug' => $this->name]);
 
 		if (empty($themes)) {
 			$meta = new AccessObject(self::getMetadata($this->name));
@@ -170,6 +168,8 @@ class Theme extends ApplicationComponent {
 				$message = sprintf("Resource does not exist: %s.", $file);
 				trigger_error($message, E_USER_ERROR);
 			}
+
+			$this->module->application->broadcastEvent('theme_render', $this);
 		}
 
 		return $this->_output;

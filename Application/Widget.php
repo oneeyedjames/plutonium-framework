@@ -105,9 +105,7 @@ class Widget extends ApplicationComponent {
 	public function install() {
 		$table = Table::getInstance('widgets');
 
-		$widgets = $table->find(array(
-			'slug' => $this->name
-		));
+		$widgets = $table->find(['slug' => $this->name]);
 
 		if (empty($widgets)) {
 			$meta = new AccessObject(self::getMetadata($this->name));
@@ -151,6 +149,8 @@ class Widget extends ApplicationComponent {
 				$message = sprintf("Resource does not exist: %s.", $file);
 				trigger_error($message, E_USER_ERROR);
 			}
+
+			$this->module->application->broadcastEvent('widget_render', $this);
 		}
 
 		return $this->_output;
