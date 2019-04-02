@@ -28,15 +28,13 @@ final class Loader {
 
 	public static function getClass($files, $class, $default, $args = null) {
 		if (!class_exists($class)) {
-			if (is_array($files)) {
-				foreach ($files as $file) {
-					if (is_file($file)) {
-						require_once $file;
-						if (class_exists($class)) break;
-					}
+			if (is_string($files)) $files = [$files];
+
+			foreach ($files as $file) {
+				if (is_file($file)) {
+					require_once $file;
+					if (class_exists($class)) break;
 				}
-			} elseif (is_file($files)) {
-				require_once $files;
 			}
 		}
 
