@@ -35,14 +35,12 @@ class Controller implements Executable {
 		}
 	}
 
-	/**
-	 * Intentionally empty method stub
-	 * Can be overridden in child classes
-	 */
-	public function initialize() {}
+	public function initialize() {
+		$this->module->application->broadcastEvent('ctrl_init', $this);
+	}
 
 	public function execute() {
-		$request = $this->_module->request;
+		$request = $this->module->request;
 
 		$action = strtolower($request->get('action', 'default'));
 		$method = $action . 'Action';
@@ -50,15 +48,17 @@ class Controller implements Executable {
 		if (method_exists($this, $method))
 			call_user_func(array($this, $method));
 
-		if (!empty($this->_redirect))
-			header('Location: ' . $this->_redirect);
+		$this->module->application->broadcastEvent('ctrl_exec', $this);
+
+		if (!empty($this->redirect))
+			header('Location: ' . $this->redirect);
 	}
 
 	public function getModel($name = null) {
-		return $this->_module->getModel($name);
+		return $this->module->getModel($name);
 	}
 
 	public function getView() {
-		return $this->_module->getView();
+		return $this->module->getView();
 	}
 }

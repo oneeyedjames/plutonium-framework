@@ -52,8 +52,8 @@ class View implements Renderable {
 
 	public function render() {
 		if (is_null($this->_output)) {
-			$layout = strtolower($this->_layout);
-			$format = strtolower($this->_format);
+			$layout = strtolower($this->layout);
+			$format = strtolower($this->format);
 
 			$method = $layout . 'Layout';
 
@@ -80,17 +80,19 @@ class View implements Renderable {
 				$message = sprintf("Resource does not exist: %s.", $file);
 				trigger_error($message, E_USER_ERROR);
 			}
+
+			$this->module->application->broadcastEvent('view_render', $this);
 		}
 
 		return $this->_output;
 	}
 
 	public function localize($text) {
-		return $this->_module->application->locale->localize($text);
+		return $this->module->application->locale->localize($text);
 	}
 
 	public function getModel($name = null) {
-		return $this->_module->getModel($name);
+		return $this->module->getModel($name);
 	}
 
 	public function getVar($key, $default = null) {
