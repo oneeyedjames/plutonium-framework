@@ -70,7 +70,7 @@ class Locale {
 
 				if (!$this->_loadFile($file)) {
 					$message = sprintf("Resource does not exist: %s", $file);
-					trigger_error($message, E_USER_WARNING);
+					trigger_error($message, E_USER_NOTICE);
 				}
 
 				if (!empty($this->country)) {
@@ -79,13 +79,13 @@ class Locale {
 
 					if (!$this->_loadFile($file)) {
 						$message = sprintf("Resource does not exist: %s", $file);
-						trigger_error($message, E_USER_WARNING);
+						trigger_error($message, E_USER_NOTICE);
 					}
 				}
 				break;
 			default:
 				$error = sprintf("Invalid locale resource type: %s", $type);
-				trigger_error($error, E_USER_WARNING);
+				trigger_error($error, E_USER_NOTICE);
 				break;
 		}
 	}

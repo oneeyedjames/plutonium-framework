@@ -51,7 +51,7 @@ class Model {
 
 		if (in_array('created', $table->field_names) &&
 			in_array('updated', $table->field_names)) {
-			$data['updated'] = date('Y-m-d H:i:s', time());
+			$data['updated'] = gmdate('Y-m-d H:i:s', time());
 			if (empty($data['id'])) $data['created'] = $data['updated'];
 		}
 

@@ -9,7 +9,7 @@ use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
-class Module extends ApplicationComponent implements Executable, Renderable {
+class Module extends ApplicationComponent implements Executable {
 	protected static $_path = null;
 
 	protected static $_default_resource = null;
@@ -58,14 +58,15 @@ class Module extends ApplicationComponent implements Executable, Renderable {
 
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
-		$type = ucfirst($name) . 'Module';
+		$phar = self::getPath() . DS . $name . '.phar';
 		$file = self::getPath() . DS . $name . DS . 'module.php';
+		$type = ucfirst($name) . 'Module';
 		$args = new AccessObject(array(
 			'application' => $application,
 			'name'        => $name
 		));
 
-		return Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass([$phar, $file], $type, __CLASS__, $args);
 	}
 
 	protected $_resource = null;
@@ -96,9 +97,7 @@ class Module extends ApplicationComponent implements Executable, Renderable {
 	public function install() {
 		$table = Table::getInstance('modules');
 
-		$modules = $table->find(array(
-			'slug' => $this->name
-		));
+		$modules = $table->find(['slug' => $this->name]);
 
 		if (empty($modules)) {
 			$meta = new AccessObject(self::getMetadata($this->name));
@@ -111,11 +110,31 @@ class Module extends ApplicationComponent implements Executable, Renderable {
 			))->save();
 		}
 
-		$path = self::getPath() . DS . $this->name
-			  . DS . 'models' . DS . 'tables' . DS . '*.xml';
+		$models = [];
 
-		foreach (glob($path) as $file) {
-			$table = $this->getModel(basename($file, '.xml'))->getTable();
+		$phar = self::getPath() . DS . $this->name . '.phar';
+
+		if (is_file($phar)) {
+			if (($dir = opendir('phar://' . $phar . DS . 'models')) !== false) {
+				while (($file = readdir($dir)) !== false) {
+					$name = pathinfo($file, PATHINFO_FILENAME);
+					$ext = pathinfo($file, PATHINFO_EXTENSION);
+
+					if ($ext == 'xml') $models[] = $name;
+				}
+
+				closedir($dir);
+			}
+		} else {
+			$path = self::getPath() . DS . $this->name
+				  . DS . 'models' . DS . '*.xml';
+
+			foreach (glob($path) as $file)
+				$models[] = basename($file, '.xml');
+		}
+
+		foreach ($models as $name) {
+			$table = $this->getModel($name)->getTable();
 			$table->create();
 		}
 	}
@@ -161,8 +180,10 @@ class Module extends ApplicationComponent implements Executable, Renderable {
 		if (is_null($this->_router)) {
 			$type = ucfirst($this->name) . 'Router';
 			$file = $this->path . DS . 'router.php';
+			$phar = $this->path . '.phar';
 
-			$this->_router = Loader::getClass($file, $type, 'Plutonium\Application\Router', $this);
+			$this->_router = Loader::getClass([$phar, $file],
+				$type, 'Plutonium\Application\Router', $this);
 		}
 
 		return $this->_router;
@@ -172,14 +193,17 @@ class Module extends ApplicationComponent implements Executable, Renderable {
 		if (is_null($this->_controller)) {
 			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'Controller';
-			$file = $this->path . DS . 'controllers' . DS . $name . '.php';
+			$path = 'controllers' . DS . $name . '.php';
+			$file = $this->path . DS . $path;
+			$phar = $this->path . '.phar';
 
 			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_controller = Loader::getClass($file, $type, 'Plutonium\Application\Controller', $args);
+			$this->_controller = Loader::getClass([$phar, $file],
+				$type, 'Plutonium\Application\Controller', $args);
 		}
 
 		return $this->_controller;
@@ -190,14 +214,17 @@ class Module extends ApplicationComponent implements Executable, Renderable {
 
 		if (empty($this->_models[$name])) {
 			$type = ucfirst($name) . 'Model';
-			$file = $this->path . DS . 'models' . DS . $name . '.php';
+			$path = 'models' . DS . $name . '.php';
+			$file = $this->path . DS . $path;
+			$phar = $this->path . '.phar';
 
 			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_models[$name] = Loader::getClass($file, $type, 'Plutonium\Application\Model', $args);
+			$this->_models[$name] = Loader::getClass([$phar, $file],
+				$type, 'Plutonium\Application\Model', $args);
 		}
 
 		return $this->_models[$name];
@@ -207,14 +234,17 @@ class Module extends ApplicationComponent implements Executable, Renderable {
 		if (is_null($this->_view)) {
 			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'View';
-			$file = $this->path . DS . 'views' . DS . $name . DS . 'view.php';
+			$path = 'views' . DS . $name . DS . 'view.php';
+			$file = $this->path . DS . $path;
+			$phar = $this->path . '.phar';
 
 			$args = new AccessObject(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_view = Loader::getClass($file, $type, 'Plutonium\Application\View', $args);
+			$this->_view = Loader::getClass([$phar, $file],
+				$type, 'Plutonium\Application\View', $args);
 		}
 
 		return $this->_view;

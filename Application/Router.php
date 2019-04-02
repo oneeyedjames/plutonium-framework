@@ -14,7 +14,8 @@ class Router {
 	public function match($path) {
 		$vars = new AccessObject();
 
-		$path = empty($path) ? array() : explode(FS, trim($path, FS));
+		$path = trim($path, FS);
+		$path = empty($path) ? array() : explode(FS, $path);
 
 		if (isset($path[0]))
 			$vars->resource = $path[0];

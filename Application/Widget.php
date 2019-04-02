@@ -58,6 +58,7 @@ class Widget extends ApplicationComponent {
 
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
+		$phar = self::getPath() . DS . $name . '.phar';
 		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
 		$args = new AccessObject(array(
@@ -65,7 +66,7 @@ class Widget extends ApplicationComponent {
 			'name' => $name
 		));
 
-		return Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass([$phar, $file], $type, __CLASS__, $args);
 	}
 
 	protected $_vars = null;
@@ -132,8 +133,11 @@ class Widget extends ApplicationComponent {
 			$layout = strtolower($this->layout);
 			$format = strtolower($request->get('format', $this->format));
 
-			$file = self::getPath() . DS . $name . DS
-			      . 'layouts' . DS . $layout . '.' . $format . '.php';
+			$path = 'layouts' . DS . $layout . '.' . $format . '.php';
+			$file = self::getPath() . DS . $name . DS . $path;
+			$phar = self::getPath() . DS . $name . '.phar';
+
+			if (is_file($phar)) $file = 'phar://' . $phar . DS . $path;
 
 			if (is_file($file)) {
 				ob_start();
