@@ -166,17 +166,17 @@ class Module extends ApplicationComponent implements Executable {
 		$this->_resource = $this->request->resource;
 
 		$this->getController()->initialize();
-		$this->module->application->broadcastEvent('mod_init', $this);
+		$this->application->broadcastEvent('mod_init', $this);
 	}
 
 	public function execute() {
 		$this->getController()->execute();
-		$this->module->application->broadcastEvent('mod_exec', $this);
+		$this->application->broadcastEvent('mod_exec', $this);
 	}
 
 	public function render() {
 		$output = $this->getView()->render();
-		$this->module->application->broadcastEvent('mod_render', $this);
+		$this->application->broadcastEvent('mod_render', $this);
 		return $output;
 	}
 

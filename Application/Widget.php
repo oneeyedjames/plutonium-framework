@@ -150,7 +150,7 @@ class Widget extends ApplicationComponent {
 				trigger_error($message, E_USER_ERROR);
 			}
 
-			$this->module->application->broadcastEvent('widget_render', $this);
+			$this->application->broadcastEvent('widget_render', $this);
 		}
 
 		return $this->_output;

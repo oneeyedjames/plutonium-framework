@@ -169,7 +169,7 @@ class Theme extends ApplicationComponent {
 				trigger_error($message, E_USER_ERROR);
 			}
 
-			$this->module->application->broadcastEvent('theme_render', $this);
+			$this->application->broadcastEvent('theme_render', $this);
 		}
 
 		return $this->_output;
