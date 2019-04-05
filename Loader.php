@@ -54,15 +54,25 @@ final class Loader {
 	}
 
 	public static function import($class) {
-		return self::importFile(str_replace(BS, DS, $class));
+		return self::importFile(trim(str_replace(BS, DS, $class), DS));
 	}
 
 	public static function importFile($rel_path) {
-		foreach (self::getPaths() as $lib_path) {
-			foreach (self::getExtensions() as $ext) {
-				$abs_path = $lib_path . DS . $rel_path . $ext;
+		$phar_path = explode(DS, $rel_path);
+		$phar_path[0] .= '.phar';
+		$phar_path = implode(DS, $phar_path);
 
-				if (is_file($abs_path)) {
+		foreach (self::getPaths() as $lib_path) {
+			$real_path = realpath($lib_path);
+
+			foreach (self::getExtensions() as $ext) {
+				$phar_file = 'phar://' . $real_path . DS . $phar_path . $ext;
+				$abs_path = $real_path . DS . $rel_path . $ext;
+
+				if (is_file($phar_file)) {
+					require_once $phar_file;
+					return true;
+				} elseif (is_file($abs_path)) {
 					require_once $abs_path;
 					return true;
 				}
