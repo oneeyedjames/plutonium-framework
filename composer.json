@@ -1,11 +1,16 @@
 {
-    "name": "oneeyedjames/plutonium-library",
-    "type": "library",
-    "authors": [
-        {
-            "name": "J Andrew Scott",
-            "email": "jascott@programmer.net"
-        }
-    ],
-    "require": {}
+	"name": "oneeyedjames/plutonium-library",
+	"type": "library",
+	"authors": [
+		{
+			"name": "J Andrew Scott",
+			"email": "jascott@programmer.net"
+		}
+	],
+	"require": {},
+	"autoload": {
+		"files": [
+			"src/Loader.php"
+		]
+	}
 }
