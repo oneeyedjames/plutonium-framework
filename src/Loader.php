@@ -3,7 +3,7 @@
 namespace Plutonium;
 
 final class Loader {
-	private static $_namespaces = [];
+	private static $_namespaces = ['Plutonium' => __DIR__];
 	private static $_registered = false;
 
 	private static function register() {
@@ -73,11 +73,8 @@ final class Loader {
 	}
 
 	public static function autoload($path = null) {
-		self::addNamespace('Plutonium', __DIR__);
 		self::register();
-
-		if (!empty($path))
-			self::addPath($path);
+		self::addPath($path);
 	}
 
 	public static function import($class) {
