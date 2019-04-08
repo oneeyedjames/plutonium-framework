@@ -3,6 +3,7 @@
 namespace Plutonium;
 
 final class Loader {
+	private static $_namespaces = [];
 	private static $_registered = false;
 
 	private static function register() {
@@ -24,6 +25,29 @@ final class Loader {
 
 	public static function getExtensions() {
 		return explode(',', spl_autoload_extensions());
+	}
+
+	public static function addNamespace($name, $path) {
+		if ($path = realpath($path)) {
+			$name = trim(str_replace(BS, DS, $name), DS);
+			self::$_namespaces[$name] = $path;
+		}
+	}
+
+	public static function getNamespaces() {
+		return self::$_namespaces;
+	}
+
+	private static function resolveNamespace($rel_path) {
+		foreach (self::getNamespaces() as $ns => $ns_path) {
+			$prefix = substr($rel_path, 0, strlen($ns) + 1);
+			$suffix = substr($rel_path, strlen($ns));
+
+			if ($ns . DS == $prefix)
+				return $ns_path . $suffix;
+		}
+
+		return false;
 	}
 
 	public static function getClass($files, $class, $default, $args = null) {
@@ -58,6 +82,15 @@ final class Loader {
 	}
 
 	public static function importFile($rel_path) {
+		if ($ns_path = self::resolveNamespace($rel_path)) {
+			foreach (self::getExtensions() as $ext) {
+				if (is_file($ns_path . $ext)) {
+					require_once $ns_path . $ext;
+					return true;
+				}
+			}
+		}
+
 		$phar_path = explode(DS, $rel_path);
 		$phar_path[0] .= '.phar';
 		$phar_path = implode(DS, $phar_path);
@@ -83,6 +116,15 @@ final class Loader {
 	}
 
 	public static function importDirectory($rel_path) {
+		if ($ns_path = self::resolveNamespace($rel_path)) {
+			foreach (self::getExtensions() as $ext) {
+				foreach (glob($ns_path . DS . '*' . $ext) as $file)
+					require_once $file;
+			}
+
+			return true;
+		}
+
 		foreach (self::getPaths() as $lib_path) {
 			if ($abs_path = realpath($lib_path . DS . $rel_path)) {
 				foreach (self::getExtensions() as $ext) {
