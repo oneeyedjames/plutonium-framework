@@ -1,0 +1,11 @@
+{
+    "name": "oneeyedjames/plutonium-library",
+    "type": "library",
+    "authors": [
+        {
+            "name": "J Andrew Scott",
+            "email": "jascott@programmer.net"
+        }
+    ],
+    "require": {}
+}
