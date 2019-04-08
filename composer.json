@@ -12,5 +12,13 @@
 		"files": [
 			"src/Loader.php"
 		]
+	},
+	"scripts": {
+		"build": [
+			"phar pack -f dist/Plutonium.phar src"
+		],
+		"clean": [
+			"rm dist/Plutonium.phar"
+		]
 	}
 }

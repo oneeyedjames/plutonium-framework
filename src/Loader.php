@@ -73,8 +73,11 @@ final class Loader {
 	}
 
 	public static function autoload($path = null) {
+		self::addNamespace('Plutonium', __DIR__);
 		self::register();
-		self::addPath($path);
+
+		if (!empty($path))
+			self::addPath($path);
 	}
 
 	public static function import($class) {
