@@ -10,7 +10,8 @@
 	"require": {},
 	"require-dev": {
 		"task/cli": "^0.3.0",
-		"task/task": "^0.6.0"
+		"task/task": "^0.6.0",
+		"phpunit/phpunit": "^7.5"
 	},
 	"autoload": {
 		"files": [
@@ -18,6 +19,9 @@
 		]
 	},
 	"scripts": {
+		"test": [
+			"phpunit"
+		],
 		"build": [
 			"task build"
 		],

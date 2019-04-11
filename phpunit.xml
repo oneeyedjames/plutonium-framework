@@ -1,0 +1,20 @@
+<phpunit bootstrap="test/bootstrap.php">
+	<testsuites>
+		<testsuite name="PlutoniumLibrary">
+			<file>test/IncludesTest.php</file>
+			<file>test/ReferencesTest.php</file>
+
+			<file>test/Plutonium/FunctionsTest.php</file>
+			<file>test/Plutonium/LoaderTest.php</file>
+			<file>test/Plutonium/AccessObjectTest.php</file>
+			<file>test/Plutonium/FilterObjectTest.php</file>
+
+			<file>test/Plutonium/Globalization/LocaleTest.php</file>
+			<file>test/Plutonium/Utility/AddressTest.php</file>
+
+			<file>test/Plutonium/Http/SessionTest.php</file>
+			<file>test/Plutonium/Http/RequestTest.php</file>
+			<file>test/Plutonium/Http/ResponseTest.php</file>
+		</testsuite>
+	</testsuites>
+</phpunit>
