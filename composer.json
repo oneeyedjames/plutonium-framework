@@ -8,6 +8,10 @@
 		}
 	],
 	"require": {},
+	"require-dev": {
+		"task/cli": "^0.3.0",
+		"task/task": "^0.6.0"
+	},
 	"autoload": {
 		"files": [
 			"src/Loader.php"
@@ -15,10 +19,10 @@
 	},
 	"scripts": {
 		"build": [
-			"phar pack -f dist/Plutonium.phar src"
+			"task build"
 		],
 		"clean": [
-			"rm dist/Plutonium.phar"
+			"task clean"
 		]
 	}
 }
