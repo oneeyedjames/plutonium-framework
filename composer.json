@@ -15,6 +15,10 @@
 	},
 	"autoload": {
 		"files": [
+			"src/Accessible.php",
+			"src/Executable.php",
+			"src/Installable.php",
+			"src/Renderable.php",
 			"src/Loader.php"
 		]
 	},
