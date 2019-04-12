@@ -23,29 +23,66 @@ class Url extends AccessObject {
 		return new self($vars);
 	}
 
+	public static function buildQuery($vars) {
+		return empty($vars) ? '' : '?' . http_build_query($vars);
+	}
+
 	public function __construct($vars = null) {
 		parent::__construct($vars);
 	}
 
-	public function query() {
-		return empty($this->_vars) ? '' : '?' . http_build_query($this->_vars);
+	public function has($key) {
+		switch ($key) {
+			case 'query': return true;
+			default: return parent::has($key);
+		}
+	}
+
+	public function get($key, $default = null) {
+		switch ($key) {
+			case 'query': return self::buildQuery($this->_vars);
+			default: return parent::get($key, $default);
+		}
+	}
+
+	public function set($key, $value = null) {
+		switch ($key) {
+			case 'query': trigger_error("Cannot write to readonly parameter: $key", E_USER_WARNING);
+			default: return parent::set($key, $value);
+		}
+	}
+
+	public function def($key, $value = null) {
+		switch ($key) {
+			case 'query': return;
+			default: return parent::def($key, $value);
+		}
+	}
+
+	public function del($key) {
+		switch ($key) {
+			case 'query': return;
+			default: return parent::del($key);
+		}
 	}
 
 	public function toString() {
-		$host = self::$_domain;
+		$fqdn = self::$_domain;
 
-		if (isset($this->module))
-			$host = $this->module . '.' . $host;
+		if (isset($this->host))   $fqdn = $this->host  . '.' . $fqdn;
+		if (isset($this->module)) $fqdn = $this->module . '.' . $fqdn;
 
-		// TODO add site name
+		$path = empty(self::$_path) ? '' : FS . self::$_path;
 
-		$url = self::$_scheme . '://' . $host . FS . self::$_path;
+		if ($this->has('resource')) $path .= FS . $this->get('resource');
+		if ($this->has('id'))       $path .= FS . $this->get('id');
+		if ($this->has('layout'))   $path .= FS . $this->get('layout');
 
-		if ($this->has('resource')) $url .= FS . $this->get('resource');
-		if ($this->has('id'))       $url .= FS . $this->get('id');
-		if ($this->has('layout'))   $url .= FS . $this->get('layout');
-		if ($this->has('format'))   $url .= FS . $this->get('format');
+		$vars = $this->_vars;
+		unset($vars['resource'], $vars['id'], $vars['layout']);
 
-		return $url;
+		$query = self::buildQuery($vars);
+
+		return self::$_scheme . '://' . $fqdn . $path . $query;
 	}
 }

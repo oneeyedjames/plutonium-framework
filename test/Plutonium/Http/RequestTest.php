@@ -36,7 +36,7 @@ class RequestTest extends TestCase {
 	public function testMethodGet() {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 
-		$request = new Request($this->config->system);
+		$request = new Request();
 
 		$this->assertEquals('GET', $request->method);
 	}
@@ -44,52 +44,49 @@ class RequestTest extends TestCase {
 	public function testMethodPost() {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
-		$request = new Request($this->config->system);
+		$request = new Request();
 
 		$this->assertEquals('POST', $request->method);
 	}
 
-	public function testMethodMapping() {
+	public function testMethodHead() {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
-
 		$_GET['_method'] = $_REQUEST['_method'] = 'HEAD';
 
-		$request = new Request($this->config->system);
+		$request = new Request();
 
 		$this->assertEquals('HEAD', $request->method);
 
 		$this->assertNull($request->get('_method', null, 'get'));
 		$this->assertNull($request->get('_method', null));
+	}
 
-		unset($_GET['_method'], $_REQUEST['_method']);
-
+	public function testMethodPut() {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
-
 		$_POST['_method'] = $_REQUEST['_method'] = 'PUT';
 
-		$request = new Request($this->config->system);
+		$request = new Request();
 
 		$this->assertEquals('PUT', $request->method);
 
 		$this->assertNull($request->get('_method', null, 'post'));
 		$this->assertNull($request->get('_method', null));
+	}
 
-		unset($_POST['_method'], $_REQUEST['_method']);
-
+	public function testMethodDelete() {
+		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$_POST['_method'] = $_REQUEST['_method'] = 'DELETE';
 
-		$request = new Request($this->config->system);
+		$request = new Request();
 
 		$this->assertEquals('DELETE', $request->method);
 
 		$this->assertNull($request->get('_method', null, 'post'));
 		$this->assertNull($request->get('_method', null));
-
-		unset($_POST['_method'], $_REQUEST['_method']);
 	}
 
 	public function testHost() {
-		$request = new Request($this->config->system);
+		$request = new Request();
 
 		$this->assertEquals('plutonium.local', $request->get('Host', null, 'headers'));
 		$this->assertEquals(80, $request->get('Port', null, 'headers'));
@@ -98,7 +95,7 @@ class RequestTest extends TestCase {
 	public function testHostPort() {
 		$_SERVER['HTTP_HOST'] .= ':8080';
 
-		$request = new Request($this->config->system);
+		$request = new Request();
 
 		$this->assertEquals('plutonium.local', $request->get('Host', null, 'headers'));
 		$this->assertEquals(8080, $request->get('Port', null, 'headers'));
@@ -110,7 +107,9 @@ class RequestTest extends TestCase {
 
 		$this->assertEquals($request->uri, '/path/to/resource');
 		$this->assertNull($request->format);
+	}
 
+	public function testUriSlash() {
 		$_SERVER['REQUEST_URI'] = '/path/to/resource/';
 		$request = new Request($this->config->system);
 
@@ -124,7 +123,9 @@ class RequestTest extends TestCase {
 
 		$this->assertEquals($request->uri, '/path/to/resource');
 		$this->assertEquals($request->format, 'ext');
+	}
 
+	public function testUriFormatSlash() {
 		$_SERVER['REQUEST_URI'] = '/path/to/resource.ext/';
 		$request = new Request($this->config->system);
 
@@ -132,11 +133,12 @@ class RequestTest extends TestCase {
 		$this->assertEquals($request->format, 'ext');
 	}
 
-	/* public function testFormat() {
+	public function testFormat() {
 		$_SERVER['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml';
 
-		$request = new Request($this->config->system);
+		$request = new Request();
 
-		$this->assertEquals('html', $request->format);
-	} */
+		$this->assertEquals('text/html,application/xhtml+xml',
+			$request->get('Accept', null, 'headers'));
+	}
 }
