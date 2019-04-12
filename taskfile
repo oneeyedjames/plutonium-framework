@@ -2,7 +2,13 @@
 
 require_once 'vendor/autoload.php';
 
+use Task\Plugin\WatchPlugin;
+
 $project = new Task\Project('Plutonium');
+$project->inject(function($container) {
+	$container['watch'] = new WatchPlugin;
+});
+
 $project->addTask('build', function() {
 	$this->runTask('clean');
 
@@ -22,5 +28,11 @@ $project->addTask('clean', function() {
 	if (file_exists('dist/Plutonium.phar'))    unlink('dist/Plutonium.phar');
 	if (file_exists('dist/Plutonium.phar.gz')) unlink('dist/Plutonium.phar.gz');
 });
+
+$project->addTask('watch', ['watch', function($watch) {
+	$watch->init('src')->addListener('modify', function($event) {
+		$this->runTask('build', $this->getOutput());
+	})->start();
+}]);
 
 return $project;
