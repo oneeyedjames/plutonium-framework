@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 use Plutonium\Http\Url;
 
-class RequestTest extends TestCase {
+class UrlTest extends TestCase {
 	public function setUp() {
 		Url::initialize('http://plutonium.local/');
 	}
