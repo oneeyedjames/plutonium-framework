@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 use Plutonium\FilterObject;
 
-class FilterObjectClass extends TestCase {
+class FilterObjectTest extends TestCase {
 	var $object;
 
 	public function testType() {

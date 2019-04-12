@@ -12,9 +12,13 @@
 			<file>test/Plutonium/Globalization/LocaleTest.php</file>
 			<file>test/Plutonium/Utility/AddressTest.php</file>
 
+			<file>test/Plutonium/Filter/TypeFilterTest.php</file>
+			<file>test/Plutonium/Filter/StringFilterTest.php</file>
+
 			<file>test/Plutonium/Http/SessionTest.php</file>
 			<file>test/Plutonium/Http/RequestTest.php</file>
 			<file>test/Plutonium/Http/ResponseTest.php</file>
+			<file>test/Plutonium/Http/UrlTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>
