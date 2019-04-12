@@ -19,7 +19,7 @@ class Request implements Accessible {
 	protected $_method = null;
 	protected $_hashes = array();
 
-	public function __construct($config) {
+	public function __construct() {
 		$this->_uri    = $_SERVER['REQUEST_URI'];
 		$this->_method = $_SERVER['REQUEST_METHOD'];
 		$this->_hashes = array(
@@ -77,10 +77,7 @@ class Request implements Accessible {
 			}
 		}
 
-		$path = implode(FS, $path);
-		$host = $this->get('Host', $config->hostname, 'headers');
-
-		$this->uri = FS . FS . $host . FS . $path;
+		$this->_uri = FS . implode(FS, $path);
 	}
 
 	// public function parseHost($host, $base) {

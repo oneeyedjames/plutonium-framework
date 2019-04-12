@@ -9,12 +9,12 @@ class RequestTest extends TestCase {
 	var $config;
 
 	protected function reset() {
-		$_SERVER['SERVER_NAME'] = 'plutonium.dev';
+		$_SERVER['SERVER_NAME'] = 'plutonium.local';
 
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$_SERVER['REQUEST_URI']    = '/';
 
-		$_SERVER['HTTP_HOST'] = 'plutonium.dev';
+		$_SERVER['HTTP_HOST'] = 'plutonium.local';
 	}
 
 	public function setUp() {
@@ -23,7 +23,7 @@ class RequestTest extends TestCase {
 		if (is_null($this->config)) {
 			$this->config = new AccessObject(array(
 				'system' => array(
-					'hostname' => 'plutonium.dev'
+					'hostname' => 'plutonium.local'
 				)
 			));
 		}
@@ -33,36 +33,20 @@ class RequestTest extends TestCase {
 		$this->reset();
 	}
 
-	public function testMethod() {
+	public function testMethodGet() {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 
 		$request = new Request($this->config->system);
 
 		$this->assertEquals('GET', $request->method);
+	}
 
-		$_SERVER['REQUEST_METHOD'] = 'HEAD';
-
-		$request = new Request($this->config->system);
-
-		$this->assertEquals('HEAD', $request->method);
-
+	public function testMethodPost() {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
 		$request = new Request($this->config->system);
 
 		$this->assertEquals('POST', $request->method);
-
-		$_SERVER['REQUEST_METHOD'] = 'PUT';
-
-		$request = new Request($this->config->system);
-
-		$this->assertEquals('PUT', $request->method);
-
-		$_SERVER['REQUEST_METHOD'] = 'DELETE';
-
-		$request = new Request($this->config->system);
-
-		$this->assertEquals('DELETE', $request->method);
 	}
 
 	public function testMethodMapping() {
@@ -106,60 +90,53 @@ class RequestTest extends TestCase {
 
 	public function testHost() {
 		$request = new Request($this->config->system);
-		$request->parseHost('plutonium.dev', 'plutonium.dev');
 
-		$this->assertNull($request->host);
-		$this->assertNull($request->module);
-
-		$request->parseHost('main.plutonium.dev', 'plutonium.dev');
-
-		$this->assertEquals($request->host, 'main');
-		$this->assertNull($request->module);
-
-		$request->parseHost('site.main.plutonium.dev', 'plutonium.dev');
-
-		$this->assertEquals($request->host,   'main');
-		$this->assertEquals($request->module, 'site');
+		$this->assertEquals('plutonium.local', $request->get('Host', null, 'headers'));
+		$this->assertEquals(80, $request->get('Port', null, 'headers'));
 	}
 
-	public function testPath() {
+	public function testHostPort() {
+		$_SERVER['HTTP_HOST'] .= ':8080';
+
 		$request = new Request($this->config->system);
-		$request->parsePath('/path/to/resource.ext');
 
-		$this->assertEquals($request->path, 'path/to/resource');
-		$this->assertEquals($request->format, 'ext');
+		$this->assertEquals('plutonium.local', $request->get('Host', null, 'headers'));
+		$this->assertEquals(8080, $request->get('Port', null, 'headers'));
+	}
 
-		$request->parsePath('/path/to/resource');
+	public function testUri() {
+		$_SERVER['REQUEST_URI'] = '/path/to/resource';
+		$request = new Request($this->config->system);
 
-		$this->assertEquals($request->path, 'path/to/resource');
+		$this->assertEquals($request->uri, '/path/to/resource');
 		$this->assertNull($request->format);
 
-		$request->parsePath('path/to/resource.ext');
+		$_SERVER['REQUEST_URI'] = '/path/to/resource/';
+		$request = new Request($this->config->system);
 
-		$this->assertEquals($request->path, 'path/to/resource');
-		$this->assertEquals($request->format, 'ext');
-
-		$request->parsePath('path/to/resource');
-
-		$this->assertEquals($request->path, 'path/to/resource');
-		$this->assertNull($request->format);
-
-		$request->parsePath('/path/to/resource.ext/');
-
-		$this->assertEquals($request->path, 'path/to/resource');
-		$this->assertEquals($request->format, 'ext');
-
-		$request->parsePath('/path/to/resource/');
-
-		$this->assertEquals($request->path, 'path/to/resource');
+		$this->assertEquals($request->uri, '/path/to/resource');
 		$this->assertNull($request->format);
 	}
 
-	public function testFormat() {
+	public function testUriFormat() {
+		$_SERVER['REQUEST_URI'] = '/path/to/resource.ext';
+		$request = new Request($this->config->system);
+
+		$this->assertEquals($request->uri, '/path/to/resource');
+		$this->assertEquals($request->format, 'ext');
+
+		$_SERVER['REQUEST_URI'] = '/path/to/resource.ext/';
+		$request = new Request($this->config->system);
+
+		$this->assertEquals($request->uri, '/path/to/resource');
+		$this->assertEquals($request->format, 'ext');
+	}
+
+	/* public function testFormat() {
 		$_SERVER['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml';
 
 		$request = new Request($this->config->system);
 
 		$this->assertEquals('html', $request->format);
-	}
+	} */
 }
