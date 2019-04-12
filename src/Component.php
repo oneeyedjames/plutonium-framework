@@ -17,4 +17,12 @@ abstract class Component implements Installable, Renderable {
 				return null;
 		}
 	}
+
+	public function __set($key, $value) {}
+
+	public function __isset($key) {
+		return $key == 'name';
+	}
+
+	public function __unset($key) {}
 }
