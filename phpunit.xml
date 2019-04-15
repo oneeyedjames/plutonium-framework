@@ -1,8 +1,8 @@
 <phpunit bootstrap="test/bootstrap.php">
 	<testsuites>
 		<testsuite name="PlutoniumLibrary">
-			<file>test/IncludesTest.php</file>
-			<file>test/ReferencesTest.php</file>
+			<!-- <file>test/IncludesTest.php</file> -->
+			<!-- <file>test/ReferencesTest.php</file> -->
 
 			<file>test/Plutonium/FunctionsTest.php</file>
 			<file>test/Plutonium/LoaderTest.php</file>
