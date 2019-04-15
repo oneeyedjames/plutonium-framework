@@ -1,0 +1,38 @@
+<?php
+
+require_once 'vendor/autoload.php';
+
+use Task\Plugin\WatchPlugin;
+
+$project = new Task\Project('Plutonium');
+$project->inject(function($container) {
+	$container['watch'] = new WatchPlugin;
+});
+
+$project->addTask('build', function() {
+	$this->runTask('clean');
+
+	$manifest = json_decode(file_get_contents('composer.json'));
+
+	$autoload = '<?php' . PHP_EOL;
+	foreach ($manifest->autoload->files as $file)
+		$autoload .= 'require_once \'' . $file . '\';' . PHP_EOL;
+
+	$phar = new Phar('dist/Plutonium.phar');
+	$phar->buildFromDirectory('src');
+	$phar->addFromString('index.php', $autoload);
+	$phar->compress(Phar::GZ);
+});
+
+$project->addTask('clean', function() {
+	if (file_exists('dist/Plutonium.phar'))    unlink('dist/Plutonium.phar');
+	if (file_exists('dist/Plutonium.phar.gz')) unlink('dist/Plutonium.phar.gz');
+});
+
+$project->addTask('watch', ['watch', function($watch) {
+	$watch->init('src')->addListener('modify', function($event) {
+		$this->runTask('build', $this->getOutput());
+	})->start();
+}]);
+
+return $project;

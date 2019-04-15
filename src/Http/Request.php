@@ -19,7 +19,7 @@ class Request implements Accessible {
 	protected $_method = null;
 	protected $_hashes = array();
 
-	public function __construct($config) {
+	public function __construct() {
 		$this->_uri    = $_SERVER['REQUEST_URI'];
 		$this->_method = $_SERVER['REQUEST_METHOD'];
 		$this->_hashes = array(
@@ -77,75 +77,8 @@ class Request implements Accessible {
 			}
 		}
 
-		$path = implode(FS, $path);
-		$host = $this->get('Host', $config->hostname, 'headers');
-
-		$this->uri = FS . FS . $host . FS . $path;
+		$this->_uri = FS . implode(FS, $path);
 	}
-
-	// public function parseHost($host, $base) {
-	// 	$args = new AccessObject();
-	//
-	// 	if ($base == $host) return $args;
-	//
-	// 	if (substr($host, -strlen($base)) == $base) {
-	// 		$diff = explode('.', trim(substr($host, 0, -strlen($base)), '.'));
-	//
-	// 		if ($host = array_pop($diff))
-	// 			$args->host = $host;
-	//
-	// 		if ($module = array_pop($diff))
-	// 			$args->module = $module;
-	// 	}
-	// }
-
-	// protected function _initFormat() {
-	// 	if (isset($_SERVER['HTTP_ACCEPT'])) {
-	// 		$type = $this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT']);
-	//
-	// 		foreach ($type as $match => $group) {
-	// 			foreach ($group as $type) {
-	// 				switch ($type) {
-	// 					case 'text/plain':
-	// 						$this->def('format', 'txt');
-	// 						return;
-	// 					case 'text/html':
-	// 					case 'application/xhtml+xml':
-	// 						$this->def('format', 'html');
-	// 						return;
-	// 					case 'text/xml':
-	// 					case 'application/xml': // unofficial
-	// 						$this->def('format', 'xml');
-	// 						return;
-	// 					case 'text/json': // unofficial
-	// 					case 'application/json':
-	// 						$this->def('format', 'json');
-	// 						return;
-	// 					case 'application/rss+xml':
-	// 						$this->def('format', 'rss');
-	// 						return;
-	// 					case 'application/atom+xml':
-	// 						$this->def('format', 'atom');
-	// 						return;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// protected function _initLanguage() {
-	// 	if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-	// 		var_dump($_SERVER['HTTP_ACCEPT_LANGUAGE'],
-	// 			$this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT_LANGUAGE']));
-	// 	}
-	// }
-
-	// protected function _initEncoding() {
-	// 	if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
-	// 		var_dump($_SERVER['HTTP_ACCEPT_ENCODING'],
-	// 			$this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT_ENCODING']));
-	// 	}
-	// }
 
 	/**
 	 * Helper function for parsing HTTP Accept and Accept-____ headers
