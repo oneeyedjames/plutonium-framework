@@ -21,8 +21,7 @@ define('LS', PHP_EOL);
 define('BS', '\\');
 define('FS', '/');
 
-define('PU_PATH_ROOT', dirname(__DIR__));
-define('PU_PATH_BASE', PU_PATH_ROOT);
+define('PU_PATH_BASE', __DIR__);
 define('PU_PATH_LIB',  realpath(PU_PATH_BASE . '/src'));
 define('PU_PATH_FUNC', realpath(PU_PATH_LIB . '/Functions'));
 
