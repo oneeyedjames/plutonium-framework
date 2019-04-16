@@ -8,18 +8,23 @@ use Plutonium\Loader;
 use Plutonium\Database\Table;
 
 class Theme extends ApplicationComponent {
-	protected static $_path = null;
+	public static function getPath($name) {
+		if (defined('PU_PATH_BASE'))
+			return PU_PATH_BASE . DS . 'themes' . DS . strtolower($name);
 
-	public static function getPath() {
-		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
-			self::$_path = realpath(PU_PATH_BASE . '/themes');
+		return null;
+	}
 
-		return self::$_path;
+	public static function getFile($name, $file, $phar = false) {
+		$path = self::getPath($name) . ($phar ? '.phar' : '');
+		$file = trim(str_replace([FS, BS], DS, $file), DS);
+
+		return $path . DS . $file;
 	}
 
 	public static function getMetadata($name) {
 		$name = strtolower($name);
-		$file = self::getPath() . DS . $name . DS . 'theme.php';
+		$file = self::getFile($name, 'theme.php');
 		$type = ucfirst($name) . 'Theme';
 		$meta = array();
 
@@ -53,9 +58,10 @@ class Theme extends ApplicationComponent {
 	}
 
 	public static function newInstance($application, $name) {
+		$file = self::getFile($name, 'theme.php');
+		$phar = self::getFile($name, 'theme.php', true);
+
 		$name = strtolower($name);
-		$phar = self::getPath() . DS . $name . '.phar';
-		$file = self::getPath() . DS . $name . DS . 'theme.php';
 		$type = ucfirst($name) . 'Theme';
 		$args = new AccessObject(array(
 			'application' => $application,
