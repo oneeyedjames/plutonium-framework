@@ -141,8 +141,8 @@ class Theme extends ApplicationComponent {
 			$format = strtolower($request->get('format', $this->format));
 
 			$path = 'layouts' . DS . $layout . '.' . $format . '.php';
-			$file = self::getPath() . DS . $name . DS . $path;
-			$phar = self::getPath() . DS . $name . '.phar';
+			$file = self::getPath($name) . DS . $path;
+			$phar = self::getPath($name) . '.phar';
 
 			if (is_file($phar)) {
 				$file = 'phar://' . $phar . DS . $path;
@@ -159,7 +159,7 @@ class Theme extends ApplicationComponent {
 				trigger_error($message, E_USER_NOTICE);
 
 				$path = 'layouts' . DS . 'default.' . $format . '.php';
-				$file = self::getPath() . DS . $name . DS . $path;
+				$file = self::getPath($name) . DS . $path;
 			}
 
 			if (is_file($file)) {
