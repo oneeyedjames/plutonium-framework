@@ -8,15 +8,17 @@ use Plutonium\Loader;
 use Plutonium\Database\Table;
 
 class Theme extends ApplicationComponent {
-	public static function getPath($name) {
-		if (defined('PU_PATH_BASE'))
-			return PU_PATH_BASE . DS . 'themes' . DS . strtolower($name);
+	public static function getPath($name, $phar = false) {
+		if (defined('PU_PATH_BASE')) {
+			$name = strtolower($name) . ($phar ? '.phar' : '');
+			return PU_PATH_BASE . DS . 'themes' . DS . $name;
+		}
 
 		return null;
 	}
 
 	public static function getFile($name, $file, $phar = false) {
-		$path = self::getPath($name) . ($phar ? '.phar' : '');
+		$path = self::getPath($name, $phar);
 		$file = trim(str_replace([FS, BS], DS, $file), DS);
 
 		return $path . DS . $file;
@@ -140,26 +142,30 @@ class Theme extends ApplicationComponent {
 			$layout = strtolower($request->get('layout', $this->layout));
 			$format = strtolower($request->get('format', $this->format));
 
-			$path = 'layouts' . DS . $layout . '.' . $format . '.php';
-			$file = self::getPath($name) . DS . $path;
-			$phar = self::getPath($name) . '.phar';
+			$path = self::getPath($name);
+			$phar = self::getPath($name, true);
+
+			$request_file = 'layouts' . DS . $layout . '.' . $format . '.php';
+			$default_file = 'layouts' . DS . 'default.' . $format . '.php';
 
 			if (is_file($phar)) {
-				$file = 'phar://' . $phar . DS . $path;
+				$file = 'phar://' . $phar . DS . $request_file;
 
 				if (!is_file($file)) {
 					$message = sprintf("Resource does not exist: %s.", $file);
 					trigger_error($message, E_USER_NOTICE);
 
-					$path = 'layouts' . DS . 'default.' . $format . '.php';
-					$file = 'phar://' . $phar . DS . $path;
+					$file = 'phar://' . $phar . DS . $default_file;
 				}
-			} elseif (!is_file($file)) {
-				$message = sprintf("Resource does not exist: %s.", $file);
-				trigger_error($message, E_USER_NOTICE);
+			} else {
+				$file = $path . DS . $request_file;
 
-				$path = 'layouts' . DS . 'default.' . $format . '.php';
-				$file = self::getPath($name) . DS . $path;
+				if (!is_file($file)) {
+					$message = sprintf("Resource does not exist: %s.", $file);
+					trigger_error($message, E_USER_NOTICE);
+
+					$file = $path . DS . $default_file;
+				}
 			}
 
 			if (is_file($file)) {
