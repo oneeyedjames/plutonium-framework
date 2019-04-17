@@ -21,9 +21,9 @@ define('LS', PHP_EOL);
 define('BS', '\\');
 define('FS', '/');
 
-define('PU_PATH_BASE', __DIR__);
-define('PU_PATH_LIB',  realpath(PU_PATH_BASE . '/src'));
-define('PU_PATH_FUNC', realpath(PU_PATH_LIB . '/Functions'));
+define('PU_PATH_LIB',  realpath(__DIR__ . '/src'));
+define('PU_PATH_FUNC', realpath(__DIR__ . '/src/Functions'));
 
 require_once PU_PATH_FUNC . '/Strings.php';
 require_once PU_PATH_FUNC . '/Arrays.php';
+require_once PU_PATH_FUNC . '/Files.php';
