@@ -21,6 +21,7 @@ define('LS', PHP_EOL);
 define('BS', '\\');
 define('FS', '/');
 
+define('PU_PATH_BASE', 'vfs://plutonium');
 define('PU_PATH_LIB',  realpath(__DIR__ . '/src'));
 define('PU_PATH_FUNC', realpath(__DIR__ . '/src/Functions'));
 
