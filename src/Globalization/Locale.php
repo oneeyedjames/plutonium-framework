@@ -3,6 +3,8 @@ namespace Plutonium\Globalization;
 
 use Plutonium\AccessObject;
 
+use function Plutonium\Functions\filepath;
+
 class Locale {
 	protected static $_path = null;
 
@@ -23,7 +25,7 @@ class Locale {
 
 		$this->_phrases = array();
 
-		$path = realpath(PU_PATH_BASE . '/locales');
+		$path = filepath(PU_PATH_BASE . '/locales');
 		$file = $path . DS . $this->_language . '.xml';
 
 		if (!$this->_loadFile($file)) {

@@ -1,11 +1,21 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use org\bovigo\vfs\vfsStream;
 
 use Plutonium\AccessObject;
 use Plutonium\Globalization\Locale;
 
 class LocaleTest extends TestCase {
+	public function setUp() {
+		$this->directory = vfsStream::setup('/plutonium', 644, [
+			'locales' => [
+				'en.xml' => '<trans type="application" name="http" lang="en"/>',
+				'en-US.xml' => '<trans type="application" name="http" lang="en-US"/>'
+			]
+		]);
+	}
+
 	public function testConstruct() {
 		$locale = new Locale('en');
 
