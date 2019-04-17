@@ -5,17 +5,17 @@ namespace Plutonium\Application;
 use function Plutonium\Functions\filepath;
 
 class ApplicationComponentLocator {
-	private $_path;
+	private $_base_path;
 
-	public function __construct($path) {
-		$this->_path = trim(str_replace([FS, BS], DS, $path), DS);
+	public function __construct($base_path) {
+		$this->_base_path = trim(str_replace([FS, BS], DS, $base_path), DS);
 	}
 
 	public function getPath($name, $phar = false) {
 		if (!defined('PU_PATH_BASE')) return null;
 
 		$name = strtolower($name) . ($phar ? '.phar' : '');
-		$path = PU_PATH_BASE . DS . $this->_path . DS . $name;
+		$path = PU_PATH_BASE . DS . $this->_base_path . DS . $name;
 
 		return filepath($path);
 	}
@@ -25,5 +25,27 @@ class ApplicationComponentLocator {
 		$file = trim(str_replace([FS, BS], DS, $file), DS);
 
 		return filepath($path . DS . $file);
+	}
+
+	public function locateFile($name, $files) {
+		$path = $this->getPath($name);
+		$phar = $this->getPath($name, true);
+
+		if (is_string($files))
+			$files = array_slice(func_get_args(), 1);
+
+		if (is_file($phar)) {
+			foreach ($files as $file) {
+				$file = $this->getFile($name, $file, true);
+				if (is_file('phar://' . $file)) return $file;
+			}
+		} elseif (is_dir($path)) {
+			foreach ($files as $file) {
+				$file = $this->getFile($name, $file);
+				if (is_file($file)) return $file;
+			}
+		}
+
+		return false;
 	}
 }
