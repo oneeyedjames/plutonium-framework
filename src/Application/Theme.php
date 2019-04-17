@@ -7,26 +7,30 @@ use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
-class Theme extends ApplicationComponent {
-	public static function getPath($name, $phar = false) {
-		if (defined('PU_PATH_BASE')) {
-			$name = strtolower($name) . ($phar ? '.phar' : '');
-			return PU_PATH_BASE . DS . 'themes' . DS . $name;
-		}
+use function Plutonium\Functions\filepath;
 
-		return null;
+class Theme extends ApplicationComponent {
+	protected static $_locator = null;
+
+	public static function getLocator() {
+		if (is_null(self::$_locator))
+			self::$_locator = new ApplicationComponentLocator('themes');
+
+		return self::$_locator;
+	}
+
+	public static function getPath($name, $phar = false) {
+		return self::getLocator()->getPath($name, $phar);
 	}
 
 	public static function getFile($name, $file, $phar = false) {
-		$path = self::getPath($name, $phar);
-		$file = trim(str_replace([FS, BS], DS, $file), DS);
-
-		return $path . DS . $file;
+		return self::getLocator()->getFile($name, $file, $phar);
 	}
 
 	public static function getMetadata($name) {
+		$file = self::getLocator()->getFile($name, 'theme.php');
+
 		$name = strtolower($name);
-		$file = self::getFile($name, 'theme.php');
 		$type = ucfirst($name) . 'Theme';
 		$meta = array();
 
@@ -60,8 +64,8 @@ class Theme extends ApplicationComponent {
 	}
 
 	public static function newInstance($application, $name) {
-		$file = self::getFile($name, 'theme.php');
-		$phar = self::getFile($name, 'theme.php', true);
+		$file = self::getLocator()->getFile($name, 'theme.php');
+		$phar = self::getLocator()->getFile($name, 'theme.php', true);
 
 		$name = strtolower($name);
 		$type = ucfirst($name) . 'Theme';
@@ -142,8 +146,8 @@ class Theme extends ApplicationComponent {
 			$layout = strtolower($request->get('layout', $this->layout));
 			$format = strtolower($request->get('format', $this->format));
 
-			$path = self::getPath($name);
-			$phar = self::getPath($name, true);
+			$path = self::getLocator()->getPath($name);
+			$phar = self::getLocator()->getPath($name, true);
 
 			$request_file = 'layouts' . DS . $layout . '.' . $format . '.php';
 			$default_file = 'layouts' . DS . 'default.' . $format . '.php';

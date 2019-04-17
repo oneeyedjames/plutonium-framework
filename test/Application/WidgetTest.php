@@ -3,14 +3,14 @@
 use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 
-use Plutonium\Application\Theme;
+use Plutonium\Application\Widget;
 
-class ThemeTest extends TestCase {
+class WidgetTest extends TestCase {
 	public function setUp() {
 		$this->directory = vfsStream::setup('/plutonium', 644, [
-			'themes' => [
-				'themename' => [
-					'theme.php' => '<?php',
+			'widgets' => [
+				'widgetname' => [
+					'widget.php' => '<?php',
 					'layouts' => []
 				]
 			]
@@ -18,12 +18,12 @@ class ThemeTest extends TestCase {
 	}
 
 	public function testGetPath() {
-		$path = Theme::getLocator()->getPath('ThemeName');
+		$path = Widget::getLocator()->getPath('WidgetName');
 		$this->assertTrue(file_exists($path));
 	}
 
 	public function testGetFile() {
-		$file = Theme::getLocator()->getFile('ThemeName', 'theme.php');
+		$file = Widget::getLocator()->getFile('WidgetName', 'widget.php');
 		$this->assertTrue(file_exists($file));
 	}
 }

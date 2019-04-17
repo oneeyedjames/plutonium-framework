@@ -17,13 +17,19 @@ class Widget extends ApplicationComponent {
 		return self::$_path;
 	}
 
-	public static function setPath($path) {
-		self::$_path = $path;
+	protected static $_locator = null;
+
+	public function getLocator() {
+		if (is_null(self::$_locator))
+			self::$_locator = new ApplicationComponentLocator('widgets');
+
+		return self::$_locator;
 	}
 
 	public static function getMetadata($name) {
+		$file = self::getLocator()->getFile($name, 'widget.php');
+
 		$name = strtolower($name);
-		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
 		$meta = array();
 
@@ -57,9 +63,10 @@ class Widget extends ApplicationComponent {
 	}
 
 	public static function newInstance($application, $name) {
+		$file = self::getLocator()->getFile($name, 'widget.php');
+		$phar = self::getLocator()->getFile($name, 'widget.php', true);
+
 		$name = strtolower($name);
-		$phar = self::getPath() . DS . $name . '.phar';
-		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
 		$args = new AccessObject(array(
 			'application' => $application,
@@ -131,11 +138,31 @@ class Widget extends ApplicationComponent {
 			$layout = strtolower($this->layout);
 			$format = strtolower($request->get('format', $this->format));
 
-			$path = 'layouts' . DS . $layout . '.' . $format . '.php';
-			$file = self::getPath() . DS . $name . DS . $path;
-			$phar = self::getPath() . DS . $name . '.phar';
+			$path = self::getLocator()->getPath($name);
+			$phar = self::getLocator()->getPath($name, true);
 
-			if (is_file($phar)) $file = 'phar://' . $phar . DS . $path;
+			$request_layout = 'layouts' . DS . $layout . '.' . $format . '.php';
+			$default_layout = 'layouts' . DS . 'default.' . $format . '.php';
+
+			if (is_file($phar)) {
+				$file = 'phar://' . $phar . DS . $request_file;
+
+				if (!is_file($file)) {
+					$message = sprintf("Resource does not exist: %s.", $file);
+					trigger_error($message, E_USER_NOTICE);
+
+					$file = 'phar://' . $phar . DS . $default_file;
+				}
+			} else {
+				$file = $path . DS . $request_file;
+
+				if (!is_file($file)) {
+					$message = sprintf("Resource does not exist: %s.", $file);
+					trigger_error($message, E_USER_NOTICE);
+
+					$file = $path . DS . $default_file;
+				}
+			}
 
 			if (is_file($file)) {
 				ob_start();

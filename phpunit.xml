@@ -21,6 +21,8 @@
 			<file>test/Http/UrlTest.php</file>
 
 			<file>test/Application/ApplicationComponentLocator.php</file>
+			<file>test/Application/ThemeTest.php</file>
+			<file>test/Application/WidgetTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>
