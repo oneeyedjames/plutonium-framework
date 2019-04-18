@@ -123,39 +123,10 @@ class Widget extends ApplicationComponent {
 
 	public function render() {
 		if (is_null($this->_output)) {
-			$request = $this->application->request;
+			if ($file = $this->getLayout()) {
+				if (stripos($file, '.phar') !== false)
+					$file = 'phar://' . $file;
 
-			$name   = strtolower($this->name);
-			$layout = strtolower($this->layout);
-			$format = strtolower($request->get('format', $this->format));
-
-			$path = self::getLocator()->getPath($name);
-			$phar = self::getLocator()->getPath($name, true);
-
-			$request_file = 'layouts' . DS . $layout . '.' . $format . '.php';
-			$default_file = 'layouts' . DS . 'default.' . $format . '.php';
-
-			if (is_file($phar)) {
-				$file = 'phar://' . $phar . DS . $request_file;
-
-				if (!is_file($file)) {
-					$message = sprintf("Resource does not exist: %s.", $file);
-					trigger_error($message, E_USER_NOTICE);
-
-					$file = 'phar://' . $phar . DS . $default_file;
-				}
-			} else {
-				$file = $path . DS . $request_file;
-
-				if (!is_file($file)) {
-					$message = sprintf("Resource does not exist: %s.", $file);
-					trigger_error($message, E_USER_NOTICE);
-
-					$file = $path . DS . $default_file;
-				}
-			}
-
-			if (is_file($file)) {
 				ob_start();
 
 				include $file;
@@ -164,7 +135,7 @@ class Widget extends ApplicationComponent {
 
 				ob_end_clean();
 			} else {
-				$message = sprintf("Resource does not exist: %s.", $file);
+				$message = sprintf("Layout file not found");
 				trigger_error($message, E_USER_ERROR);
 			}
 
@@ -174,8 +145,11 @@ class Widget extends ApplicationComponent {
 		return $this->_output;
 	}
 
-	public function getLayout($request) {
-		$layout = strtolower($request->get('layout', $this->layout));
+	public function getLayout($request = null) {
+		if (is_null($request))
+			$request = $this->application->request;
+
+		$layout = strtolower($this->layout);
 		$format = strtolower($request->get('format', $this->format));
 
 		$files = [

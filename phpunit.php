@@ -29,6 +29,10 @@ require_once PU_PATH_FUNC . '/Strings.php';
 require_once PU_PATH_FUNC . '/Arrays.php';
 require_once PU_PATH_FUNC . '/Files.php';
 
+class ApplicationMock {
+	public function broadcastEvent() {}
+}
+
 class LocaleMock {
 	public function load() {}
 }
