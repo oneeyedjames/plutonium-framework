@@ -132,8 +132,8 @@ class Widget extends ApplicationComponent {
 			$path = self::getLocator()->getPath($name);
 			$phar = self::getLocator()->getPath($name, true);
 
-			$request_layout = 'layouts' . DS . $layout . '.' . $format . '.php';
-			$default_layout = 'layouts' . DS . 'default.' . $format . '.php';
+			$request_file = 'layouts' . DS . $layout . '.' . $format . '.php';
+			$default_file = 'layouts' . DS . 'default.' . $format . '.php';
 
 			if (is_file($phar)) {
 				$file = 'phar://' . $phar . DS . $request_file;
