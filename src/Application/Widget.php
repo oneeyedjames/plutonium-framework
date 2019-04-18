@@ -8,15 +8,6 @@ use Plutonium\Loader;
 use Plutonium\Database\Table;
 
 class Widget extends ApplicationComponent {
-	protected static $_path = null;
-
-	public static function getPath() {
-		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
-			self::$_path = realpath(PU_PATH_BASE . '/widgets');
-
-		return self::$_path;
-	}
-
 	protected static $_locator = null;
 
 	public function getLocator() {
@@ -181,6 +172,18 @@ class Widget extends ApplicationComponent {
 		}
 
 		return $this->_output;
+	}
+
+	public function getLayout($request) {
+		$layout = strtolower($request->get('layout', $this->layout));
+		$format = strtolower($request->get('format', $this->format));
+
+		$files = [
+			'layouts/' . $layout . '.' . $format . '.php',
+			'layouts/default.' . $format . '.php'
+		];
+
+		return self::getLocator()->locateFile($this->name, $files);
 	}
 
 	public function getVar($key) {

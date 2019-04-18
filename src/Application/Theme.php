@@ -19,14 +19,6 @@ class Theme extends ApplicationComponent {
 		return self::$_locator;
 	}
 
-	public static function getPath($name, $phar = false) {
-		return self::getLocator()->getPath($name, $phar);
-	}
-
-	public static function getFile($name, $file, $phar = false) {
-		return self::getLocator()->getFile($name, $file, $phar);
-	}
-
 	public static function getMetadata($name) {
 		$file = self::getLocator()->getFile($name, 'theme.php');
 
@@ -189,6 +181,18 @@ class Theme extends ApplicationComponent {
 		}
 
 		return $this->_output;
+	}
+
+	public function getLayout($request) {
+		$layout = strtolower($request->get('layout', $this->layout));
+		$format = strtolower($request->get('format', $this->format));
+
+		$files = [
+			'layouts/' . $layout . '.' . $format . '.php',
+			'layouts/default.' . $format . '.php'
+		];
+
+		return self::getLocator()->locateFile($this->name, $files);
 	}
 
 	public function localize($text) {

@@ -28,3 +28,7 @@ define('PU_PATH_FUNC', realpath(__DIR__ . '/src/Functions'));
 require_once PU_PATH_FUNC . '/Strings.php';
 require_once PU_PATH_FUNC . '/Arrays.php';
 require_once PU_PATH_FUNC . '/Files.php';
+
+class LocaleMock {
+	public function load() {}
+}
