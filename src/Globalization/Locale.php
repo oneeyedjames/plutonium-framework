@@ -3,42 +3,42 @@ namespace Plutonium\Globalization;
 
 use Plutonium\AccessObject;
 
+use function Plutonium\Functions\filepath;
+
 class Locale {
 	protected static $_path = null;
+
+	public static function parse($locale) {
+		if ($locale instanceof AccessObject)
+			return $locale;
+
+		if (is_string($locale)) {
+			if (strpos($locale, '-') !== false) {
+				list($language, $country) = explode('-', $locale, 2);
+				$locale = array('language' => $language, 'country' => $country);
+			} else {
+				$locale = array('language' => $locale);
+			}
+		}
+
+		return is_array($locale) ? new AccessObject($locale) : null;
+	}
 
 	protected $_language;
 	protected $_country;
 	protected $_phrases;
 
 	public function __construct($config) {
-		if (is_string($config))
-			$config = $this->_parseString($config);
-		elseif (is_array($config))
-			$config = new AccessObject($config);
+		$config = self::parse($config);
 
 		if ($config instanceof AccessObject) {
 			$this->_language = strtolower($config->language);
 			$this->_country  = strtoupper($config->country);
 		}
 
-		$this->_phrases = array();
+		$this->_phrases = [];
 
-		$path = realpath(PU_PATH_BASE . '/locales');
-		$file = $path . DS . $this->_language . '.xml';
-
-		if (!$this->_loadFile($file)) {
-			$message = sprintf("Could not find language resource: %s.", $this->_language);
-			trigger_error($message, E_USER_WARNING);
-		}
-
-		if (!empty($this->_country)) {
-			$file = $path . DS . $this->_language . '-' . $this->_country . '.xml';
-
-			if (!$this->_loadFile($file)) {
-				$message = sprintf("Could not find language resource: %s-%s.", $this->_language, $this->_country);
-				trigger_error($message, E_USER_NOTICE);
-			}
-		}
+		$this->_loadPath(PU_PATH_BASE . DS . 'application' . DS . 'locales');
 	}
 
 	public function __get($key) {
@@ -57,6 +57,19 @@ class Locale {
 		}
 	}
 
+	public function localize($key) {
+		if (!isset($this->_phrases[strtoupper($key)])) return $key;
+
+		$match = $this->_phrases[strtoupper($key)];
+
+		if (func_num_args() == 1) return $match;
+
+		$args = func_get_args();
+		$args[0] = $match;
+
+		return call_user_func_array('sprintf', $args);
+	}
+
 	public function load($name, $type) {
 		$name = strtolower($name);
 		$type = strtolower($type);
@@ -65,28 +78,32 @@ class Locale {
 			case 'themes':
 			case 'modules':
 			case 'widgets':
-				$path = realpath(PU_PATH_BASE) . DS . $type . DS . $name . DS . 'locales';
-				$file = $path . DS . $this->language . '.xml';
-
-				if (!$this->_loadFile($file)) {
-					$message = sprintf("Resource does not exist: %s", $file);
-					trigger_error($message, E_USER_NOTICE);
-				}
-
-				if (!empty($this->country)) {
-					$path = realpath(PU_PATH_BASE . DS . $type . DS . $name);
-					$file = $path . DS . 'locales' . DS . $this->name . '.xml';
-
-					if (!$this->_loadFile($file)) {
-						$message = sprintf("Resource does not exist: %s", $file);
-						trigger_error($message, E_USER_NOTICE);
-					}
-				}
+				$path = PU_PATH_BASE . DS . $type . DS . $name . DS . 'locales';
+				$this->_loadPath($path);
 				break;
 			default:
 				$error = sprintf("Invalid locale resource type: %s", $type);
 				trigger_error($error, E_USER_NOTICE);
 				break;
+		}
+	}
+
+	protected function _loadPath($path) {
+		$file = filepath($path) . DS . $this->language . '.xml';
+
+		if (!$this->_loadFile($file)) {
+			$message = sprintf("Could not find language resource: %s.", $this->language);
+			trigger_error($message, E_USER_WARNING);
+		}
+
+		if (!empty($this->country)) {
+			$locale = $this->language . '-' . $this->country;
+			$file = filepath($path) . DS . $name . '.xml';
+
+			if (!$this->_loadFile($file)) {
+				$message = sprintf("Could not find language resource: %s.", $locale);
+				trigger_error($message, E_USER_NOTICE);
+			}
 		}
 	}
 
@@ -107,29 +124,5 @@ class Locale {
 		}
 
 		return false;
-	}
-
-	protected function _parseString($locale) {
-		if (strpos($locale, '-') !== false) {
-			list($language, $country) = explode('-', $locale, 2);
-			$locale = array('language' => $language, 'country' => $country);
-		} else {
-			$locale = array('language' => $locale);
-		}
-
-		return new AccessObject($locale);
-	}
-
-	public function localize($key) {
-		if (!isset($this->_phrases[strtoupper($key)])) return $key;
-
-		$match = $this->_phrases[strtoupper($key)];
-
-		if (func_num_args() == 1) return $match;
-
-		$args = func_get_args();
-		$args[0] = $match;
-
-		return call_user_func_array('sprintf', $args);
 	}
 }

@@ -8,22 +8,19 @@ use Plutonium\Loader;
 use Plutonium\Database\Table;
 
 class Widget extends ApplicationComponent {
-	protected static $_path = null;
+	protected static $_locator = null;
 
-	public static function getPath() {
-		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
-			self::$_path = realpath(PU_PATH_BASE . '/widgets');
+	public static function getLocator() {
+		if (is_null(self::$_locator))
+			self::$_locator = new ApplicationComponentLocator('widgets');
 
-		return self::$_path;
-	}
-
-	public static function setPath($path) {
-		self::$_path = $path;
+		return self::$_locator;
 	}
 
 	public static function getMetadata($name) {
+		$file = self::getLocator()->getFile($name, 'widget.php');
+
 		$name = strtolower($name);
-		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
 		$meta = array();
 
@@ -57,9 +54,10 @@ class Widget extends ApplicationComponent {
 	}
 
 	public static function newInstance($application, $name) {
+		$file = self::getLocator()->getFile($name, 'widget.php');
+		$phar = self::getLocator()->getFile($name, 'widget.php', true);
+
 		$name = strtolower($name);
-		$phar = self::getPath() . DS . $name . '.phar';
-		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
 		$args = new AccessObject(array(
 			'application' => $application,
@@ -125,19 +123,10 @@ class Widget extends ApplicationComponent {
 
 	public function render() {
 		if (is_null($this->_output)) {
-			$request = $this->application->request;
+			if ($file = $this->getLayout()) {
+				if (stripos($file, '.phar') !== false)
+					$file = 'phar://' . $file;
 
-			$name   = strtolower($this->name);
-			$layout = strtolower($this->layout);
-			$format = strtolower($request->get('format', $this->format));
-
-			$path = 'layouts' . DS . $layout . '.' . $format . '.php';
-			$file = self::getPath() . DS . $name . DS . $path;
-			$phar = self::getPath() . DS . $name . '.phar';
-
-			if (is_file($phar)) $file = 'phar://' . $phar . DS . $path;
-
-			if (is_file($file)) {
 				ob_start();
 
 				include $file;
@@ -146,7 +135,7 @@ class Widget extends ApplicationComponent {
 
 				ob_end_clean();
 			} else {
-				$message = sprintf("Resource does not exist: %s.", $file);
+				$message = sprintf("Layout file not found");
 				trigger_error($message, E_USER_ERROR);
 			}
 
@@ -154,6 +143,25 @@ class Widget extends ApplicationComponent {
 		}
 
 		return $this->_output;
+	}
+
+	public function getLayout($request = null) {
+		if (is_null($request))
+			$request = $this->application->request;
+
+		$layout = strtolower($this->layout);
+		$format = strtolower($request->get('format', $this->format));
+
+		$files = [
+			'layouts/' . $layout . '.' . $format . '.php',
+			'layouts/default.' . $format . '.php'
+		];
+
+		return self::getLocator()->locateFile($this->name, $files);
+	}
+
+	public function localize($text) {
+		return $this->application->locale->localize($text);
 	}
 
 	public function getVar($key) {

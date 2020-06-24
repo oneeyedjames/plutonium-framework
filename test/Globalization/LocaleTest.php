@@ -1,56 +1,75 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use org\bovigo\vfs\vfsStream;
 
 use Plutonium\AccessObject;
 use Plutonium\Globalization\Locale;
 
 class LocaleTest extends TestCase {
-	public function testConstruct() {
-		$locale = new Locale('en');
+	public function setUp() {
+		$this->directory = vfsStream::setup('/plutonium', 644, [
+			'application' => [
+				'locales' => [
+					'en.xml' => '<trans type="application" name="http" lang="en"/>',
+					'en-US.xml' => '<trans type="application" name="http" lang="en-US"/>'
+				]
+			]
+		]);
+	}
 
-		$this->assertEquals('en', $locale->name);
+	/*
+	 * Tests that locale string names are properly parsed.
+	 */
+	public function testParseString() {
+		$locale = Locale::parse('en');
+
 		$this->assertEquals('en', $locale->language);
 		$this->assertEmpty($locale->country);
 
-		$locale = new Locale(array(
+		$locale = Locale::parse('en-us');
+
+		$this->assertEquals('en', $locale->language);
+		$this->assertEquals('us', $locale->country);
+	}
+
+	/*
+	 * Tests that locale arrays are properly interpreted.
+	 */
+	public function testParseArray() {
+		$locale = Locale::parse(array(
 			'language' => 'en'
 		));
 
-		$this->assertEquals('en', $locale->name);
 		$this->assertEquals('en', $locale->language);
 		$this->assertEmpty($locale->country);
 
-		$locale = new Locale(new AccessObject(array(
+		$locale = Locale::parse(array(
+			'language' => 'en',
+			'country'  => 'us'
+		));
+
+		$this->assertEquals('en', $locale->language);
+		$this->assertEquals('us', $locale->country);
+	}
+
+	/*
+	 * Tests that locale objects are properly interpreted.
+	 */
+	public function testParseObject() {
+		$locale = Locale::parse(new AccessObject(array(
 			'language' => 'en'
 		)));
 
-		$this->assertEquals('en', $locale->name);
 		$this->assertEquals('en', $locale->language);
 		$this->assertEmpty($locale->country);
 
-		$locale = new Locale('en-us');
-
-		$this->assertEquals('en-US', $locale->name);
-		$this->assertEquals('en', $locale->language);
-		$this->assertEquals('US', $locale->country);
-
-		$locale = new Locale(array(
+		$locale = Locale::parse(new AccessObject(array(
 			'language' => 'en',
-			'country'  => 'US'
-		));
-
-		$this->assertEquals('en-US', $locale->name);
-		$this->assertEquals('en', $locale->language);
-		$this->assertEquals('US', $locale->country);
-
-		$locale = new Locale(new AccessObject(array(
-			'language' => 'en',
-			'country'  => 'US'
+			'country'  => 'us'
 		)));
 
-		$this->assertEquals('en-US', $locale->name);
 		$this->assertEquals('en', $locale->language);
-		$this->assertEquals('US', $locale->country);
+		$this->assertEquals('us', $locale->country);
 	}
 }

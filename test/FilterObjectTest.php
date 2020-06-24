@@ -5,8 +5,9 @@ use PHPUnit\Framework\TestCase;
 use Plutonium\FilterObject;
 
 class FilterObjectTest extends TestCase {
-	var $object;
-
+	/*
+	 * Tests that type-casting getter methods are properly implemented.
+	 */
 	public function testType() {
 		$object = new FilterObject(array(
 			'zero'  => 0,
@@ -32,19 +33,23 @@ class FilterObjectTest extends TestCase {
 		$this->assertNull($object->getInt('array'));
 		$this->assertNull($object->getFloat('array'));
 		$this->assertNull($object->getString('array'));
-		$this->assertSame(array(1, 2, 3), $object->getArray('array'));
+		$this->assertEquals(array(1, 2, 3), $object->getArray('array'));
+		$this->assertEquals((object)array(1, 2, 3), $object->getObject('array'));
 	}
 
+	/*
+	 * Tests that string-filtering getter methods are properly implemented.
+	 */
 	public function testString() {
 		$object = new FilterObject(array(
-			'string' => 'FooBar123@#!'
+			'value' => 'FooBar123@#!'
 		));
 
-		$this->assertSame('FooBar', $object->getAlpha('string'));
-		$this->assertSame('FooBar123', $object->getAlnum('string'));
-		$this->assertSame('123', $object->getDigit('string'));
-		$this->assertSame('FBa123', $object->getHexit('string'));
-		$this->assertSame('ooar', $object->getLower('string'));
-		$this->assertSame('FB', $object->getUpper('string'));
+		$this->assertSame('FooBar', $object->getAlpha('value'));
+		$this->assertSame('FooBar123', $object->getAlnum('value'));
+		$this->assertSame('123', $object->getDigit('value'));
+		$this->assertSame('FBa123', $object->getHexit('value'));
+		$this->assertSame('ooar', $object->getLower('value'));
+		$this->assertSame('FB', $object->getUpper('value'));
 	}
 }

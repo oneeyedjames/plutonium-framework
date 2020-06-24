@@ -7,19 +7,22 @@ use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
+use function Plutonium\Functions\filepath;
+
 class Theme extends ApplicationComponent {
-	protected static $_path = null;
+	protected static $_locator = null;
 
-	public static function getPath() {
-		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
-			self::$_path = realpath(PU_PATH_BASE . '/themes');
+	public static function getLocator() {
+		if (is_null(self::$_locator))
+			self::$_locator = new ApplicationComponentLocator('themes');
 
-		return self::$_path;
+		return self::$_locator;
 	}
 
 	public static function getMetadata($name) {
+		$file = self::getLocator()->getFile($name, 'theme.php');
+
 		$name = strtolower($name);
-		$file = self::getPath() . DS . $name . DS . 'theme.php';
 		$type = ucfirst($name) . 'Theme';
 		$meta = array();
 
@@ -53,9 +56,10 @@ class Theme extends ApplicationComponent {
 	}
 
 	public static function newInstance($application, $name) {
+		$file = self::getLocator()->getFile($name, 'theme.php');
+		$phar = self::getLocator()->getFile($name, 'theme.php', true);
+
 		$name = strtolower($name);
-		$phar = self::getPath() . DS . $name . '.phar';
-		$file = self::getPath() . DS . $name . DS . 'theme.php';
 		$type = ucfirst($name) . 'Theme';
 		$args = new AccessObject(array(
 			'application' => $application,
@@ -128,35 +132,10 @@ class Theme extends ApplicationComponent {
 
 	public function render() {
 		if (is_null($this->_output)) {
-			$request = $this->application->request;
+			if ($file = $this->getLayout()) {
+				if (stripos($file, '.phar') !== false)
+					$file = 'phar://' . $file;
 
-			$name   = strtolower($this->name);
-			$layout = strtolower($request->get('layout', $this->layout));
-			$format = strtolower($request->get('format', $this->format));
-
-			$path = 'layouts' . DS . $layout . '.' . $format . '.php';
-			$file = self::getPath() . DS . $name . DS . $path;
-			$phar = self::getPath() . DS . $name . '.phar';
-
-			if (is_file($phar)) {
-				$file = 'phar://' . $phar . DS . $path;
-
-				if (!is_file($file)) {
-					$message = sprintf("Resource does not exist: %s.", $file);
-					trigger_error($message, E_USER_NOTICE);
-
-					$path = 'layouts' . DS . 'default.' . $format . '.php';
-					$file = 'phar://' . $phar . DS . $path;
-				}
-			} elseif (!is_file($file)) {
-				$message = sprintf("Resource does not exist: %s.", $file);
-				trigger_error($message, E_USER_NOTICE);
-
-				$path = 'layouts' . DS . 'default.' . $format . '.php';
-				$file = self::getPath() . DS . $name . DS . $path;
-			}
-
-			if (is_file($file)) {
 				ob_start();
 
 				include $file;
@@ -165,7 +144,7 @@ class Theme extends ApplicationComponent {
 
 				ob_end_clean();
 			} else {
-				$message = sprintf("Resource does not exist: %s.", $file);
+				$message = sprintf("Layout file not found");
 				trigger_error($message, E_USER_ERROR);
 			}
 
@@ -173,6 +152,21 @@ class Theme extends ApplicationComponent {
 		}
 
 		return $this->_output;
+	}
+
+	public function getLayout($request = null) {
+		if (is_null($request))
+			$request = $this->application->request;
+
+		$layout = strtolower($request->get('layout', $this->layout));
+		$format = strtolower($request->get('format', $this->format));
+
+		$files = [
+			'layouts/' . $layout . '.' . $format . '.php',
+			'layouts/default.' . $format . '.php'
+		];
+
+		return self::getLocator()->locateFile($this->name, $files);
 	}
 
 	public function localize($text) {

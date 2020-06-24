@@ -55,6 +55,9 @@ final class Loader {
 			if (is_string($files)) $files = [$files];
 
 			foreach ($files as $file) {
+				if (stripos($file, '.phar/') !== false)
+					$file = 'phar://' . $file;
+
 				if (is_file($file)) {
 					require_once $file;
 					if (class_exists($class)) break;

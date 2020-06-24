@@ -10,6 +10,8 @@ use function Plutonium\Functions\array_peek;
 use function Plutonium\Functions\is_assoc;
 use function Plutonium\Functions\is_range;
 
+use function Plutonium\Functions\filepath;
+
 class FunctionsTest extends TestCase {
 	public function testStrings() {
 		$strings = array(
@@ -69,5 +71,16 @@ class FunctionsTest extends TestCase {
 		$this->assertTrue(is_range($range));
 		$this->assertTrue(is_range($rangePart));
 		$this->assertFalse(is_range($rangePlus));
+	}
+
+	public function testFiles() {
+		$this->assertEquals('/bin/script.sh', filepath('/bin/script.sh'));
+		$this->assertEquals('/bin/script.sh', filepath('/bin//script.sh'));
+		$this->assertEquals('file:///bin/script.sh', filepath('file:///bin/script.sh'));
+
+		$this->assertEquals(getenv('HOME') . '/bin/script.sh', filepath('~/bin/script.sh'));
+		$this->assertEquals(realpath('.') . '/bin/script.sh', filepath('bin/script.sh'));
+		$this->assertEquals(realpath('.') . '/bin/script.sh', filepath('./bin/script.sh'));
+		$this->assertEquals(realpath('..') . '/bin/script.sh', filepath('../bin/script.sh'));
 	}
 }

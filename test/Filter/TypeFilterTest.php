@@ -5,12 +5,13 @@ use PHPUnit\Framework\TestCase;
 use Plutonium\Filter\TypeFilter;
 
 class TypeFilterTest extends TestCase {
-	var $filter;
-
 	public function setUp() {
 		$this->filter = new TypeFilter();
 	}
 
+	/*
+	 * Tests that passed value is returned as a boolean value.
+	 */
 	public function testFilterBool() {
 		$this->assertNotFalse($this->filter->canHandle('bool'));
 		$this->assertSame(false, $this->filter->filter(0, 'bool'));
@@ -18,6 +19,9 @@ class TypeFilterTest extends TestCase {
 		$this->assertNull($this->filter->filter([1, 2, 3], 'bool'));
 	}
 
+	/*
+	 * Tests that passed value is returned as an integer value.
+	 */
 	public function testFilterInt() {
 		$this->assertNotFalse($this->filter->canHandle('int'));
 		$this->assertSame(0, $this->filter->filter(0, 'int'));
@@ -25,6 +29,9 @@ class TypeFilterTest extends TestCase {
 		$this->assertNull($this->filter->filter([1, 2, 3], 'int'));
 	}
 
+	/*
+	 * Tests that passed value is returned as a float value.
+	 */
 	public function testFilterFloat() {
 		$this->assertNotFalse($this->filter->canHandle('float'));
 		$this->assertSame(0.0, $this->filter->filter(0, 'float'));
@@ -32,6 +39,9 @@ class TypeFilterTest extends TestCase {
 		$this->assertNull($this->filter->filter([1, 2, 3], 'float'));
 	}
 
+	/*
+	 * Tests that passed value is returned as a string value.
+	 */
 	public function testFilterString() {
 		$this->assertNotFalse($this->filter->canHandle('string'));
 		$this->assertSame('0', $this->filter->filter(0, 'string'));
@@ -39,6 +49,9 @@ class TypeFilterTest extends TestCase {
 		$this->assertNull($this->filter->filter([1, 2, 3], 'string'));
 	}
 
+	/*
+	 * Tests that passed value is returned as an array.
+	 */
 	public function testFilterArray() {
 		$this->assertNotFalse($this->filter->canHandle('array'));
 		$this->assertNull($this->filter->filter(0, 'array'));
@@ -46,6 +59,9 @@ class TypeFilterTest extends TestCase {
 		$this->assertSame([1, 2, 3], $this->filter->filter([1, 2, 3], 'array'));
 	}
 
+	/*
+	 * Tests that passed value is returned as an object.
+	 */
 	public function testFilterObject() {
 		$this->assertNotFalse($this->filter->canHandle('object'));
 		$this->assertNull($this->filter->filter(0, 'object'));

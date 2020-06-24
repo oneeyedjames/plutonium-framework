@@ -19,6 +19,12 @@
 			<file>test/Http/RequestTest.php</file>
 			<file>test/Http/ResponseTest.php</file>
 			<file>test/Http/UrlTest.php</file>
+
+			<file>test/Application/ApplicationComponentLocatorTest.php</file>
+			<file>test/Application/ThemeTest.php</file>
+			<file>test/Application/WidgetTest.php</file>
+			<file>test/Application/ModuleTest.php</file>
+			<file>test/Application/ViewTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

@@ -14,6 +14,15 @@ class Module extends ApplicationComponent implements Executable {
 
 	protected static $_default_resource = null;
 
+	protected static $_locator = null;
+
+	public static function getLocator() {
+		if (is_null(self::$_locator))
+			self::$_locator = new ApplicationComponentLocator('modules');
+
+		return self::$_locator;
+	}
+
 	public static function getPath() {
 		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
 			self::$_path = realpath(PU_PATH_BASE . '/modules');
@@ -178,6 +187,10 @@ class Module extends ApplicationComponent implements Executable {
 		$output = $this->getView()->render();
 		$this->application->broadcastEvent('mod_render', $this);
 		return $output;
+	}
+
+	public function localize($text) {
+		return $this->application->locale->localize($text);
 	}
 
 	public function getRouter() {
