@@ -27,10 +27,6 @@ class Url extends AccessObject {
 		return empty($vars) ? '' : '?' . http_build_query($vars);
 	}
 
-	public function __construct($vars = null) {
-		parent::__construct($vars);
-	}
-
 	public function has($key) {
 		switch ($key) {
 			case 'query': return true;
@@ -84,5 +80,9 @@ class Url extends AccessObject {
 		$query = self::buildQuery($vars);
 
 		return self::$_scheme . '://' . $fqdn . $path . $query;
+	}
+
+	public function __toString() {
+		return $this->toString();
 	}
 }
