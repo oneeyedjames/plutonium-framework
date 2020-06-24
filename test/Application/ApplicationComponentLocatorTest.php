@@ -1,59 +1,47 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 
 use Plutonium\Application\ApplicationComponentLocator;
 
-class ApplicationComponentLocatorTest extends TestCase {
-	public function setUp() {
-		$this->directory = vfsStream::setup('/plutonium', 644, [
-			'themes' => [
-				'themename' => [
-					'theme.php' => '<?php',
-					'layouts' => [
-						'default.html.php' => ''
-					]
-				]
-			],
-			'widgets' => [
-				'widgetname' => [
-					'widget.php' => '<?php',
-					'layouts' => [
-						'default.html.php' => ''
-					]
-				]
-			]
-		]);
-	}
-
+class ApplicationComponentLocatorTest extends ComponentTestCase {
+	/*
+	 * Tests that the path to the component is properly formed.
+	 */
 	public function testGetPath() {
 		$locator = new ApplicationComponentLocator('modules');
 
-		$path = $locator->getPath('ModuleName');
-		$phar = $locator->getPath('ModuleName', true);
+		$path = $locator->getPath('Blog');
+		$phar = $locator->getPath('Blog', true);
 
-		$this->assertEquals(PU_PATH_BASE . '/modules/modulename', $path);
-		$this->assertEquals(PU_PATH_BASE . '/modules/modulename.phar', $phar);
+		$this->assertEquals(PU_PATH_BASE . '/modules/blog', $path);
+		$this->assertEquals(PU_PATH_BASE . '/modules/blog.phar', $phar);
 	}
 
+	/*
+	 * Tests that the paths to the component files are properly formed.
+	 */
 	public function testGetFile() {
 		$locator = new ApplicationComponentLocator('modules');
 
-		$file = $locator->getFile('ModuleName', 'module.php');
-		$phar = $locator->getFile('ModuleName', 'module.php', true);
+		$file = $locator->getFile('Blog', 'module.php');
+		$phar = $locator->getFile('Blog', 'module.php', true);
 
-		$this->assertEquals(PU_PATH_BASE . '/modules/modulename/module.php', $file);
-		$this->assertEquals(PU_PATH_BASE . '/modules/modulename.phar/module.php', $phar);
+		$this->assertEquals(PU_PATH_BASE . '/modules/blog/module.php', $file);
+		$this->assertEquals(PU_PATH_BASE . '/modules/blog.phar/module.php', $phar);
 	}
 
+	/*
+	 * Tests that the component files are properly located.
+	 */
 	public function testLocateFile() {
-		$locator = new ApplicationComponentLocator('themes');
+		$locator = new ApplicationComponentLocator('modules');
 
-		$file = $locator->locateFile('ThemeName',
-			'layouts/item.html.php', 'layouts/default.html.php');
+		$file = $locator->locateFile('Blog',
+			'views/post/layouts/item.html.php',
+			'views/post/layouts/default.html.php');
 
-		$this->assertEquals(PU_PATH_BASE . '/themes/themename/layouts/default.html.php', $file);
-		$this->assertFalse($locator->locateFile('ThemeName', 'layouts/item.html.php'));
+		$this->assertEquals(PU_PATH_BASE . '/modules/blog/views/post/layouts/default.html.php', $file);
+		$this->assertFalse($locator->locateFile('Blog', 'views/post/layouts/item.html.php'));
 	}
 }

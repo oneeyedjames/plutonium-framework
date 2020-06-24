@@ -1,27 +1,12 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use org\bovigo\vfs\vfsStream;
-
 use Plutonium\AccessObject;
 use Plutonium\Application\Widget;
 
-class WidgetTest extends TestCase {
-	const NAME = 'WidgetName';
-
-	public function setUp() {
-		$this->directory = vfsStream::setup('/plutonium', 644, [
-			'widgets' => [
-				'widgetname' => [
-					'widget.php' => '<?php',
-					'layouts' => [
-						'default.html.php' => 'default layout'
-					]
-				]
-			]
-		]);
-	}
-
+class WidgetTest extends ComponentTestCase {
+	/*
+	 * Tests that layout templates are properly located.
+	 */
 	public function testGetLayout() {
 		$layout1 = $this->createWidget()->getLayout();
 		$layout2 = $this->createWidget('item')->getLayout();
@@ -30,16 +15,19 @@ class WidgetTest extends TestCase {
 
 		$layout3 = $this->createWidget('item')->getLayout();
 
-		$this->assertEquals(PU_PATH_BASE . '/widgets/widgetname/layouts/default.html.php', $layout1);
-		$this->assertEquals(PU_PATH_BASE . '/widgets/widgetname/layouts/default.html.php', $layout2);
-		$this->assertEquals(PU_PATH_BASE . '/widgets/widgetname/layouts/default.html.php', $layout3);
+		$this->assertEquals(PU_PATH_BASE . '/widgets/calendar/layouts/default.html.php', $layout1);
+		$this->assertEquals(PU_PATH_BASE . '/widgets/calendar/layouts/default.html.php', $layout2);
+		$this->assertEquals(PU_PATH_BASE . '/widgets/calendar/layouts/default.html.php', $layout3);
 	}
 
+	/*
+	 * Tests that layout templates are properly rendered.
+	 */
 	public function testRender() {
 		$output1 = $this->createWidget()->render();
 		$output2 = $this->createWidget('item')->render();
 
-		$this->addFile('widgets/widgetname/layouts/item.html.php', 'item layout');
+		$this->addFile('widgets/calendar/layouts/item.html.php', 'item layout');
 
 		$output3 = $this->createWidget('item')->render();
 
@@ -48,18 +36,10 @@ class WidgetTest extends TestCase {
 		$this->assertEquals('default layout', $output3);
 	}
 
-	protected function addFile($path, $data) {
-		vfsStream::newFile($path)->at($this->directory)->setContent($data);
-	}
-
 	protected function createWidget($layout = 'default', $format = 'html') {
-		$app = new ApplicationMock;
-		$app->locale = new LocaleMock;
-		$app->request = new AccessObject(compact('layout', 'format'));
-
 		return new Widget(new AccessObject([
-			'name' => self::NAME,
-			'application' => $app
+			'name' => 'Calendar',
+			'application' => $this->createApplication($layout, $format)
 		]));
 	}
 }

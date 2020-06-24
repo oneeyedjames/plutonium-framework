@@ -10,7 +10,7 @@ use Plutonium\Database\Table;
 class Widget extends ApplicationComponent {
 	protected static $_locator = null;
 
-	public function getLocator() {
+	public static function getLocator() {
 		if (is_null(self::$_locator))
 			self::$_locator = new ApplicationComponentLocator('widgets');
 
@@ -158,6 +158,10 @@ class Widget extends ApplicationComponent {
 		];
 
 		return self::getLocator()->locateFile($this->name, $files);
+	}
+
+	public function localize($text) {
+		return $this->application->locale->localize($text);
 	}
 
 	public function getVar($key) {

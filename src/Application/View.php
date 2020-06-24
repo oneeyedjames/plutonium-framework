@@ -17,9 +17,8 @@ class View implements Renderable {
 		$this->_vars = array();
 
 		$this->_module = $args->module;
-
-		$this->_layout = $this->_module->request->get('layout', 'default');
-		$this->_format = $this->_module->request->get('format', 'html');
+		$this->_layout = $args->module->request->get('layout', 'default');
+		$this->_format = $args->module->request->get('format', 'html');
 	}
 
 	public function __get($key) {
@@ -60,15 +59,10 @@ class View implements Renderable {
 			if (method_exists($this, $method))
 				call_user_func(array($this, $method));
 
-			$name = strtolower($this->_name);
-			$path = 'views' . DS . $name . DS . 'layouts'
-			      . DS . $layout . '.' . $format . '.php';
-			$file = $this->_module->path . DS . $path;
-			$phar = $this->_module->path . '.phar';
+			if ($file = $this->getLayout()) {
+				if (stripos($file, '.phar') !== false)
+					$file = 'phar://' . $file;
 
-			if (is_file($phar)) $file = 'phar://' . $phar . DS . $path;
-
-			if (is_file($file)) {
 				ob_start();
 
 				include $file;
@@ -77,7 +71,7 @@ class View implements Renderable {
 
 				ob_end_clean();
 			} else {
-				$message = sprintf("Resource does not exist: %s.", $file);
+				$message = sprintf("Layout file not found");
 				trigger_error($message, E_USER_ERROR);
 			}
 
@@ -87,8 +81,23 @@ class View implements Renderable {
 		return $this->_output;
 	}
 
+	public function getLayout() {
+		$layout = strtolower($this->layout);
+		$format = strtolower($this->format);
+
+		$name = strtolower($this->name);
+		$path = 'views' . DS . $name . DS . 'layouts';
+
+		$files = [
+			$path . DS . $layout . '.' . $format . '.php',
+			$path . DS . 'default.' . $format . '.php'
+		];
+
+		return Module::getLocator()->locateFile($this->module->name, $files);
+	}
+
 	public function localize($text) {
-		return $this->module->application->locale->localize($text);
+		return $this->module->localize($text);
 	}
 
 	public function getModel($name = null) {

@@ -1,12 +1,11 @@
 <?php
 namespace Plutonium\Globalization;
 
-use Plutonium\Localizable;
 use Plutonium\AccessObject;
 
 use function Plutonium\Functions\filepath;
 
-class Locale implements Localizable {
+class Locale {
 	protected static $_path = null;
 
 	public static function parse($locale) {
