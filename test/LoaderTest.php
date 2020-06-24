@@ -5,6 +5,9 @@ use PHPUnit\Framework\TestCase;
 use Plutonium\Loader;
 
 class LoaderTest extends TestCase {
+	/*
+	 * Tests that classes and interfaces can be loaded from source files.
+	 */
 	public function testImport() {
 		Loader::autoload(PU_PATH_LIB);
 

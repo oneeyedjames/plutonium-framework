@@ -9,6 +9,9 @@ class ComponentTest extends TestCase {
 		$this->comp = new ComponentImpl('TestName');
 	}
 
+	/*
+	 * Tests that name property cannot be overwritten
+	 */
 	public function testName() {
 		$comp = new ComponentImpl('TestName');
 		$comp->name = 'AnotherName';
@@ -16,6 +19,9 @@ class ComponentTest extends TestCase {
 		$this->assertEquals('TestName', $comp->name);
 	}
 
+	/*
+	 * Tests that arbitrary properties cannot be set
+	 */
 	public function testOther() {
 		$comp = new ComponentImpl('TestName');
 		$comp->other = 'OtherValue';
