@@ -11,7 +11,7 @@ session_start();
 
 spl_autoload_register(function ($class) {
 	$file = str_replace(['Plutonium', BS], ['', DS], $class) . '.php';
-	$path = realpath(PU_PATH_LIB . '/' . ltrim($file, '\\'));
+	$path = realpath(__DIR__ . '/src/' . ltrim($file, '\\'));
 	if (is_file($path)) require_once $path;
 });
 
@@ -23,11 +23,10 @@ define('FS', '/');
 
 define('PU_PATH_BASE', 'vfs://plutonium');
 define('PU_PATH_LIB',  realpath(__DIR__ . '/src'));
-define('PU_PATH_FUNC', realpath(__DIR__ . '/src/Functions'));
 
-require_once PU_PATH_FUNC . '/Strings.php';
-require_once PU_PATH_FUNC . '/Arrays.php';
-require_once PU_PATH_FUNC . '/Files.php';
+require_once __DIR__ . '/src/Functions/Strings.php';
+require_once __DIR__ . '/src/Functions/Arrays.php';
+require_once __DIR__ . '/src/Functions/Files.php';
 
 class ApplicationMock {
 	public function broadcastEvent() {}
