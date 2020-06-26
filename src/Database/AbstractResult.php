@@ -9,15 +9,14 @@ abstract class AbstractResult {
 		$this->_result = $result;
 	}
 
-	public function reset() {
-		return $this->seek(0);
-	}
-
-	abstract public function close();
-	abstract public function seek($num);
-
 	abstract public function getNumFields();
-	abstract public function getNumRows();
+
+	abstract public function reset();
+	abstract public function close();
+
+	abstract public function fetchArray();
+	abstract public function fetchAssoc();
+	abstract public function fetchObject();
 
 	public function fetch($type = 'array') {
 		switch ($type) {
@@ -33,8 +32,7 @@ abstract class AbstractResult {
 	}
 
 	public function fetchAll($type = 'array') {
-		if ($this->getNumRows() > 0)
-			$this->reset();
+		$this->reset();
 
 		$rows = array();
 
@@ -43,11 +41,6 @@ abstract class AbstractResult {
 
 		return $rows;
 	}
-
-	abstract public function fetchArray();
-	abstract public function fetchAssoc();
-	abstract public function fetchObject();
-	abstract public function fetchResult($row = 0, $field = 0);
 
 	public function fetchAllArray() {
 		return $this->fetchAll('array');

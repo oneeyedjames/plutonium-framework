@@ -2,23 +2,23 @@
 
 namespace Plutonium\Database\MySQL;
 
-use Plutonium\Database\AbstractResult;
+use Plutonium\Database\SeekableResult;
 
-class Result extends AbstractResult {
-	public function close() {
-		return mysql_free_result($this->_result);
-	}
-
-	public function seek($num) {
-		return mysql_data_seek($this->_result, $num);
-	}
-
+class Result extends SeekableResult {
 	public function getNumFields() {
 		return mysql_num_fields($this->_result);
 	}
 
 	public function getNumRows() {
 		return mysql_num_rows($this->_result);
+	}
+
+	public function close() {
+		return mysql_free_result($this->_result);
+	}
+
+	public function seek($row) {
+		return mysql_data_seek($this->_result, $row);
 	}
 
 	public function fetchArray() {
@@ -33,10 +33,14 @@ class Result extends AbstractResult {
 		return mysql_fetch_object($this->_result);
 	}
 
+	/**
+	 * Overrides default implementation in SeekableResult class.
+	 */
 	public function fetchResult($row = 0, $field = 0) {
-		if (mysql_num_rows($this->_result) <= $row ||
-			mysql_num_fields($this->_result) <= $field) return false;
+		if ($this->_canFetchResult($row, $field)) {
+			return mysql_result($this->_result, $row, $field);
+		}
 
-		return mysql_result($this->_result, $row, $field);
+		return false;
 	}
 }
