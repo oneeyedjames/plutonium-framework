@@ -3,12 +3,13 @@
 namespace Plutonium\Application;
 
 use function Plutonium\Functions\filepath;
+use function Plutonium\Functions\cleanpath;
 
 class ApplicationComponentLocator {
 	private $_base_path;
 
 	public function __construct($base_path) {
-		$this->_base_path = trim(str_replace([FS, BS], DS, $base_path), DS);
+		$this->_base_path = cleanpath($base_path);
 	}
 
 	public function getPath($name, $phar = false) {
@@ -22,7 +23,7 @@ class ApplicationComponentLocator {
 
 	public function getFile($name, $file, $phar = false) {
 		$path = $this->getPath($name, $phar);
-		$file = trim(str_replace([FS, BS], DS, $file), DS);
+		$file = cleanpath($file);
 
 		return filepath($path . DS . $file);
 	}

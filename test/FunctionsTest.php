@@ -11,6 +11,9 @@ use function Plutonium\Functions\is_assoc;
 use function Plutonium\Functions\is_range;
 
 use function Plutonium\Functions\filepath;
+use function Plutonium\Functions\joinpath;
+use function Plutonium\Functions\splitpath;
+use function Plutonium\Functions\cleanpath;
 
 class FunctionsTest extends TestCase {
 	public function testStrings() {
@@ -73,7 +76,7 @@ class FunctionsTest extends TestCase {
 		$this->assertFalse(is_range($rangePlus));
 	}
 
-	public function testFiles() {
+	public function testFilePath() {
 		$this->assertEquals('/bin/script.sh', filepath('/bin/script.sh'));
 		$this->assertEquals('/bin/script.sh', filepath('/bin//script.sh'));
 		$this->assertEquals('file:///bin/script.sh', filepath('file:///bin/script.sh'));
@@ -82,5 +85,27 @@ class FunctionsTest extends TestCase {
 		$this->assertEquals(realpath('.') . '/bin/script.sh', filepath('bin/script.sh'));
 		$this->assertEquals(realpath('.') . '/bin/script.sh', filepath('./bin/script.sh'));
 		$this->assertEquals(realpath('..') . '/bin/script.sh', filepath('../bin/script.sh'));
+	}
+
+	public function testJoinPath() {
+		$this->assertEquals('path/to/resource', joinpath('path', 'to', 'resource'));
+		$this->assertEquals('path/to/resource', joinpath(['path', 'to', 'resource']));
+		$this->assertEquals('path/to/resource', joinpath(['path', 'to', 'resource'], 'and', 'more'));
+	}
+
+	public function testSplitPath() {
+		$this->assertEquals(['path', 'to', 'resource'], splitpath('path/to/resource'));
+		$this->assertEquals(['path', 'to', 'resource'], splitpath('path/to/resource/'));
+		$this->assertEquals(['path', 'to', 'resource'], splitpath('/path/to/resource'));
+		$this->assertEquals(['path', 'to', 'resource'], splitpath('/path/to/resource/'));
+		$this->assertEquals(['path', 'to', 'resource'], splitpath('path\\to\\resource'));
+	}
+
+	public function testCleanPath() {
+		$this->assertEquals('path/to/resource', cleanpath('path/to/resource'));
+		$this->assertEquals('path/to/resource', cleanpath('path/to/resource/'));
+		$this->assertEquals('path/to/resource', cleanpath('/path/to/resource'));
+		$this->assertEquals('path/to/resource', cleanpath('/path/to/resource/'));
+		$this->assertEquals('path/to/resource', cleanpath('path\\to\\resource'));
 	}
 }

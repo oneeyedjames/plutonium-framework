@@ -10,26 +10,23 @@ function filepath($path) {
 		$scheme = '';
 	}
 
-	$path = str_replace([FS, BS], DS, $path);
+	$absolute = in_array($path[0], [FS, BS]);
 
-	$absolute = $path[0] == DS;
-
-	if ($path[0] == '~') {
-		$path = getenv('HOME') . DS . substr($path, 1);
-	} elseif (!$absolute && !$scheme) {
+	if ($path[0] == '~')
+		$path = getenv('HOME') . DS . $path;
+	elseif (!$absolute && !$scheme)
 		$path = getcwd() . DS . $path;
-	}
 
-	$oldparts = explode(DS, $path);
+	$oldparts = splitpath($path);
 	$newparts = [];
 
 	foreach ($oldparts as $part) {
-		if ($part == '.' || $part == '') continue;
+		if (in_array($part, ['.', '~', ''])) continue;
 		elseif ($part == '..') array_pop($newparts);
 		else $newparts[] = $part;
 	}
 
-	$path = implode(DS, $newparts);
+	$path = joinpath($newparts);
 
 	if ($absolute || !$scheme)
 		$path = DS . $path;
