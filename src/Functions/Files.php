@@ -36,3 +36,16 @@ function filepath($path) {
 
 	return $scheme . $path;
 }
+
+function joinpath($parts) {
+	$parts = is_array($parts) ? $parts : func_get_args();
+	return implode(DS, $parts);
+}
+
+function splitpath($path) {
+	return explode(DS, cleanpath($path));
+}
+
+function cleanpath($path) {
+	return trim(str_replace([FS, BS], DS, $path), DS);
+}

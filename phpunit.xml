@@ -11,6 +11,7 @@
 
 			<file>test/Globalization/LocaleTest.php</file>
 			<file>test/Utility/AddressTest.php</file>
+			<file>test/Error/ErrorHandlerTest.php</file>
 
 			<file>test/Filter/TypeFilterTest.php</file>
 			<file>test/Filter/StringFilterTest.php</file>
