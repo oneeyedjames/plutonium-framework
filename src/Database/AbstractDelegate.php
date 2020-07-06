@@ -178,6 +178,11 @@ abstract class AbstractDelegate {
 			}
 		}
 
+		if ($this->_table->table_meta->timestamps) {
+			$fields[] = $this->quoteSymbol('created');
+			$values[] = 'NOW()';
+		}
+
 		if (!empty($fields) && !empty($values)) {
 			$fields = implode(', ', $fields);
 			$values = implode(', ', $values);
@@ -202,6 +207,10 @@ abstract class AbstractDelegate {
 				$fields[] = $this->quoteSymbol($field) . ' = '
 						  . $this->quoteString($row->$field);
 			}
+		}
+
+		if ($this->_table->table_meta->timestamps) {
+			$fields[] = $this->quoteSymbol('updated') . ' = NOW()';
 		}
 
 		if (!empty($fields)) {

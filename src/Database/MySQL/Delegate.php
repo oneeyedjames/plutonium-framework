@@ -73,7 +73,7 @@ class Delegate extends AbstractDelegate {
 	protected function _createFieldType($field_meta) {
 		switch ($field_meta->type) {
 			case 'bool':
-				return 'TINYINT';
+				return 'TINYINT UNSIGNED';
 			case 'int':
 				$prefix = array('short' => 'SMALL', 'long'  => 'BIG');
 				$type = @$prefix[$field_meta->size] . 'INT';
@@ -83,7 +83,12 @@ class Delegate extends AbstractDelegate {
 
 				return $type;
 			case 'float':
-				return $field_meta->size == 'long' ? 'DOUBLE' : 'FLOAT';
+				$type = $field_meta->size == 'long' ? 'DOUBLE' : 'FLOAT';
+
+				if ($field_meta->unsigned)
+					$type .= ' UNSIGNED';
+
+				return $type;
 			case 'string':
 				if (intval($field_meta->length) > 0) {
 					$length = intval($field_meta->length);

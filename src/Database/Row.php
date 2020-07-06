@@ -112,6 +112,14 @@ class Row {
 		}
 	}
 
+	public function __isset($key) {
+		return array_key_exists($key, $this->_data);
+	}
+
+	public function __unset($key) {
+		unset($this->_data[$key]);
+	}
+
 	// TODO work out fetch on cross-reference
 	public function __call($name, $args) {
 		if (array_key_exists($name, $this->_xrefs)) {
