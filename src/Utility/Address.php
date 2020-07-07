@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\utility
+ */
 
 namespace Plutonium\Utility;
 

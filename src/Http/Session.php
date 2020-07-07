@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\http
+ */
 
 namespace Plutonium\Http;
 
@@ -14,18 +17,30 @@ class Session implements Accessible {
 		$this->_namespaces =& $_SESSION;
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		return $this->get($key);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		$this->set($key, $value);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __isset($key) {
 		return $this->has($key);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __unset($key) {
 		$this->del($key);
 	}

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\application
+ */
 
 namespace Plutonium\Application;
 
@@ -14,6 +17,9 @@ abstract class ApplicationComponent extends Component {
 		$this->_application->locale->load($args->name, "{$type}s");
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'application':

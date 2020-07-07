@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\filter
+ */
 
 namespace Plutonium\Filter;
 

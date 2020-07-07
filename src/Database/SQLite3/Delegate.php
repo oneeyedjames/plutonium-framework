@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database\sqlite3
+ */
 
 namespace Plutonium\Database\SQLite3;
 

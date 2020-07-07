@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\html
+ */
 
 namespace Plutonium\Html;
 
@@ -15,6 +18,9 @@ class Tag {
 		$this->_self_close = $self_close;
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'name':
@@ -24,6 +30,9 @@ class Tag {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		switch ($key) {
 			case 'name':
@@ -35,6 +44,9 @@ class Tag {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __toString() {
 		return $this->toString();
 	}

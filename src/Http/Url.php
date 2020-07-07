@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\http
+ */
 
 namespace Plutonium\Http;
 
@@ -25,6 +28,13 @@ class Url extends AccessObject {
 
 	public static function buildQuery($vars) {
 		return empty($vars) ? '' : '?' . http_build_query($vars);
+	}
+
+	/**
+	 * @ignore magic method
+	 */
+	public function __toString() {
+		return $this->toString();
 	}
 
 	public function has($key) {
@@ -80,9 +90,5 @@ class Url extends AccessObject {
 		$query = self::buildQuery($vars);
 
 		return self::$_scheme . '://' . $fqdn . $path . $query;
-	}
-
-	public function __toString() {
-		return $this->toString();
 	}
 }

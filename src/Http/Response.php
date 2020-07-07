@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\http
+ */
 
 namespace Plutonium\Http;
 

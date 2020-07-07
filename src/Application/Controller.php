@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\application
+ */
 
 namespace Plutonium\Application;
 
@@ -14,6 +17,9 @@ class Controller implements Executable {
 		$this->_module = $args->module;
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'name':
@@ -27,6 +33,9 @@ class Controller implements Executable {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		switch ($key) {
 			case 'redirect':

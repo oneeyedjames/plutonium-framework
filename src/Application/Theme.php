@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\application
+ */
 
 namespace Plutonium\Application;
 
@@ -90,6 +93,9 @@ class Theme extends ApplicationComponent {
 		$this->_format = 'html';
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'message_start':

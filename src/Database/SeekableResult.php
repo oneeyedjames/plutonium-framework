@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database
+ */
 
 namespace Plutonium\Database;
 

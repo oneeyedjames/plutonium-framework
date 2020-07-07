@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\application
+ */
 
 namespace Plutonium\Application;
 
@@ -90,6 +93,9 @@ class Module extends ApplicationComponent implements Executable {
 		parent::__construct('module', $args);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'path':

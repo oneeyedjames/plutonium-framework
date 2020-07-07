@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database
+ */
 
 namespace Plutonium\Database;
 
@@ -13,6 +16,9 @@ abstract class AbstractDelegate {
 		$this->_table   = $table;
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'table_name':
@@ -20,6 +26,9 @@ abstract class AbstractDelegate {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __call($name, $args) {
 		if (method_exists($this->_adapter, $name))
 			return call_user_func_array(array($this->_adapter, $name), $args);

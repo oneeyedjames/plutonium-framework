@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\functions\string
+ */
 
 namespace Plutonium\Functions;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\application
+ */
 
 namespace Plutonium\Application;
 
@@ -21,6 +24,9 @@ class View implements Renderable {
 		$this->_format = $args->module->request->get('format', 'html');
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'name':
@@ -35,6 +41,9 @@ class View implements Renderable {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		switch ($key) {
 			case 'layout':

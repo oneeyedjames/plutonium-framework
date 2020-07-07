@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium
+ */
 
 namespace Plutonium;
 
@@ -19,19 +22,30 @@ class AccessObject implements Accessible, \ArrayAccess, \Iterator, \Countable {
 		}
 	}
 
-	// Magic methods
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		return $this->get($key);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		$this->set($key, $value);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __isset($key) {
 		return $this->has($key);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __unset($key) {
 		$this->del($key);
 	}

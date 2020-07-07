@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database
+ */
 
 namespace Plutonium\Database;
 
@@ -266,6 +269,9 @@ class Table {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'name':

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package plutonium\globalization
+ */
+
 namespace Plutonium\Globalization;
 
 use Plutonium\AccessObject;
@@ -41,6 +45,9 @@ class Locale {
 		$this->_loadPath(PU_PATH_BASE . DS . 'application' . DS . 'locales');
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'name':

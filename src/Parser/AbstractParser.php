@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\parser
+ */
 
 namespace Plutonium\Parser;
 
@@ -11,6 +14,9 @@ abstract class AbstractParser {
 		$this->_application = $application;
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'namespace':

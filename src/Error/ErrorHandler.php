@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\error
+ */
 
 namespace Plutonium\Error;
 
@@ -39,6 +42,9 @@ class ErrorHandler {
 		return false;
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __invoke($level, $message, $file, $line) {
 		switch ($level) {
 			case E_USER_ERROR:

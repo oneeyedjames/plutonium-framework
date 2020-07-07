@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database
+ */
 
 namespace Plutonium\Database;
 
@@ -27,6 +30,9 @@ abstract class AbstractAdapter {
 			trigger_error("Unable to connect to database.", E_USER_ERROR);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'driver':

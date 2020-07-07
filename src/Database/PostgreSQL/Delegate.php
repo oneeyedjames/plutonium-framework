@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database\postgresql
+ */
 
 namespace Plutonium\Database\PostgreSQL;
 

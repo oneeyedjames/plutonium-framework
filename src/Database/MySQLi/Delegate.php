@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database\mysqli
+ */
 
 namespace Plutonium\Database\MySQLi;
 

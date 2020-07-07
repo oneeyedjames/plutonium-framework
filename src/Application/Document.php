@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\application
+ */
 
 namespace Plutonium\Application;
 
@@ -32,6 +35,9 @@ abstract class Document extends AccessObject implements Renderable {
 		$this->_application = $args->application;
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'application':
@@ -41,6 +47,9 @@ abstract class Document extends AccessObject implements Renderable {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		switch ($key) {
 			case 'title':

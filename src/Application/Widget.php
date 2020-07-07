@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\application
+ */
 
 namespace Plutonium\Application;
 
@@ -81,6 +84,9 @@ class Widget extends ApplicationComponent {
 		$this->_format = 'html';
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'application':
@@ -96,6 +102,9 @@ class Widget extends ApplicationComponent {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		$this->setVal($key, $value);
 	}

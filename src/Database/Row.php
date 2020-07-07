@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database
+ */
 
 namespace Plutonium\Database;
 
@@ -30,6 +33,9 @@ class Row {
 			$this->_bind_xref($xref_data);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		if (array_key_exists($key, $this->_data)) {
 			return $this->_data[$key];
@@ -93,6 +99,9 @@ class Row {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		if (array_key_exists($key, $this->_data)) {
 			$this->_data[$key] = $value;
@@ -112,15 +121,24 @@ class Row {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __isset($key) {
 		return array_key_exists($key, $this->_data);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __unset($key) {
 		unset($this->_data[$key]);
 	}
 
-	// TODO work out fetch on cross-reference
+	/**
+	 * TODO work out fetch on cross-reference
+	 * @ignore magic method
+	 */
 	public function __call($name, $args) {
 		if (array_key_exists($name, $this->_xrefs)) {
 			$xref = $this->_table->table_xrefs[$name];

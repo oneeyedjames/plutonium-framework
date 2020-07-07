@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\http
+ */
 
 namespace Plutonium\Http;
 
@@ -117,6 +120,9 @@ class Request implements Accessible {
 	// 	return $result;
 	// }
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'uri':
@@ -128,6 +134,9 @@ class Request implements Accessible {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		switch ($key) {
 			case 'uri':
@@ -139,6 +148,9 @@ class Request implements Accessible {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __isset($key) {
 		switch ($key) {
 			case 'uri':
@@ -149,6 +161,9 @@ class Request implements Accessible {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __unset($key) {
 		switch ($key) {
 			case 'uri':

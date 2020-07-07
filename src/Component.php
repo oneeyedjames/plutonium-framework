@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium
+ */
 
 namespace Plutonium;
 
@@ -9,6 +12,9 @@ abstract class Component implements Installable, Renderable {
 		$this->_name = $name;
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'name':
@@ -18,11 +24,20 @@ abstract class Component implements Installable, Renderable {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __isset($key) {
 		return $key == 'name';
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __unset($key) {}
 }
