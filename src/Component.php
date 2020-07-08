@@ -5,9 +5,15 @@
 
 namespace Plutonium;
 
+/**
+ * @property-read string $name The component name
+ */
 abstract class Component implements Installable, Renderable {
 	protected $_name = null;
 
+	/**
+	 * @param string $name The component name
+	 */
 	public function __construct($name) {
 		$this->_name = $name;
 	}
