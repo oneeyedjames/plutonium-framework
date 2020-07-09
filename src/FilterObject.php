@@ -67,8 +67,8 @@ class FilterObject extends AccessObject {
 	 * value is returned if the key is not set.
 	 *
 	 * @param string $key Unique key
-	 * @param int $default OPTIONAL Default value to filter
-	 * @return int Filtered value associated with key
+	 * @param integer $default OPTIONAL Default value to filter
+	 * @return integer Filtered value associated with key
 	 */
 	public function getInt($key, $default = null) {
 		return $this->get($key, $default, 'int');
