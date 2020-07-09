@@ -5,12 +5,22 @@
 
 namespace Plutonium\Functions;
 
+/**
+ * Returns whether the given variable is an array containing only string keys.
+ * @param mixed $var
+ * @return boolean
+ */
 function is_assoc($var) {
 	if (!is_array($var) || empty($var)) return false;
 
 	return (bool) count(array_filter(array_keys($var), 'is_string'));
 }
-
+/**
+ * Returns whether the given variable is an array containing only keys 'min'
+ * and/or 'max'.
+ * @param mixed $var
+ * @return boolean
+ */
 function is_range($var) {
 	if (!is_array($var) || empty($var)) return false;
 
@@ -20,6 +30,11 @@ function is_range($var) {
 	return true;
 }
 
+/**
+ * Returns the last item in an array.
+ * @param array $array
+ * @return mixed
+ */
 function array_peek(&$array) {
 	$values = array_values($array);
 	return $values[count($array) - 1];
