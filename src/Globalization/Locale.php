@@ -9,9 +9,22 @@ use Plutonium\AccessObject;
 
 use function Plutonium\Functions\filepath;
 
+/**
+ * @property-read string $name Locale string
+ * @property-read string $language Language code
+ * @property-read string $country Country code
+ */
 class Locale {
+	/**
+	 * @ignore internal variable
+	 */
 	protected static $_path = null;
 
+	/**
+	 * Parses a locale string into its languag and country components.
+	 * @param string $localse Locale string
+	 * @return object AccessObject containing language and country
+	 */
 	public static function parse($locale) {
 		if ($locale instanceof AccessObject)
 			return $locale;
@@ -28,10 +41,24 @@ class Locale {
 		return is_array($locale) ? new AccessObject($locale) : null;
 	}
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_language;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_country;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_phrases;
 
+	/**
+	 * @param mixed $config Locale name or AccessObject of language and country
+	 */
 	public function __construct($config) {
 		$config = self::parse($config);
 
@@ -64,6 +91,12 @@ class Locale {
 		}
 	}
 
+	/**
+	 * Returns a translated string for the given original text. Original text is
+	 * returned if no translation is available.
+	 * @param string $key Original text
+	 * @return string Translated text
+	 */
 	public function localize($key) {
 		if (!isset($this->_phrases[strtoupper($key)])) return $key;
 
@@ -77,6 +110,11 @@ class Locale {
 		return call_user_func_array('sprintf', $args);
 	}
 
+	/**
+	 * Loads translation resources from specified component.
+	 * @param string $name Component name
+	 * @param string $type Component type
+	 */
 	public function load($name, $type) {
 		$name = strtolower($name);
 		$type = strtolower($type);
@@ -95,6 +133,9 @@ class Locale {
 		}
 	}
 
+	/**
+	 * @ignore internal method
+	 */
 	protected function _loadPath($path) {
 		$file = filepath($path) . DS . $this->language . '.xml';
 
@@ -114,6 +155,9 @@ class Locale {
 		}
 	}
 
+	/**
+	 * @ignore internal method
+	 */
 	protected function _loadFile($file) {
 		if (is_file($file)) {
 			$xml = simplexml_load_file($file);
