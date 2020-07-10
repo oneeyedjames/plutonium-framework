@@ -7,9 +7,17 @@ namespace Plutonium\Application;
 
 use Plutonium\Component;
 
+/**
+ * @property-read object $application The active Application object
+ * @property-read string $name The component name
+ */
 abstract class ApplicationComponent extends Component {
 	protected $_application = null;
 
+	/**
+	 * @param string $type The component type
+	 * @param object $args AccessObject containing name and application object
+	 */
 	public function __construct($type, $args) {
 		parent::__construct($args->name);
 

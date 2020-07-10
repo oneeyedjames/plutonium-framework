@@ -14,9 +14,9 @@ namespace Plutonium\Parser;
  */
 abstract class AbstractParser {
 	/**
-	 * Default namespace.
 	 * Child classes may override this value to encapsulate tags into a custom
 	 * namespace.
+	 * @var string Default namespace
 	 */
 	protected $_namespace = 'pu';
 
