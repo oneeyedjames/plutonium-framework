@@ -5,12 +5,38 @@
 
 namespace Plutonium\Html;
 
+/**
+ * Base class for all HTML tags
+ * @property string $name HTML tag name
+ * @property array $attributes Tag attributes as key-value pairs
+ */
 class Tag {
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_name;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_attributes;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_child_tags;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_self_close;
 
+	/**
+	 * @param string $name HTML tag name
+	 * @param array $attributes OPTIONAL Tag attributes as key-value pairs
+	 * @param array $child_tags OPTIONAL Array of Tag objects
+	 * @param boolean $self_close OPTIONAL Whether to self-close body-less tag
+	 */
 	public function __construct($name, $attributes = array(), $child_tags = array(), $self_close = true) {
 		$this->_name = $name;
 		$this->_attributes = is_array($attributes) ? $attributes : array();
@@ -24,9 +50,9 @@ class Tag {
 	public function __get($key) {
 		switch ($key) {
 			case 'name':
-				return $this->getName();
+				return $this->_name;
 			case 'attributes':
-				return $this->getAttributes();
+				return $this->_attributes;
 		}
 	}
 
@@ -36,10 +62,41 @@ class Tag {
 	public function __set($key, $value) {
 		switch ($key) {
 			case 'name':
-				$this->setName($value);
+				$this->_name = $value;
 				break;
 			case 'attributes':
 				$this->setAttributes($values);
+				break;
+			default:
+				$this->_attributes[$key] = $value;
+				break;
+		}
+	}
+
+	/**
+	 * @ignore magic method
+	 */
+	public function __isset($key) {
+		switch ($key) {
+			case 'name':
+			case 'attributes':
+				return true;
+			default:
+				return isset($this->_attributes[$key]);
+		}
+	}
+
+	/**
+	 * @ignore magic method
+	 */
+	public function __unset($key) {
+		switch ($key) {
+			case 'name':
+			case 'attributes':
+				break;
+			default:
+				if (isset($this->_attributes[$key]))
+					unset($this->_attributes[$key]);
 				break;
 		}
 	}
@@ -51,52 +108,26 @@ class Tag {
 		return $this->toString();
 	}
 
-	public function getName() {
-		return $this->_name;
-	}
-
-	public function setName($name) {
-		$this->_name = $name;
-	}
-
-	public function getAttributes() {
-		return $this->_attributes;
-	}
-
-	public function setAttributes($attributes, $overwrite = true) {
-		foreach ($attributes as $key => $value) {
-			$this->setAttribute($key, $value, $overwrite);
-		}
-	}
-
-	public function hasAttribute($key) {
-		return isset($this->_attributes[$key]);
-	}
-
-	public function getAttribute($key, $default = null) {
-		return isset($this->_attributes[$key]) ? $this->_attributes[$key] : $default;
-	}
-
-	public function setAttribute($key, $value, $overwrite = true) {
-		if (!isset($this->_attributes[$key]) || $overwrite) {
-			$this->_attributes[$key] = $value;
-		}
-	}
-
-	public function unsetAttribute($key) {
-		if (isset($this->_attributes[$key])) {
-			unset($this->_attributes[$key]);
-		}
-	}
-
+	/**
+	 * Adds another Tag object to be nested inside this one.
+	 * @param object $tag Tag object
+	 */
 	public function addChildTag($tag) {
 		$this->_child_tags[] = $tag;
 	}
 
+	/**
+	 * Sets self-close flag on tag.
+	 * @param boolean $self_close Whether to self-close body-less tag
+	 */
 	public function setSelfClose($self_close) {
 		$this->_self_close = $self_close;
 	}
 
+	/**
+	 * Formats the tag as s HTML string.
+	 * @return string Formatted HTML
+	 */
 	public function toString() {
 		$html = '<' . strtolower($this->_name);
 
