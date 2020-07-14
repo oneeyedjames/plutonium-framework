@@ -7,6 +7,9 @@ namespace Plutonium\Database\PostgreSQL;
 
 use Plutonium\Database\AbstractAdapter;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Adapter extends AbstractAdapter {
 	protected $_result = null;
 

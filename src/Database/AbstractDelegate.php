@@ -7,10 +7,23 @@ namespace Plutonium\Database;
 
 use function Plutonium\Functions\is_assoc;
 
+/**
+ * Base class for vendor-specific query managers.
+ */
 abstract class AbstractDelegate {
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_adapter = null;
-	protected $_table   = null;
 
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_table = null;
+
+	/**
+	 * @param object $table Table object
+	 */
 	public function __construct($table) {
 		$this->_adapter = AbstractAdapter::getInstance();
 		$this->_table   = $table;
@@ -34,6 +47,14 @@ abstract class AbstractDelegate {
 			return call_user_func_array(array($this->_adapter, $name), $args);
 	}
 
+	/**
+	 * Attempts to fetch database records according to the given criteria.
+	 * @param array $match Fields and values to match
+	 * @param array $sort OPTIONAL Fields to sort by
+	 * @param integer $limit OPTIONAL Maximum number or records to return
+	 * @param integer $offset OPTIONAL Number of leading records to ignore
+	 * @return object Vendor-specific Result object
+	 */
 	public function select($match, $sort = null, $limit = 0, $offset = 0) {
 		$return_limit = $limit;
 
@@ -176,6 +197,11 @@ abstract class AbstractDelegate {
 		return false;
 	}
 
+	/**
+	 * Attempts to insert the given row as a new database record.
+	 * @param object $row Row object
+	 * @return boolean TRUE on success, FALSE on failure
+	 */
 	public function insert($row) {
 		$fields = array();
 		$values = array();
@@ -208,6 +234,11 @@ abstract class AbstractDelegate {
 		return false;
 	}
 
+	/**
+	 * Attempts to update the given row as an existing database record.
+	 * @param object $row Row object
+	 * @return boolean TRUE on success, FALSE on failure
+	 */
 	public function update($row) {
 		$fields = array();
 
@@ -235,6 +266,11 @@ abstract class AbstractDelegate {
 		return false;
 	}
 
+	/**
+	 * Attempts to delete the database record with the given ID.
+	 * @param mixed $id Primary key value
+	 * @return boolean TRUE on success, FALSE on failure
+	 */
 	public function delete($id) {
 		$where = $this->_whereClause($id);
 
@@ -243,6 +279,9 @@ abstract class AbstractDelegate {
 		return $this->query($sql);
 	}
 
+	/**
+	 * @ignore internal method
+	 */
 	protected function _whereClause($match) {
 		if (empty($match)) {
 			return false;
@@ -269,6 +308,9 @@ abstract class AbstractDelegate {
 		return false;
 	}
 
+	/**
+	 * @ignore internal method
+	 */
 	protected function _whereEquals($field, $value) {
 		$field = $this->quoteSymbol($field);
 		$value = $this->quoteString($value);
@@ -276,6 +318,9 @@ abstract class AbstractDelegate {
 		return "$field = $value";
 	}
 
+	/**
+	 * @ignore internal method
+	 */
 	protected function _whereInList($field, $values) {
 		$list = array();
 
@@ -288,6 +333,9 @@ abstract class AbstractDelegate {
 		return "$field IN ($list)";
 	}
 
+	/**
+	 * @ignore internal method
+	 */
 	protected function _orderClause($fields) {
 		if (empty($fields)) return false;
 
@@ -310,6 +358,9 @@ abstract class AbstractDelegate {
 		return "ORDER BY $list";
 	}
 
+	/**
+	 * @ignore internal method
+	 */
 	protected function _limitClause($limit = 0, $offset = 0) {
 		$limit  = intval($limit);
 		$offset = intval($offset);
@@ -326,12 +377,28 @@ abstract class AbstractDelegate {
 		return false;
 	}
 
+	/**
+	 * Returns whether the database table exists.
+	 * @return boolean Whether table exists
+	 */
 	abstract public function exists();
 
+	/**
+	 * Attempts to create the database table.
+	 * @return boolean TRUE on success, FALSE on failure
+	 */
 	abstract public function create();
 
+	/**
+	 * Attempts to alter the database table.
+	 * @return boolean TRUE on success, FALSE on failure
+	 */
 	abstract public function modify();
 
+	/**
+	 * Attempts to drop the database table.
+	 * @return boolean TRUE on success, FALSE on failure
+	 */
 	public function drop() {
 		$sql = "DROP TABLE IF EXISTS $this->table_name";
 

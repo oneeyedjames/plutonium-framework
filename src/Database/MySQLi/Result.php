@@ -7,6 +7,9 @@ namespace Plutonium\Database\MySQLi;
 
 use Plutonium\Database\SeekableResult;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Result extends SeekableResult {
 	public function getNumFields() {
 		return $this->_result->field_count;

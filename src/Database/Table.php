@@ -12,11 +12,36 @@ use Plutonium\Application\Module;
 use DOMDocument;
 use DOMXPath;
 
+/**
+ * @property-read string $name Brief name for this object
+ * @property-read string $table_name Database table name
+ * @property-read array $table_meta Metadata about table
+ * @property-read array $field_names Database field names
+ * @property-read array $field_meta Metadata about fields
+ */
 class Table {
+	/**
+	 * @ignore internal variable
+	 */
 	protected static $_tables = array();
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected static $_xref_tables = array();
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected static $_refs = array();
 
+	/**
+	 * Builds cross-reference metadata from XML definition.
+	 * @param object $node DOMNode object
+	 * @param object $xpath DOMXPath object
+	 * @param object $cfg AccessObject
+	 * @return object Table object
+	 */
 	protected static function buildXRefTable($node, $xpath, &$cfg) {
 		$name   = $node->getAttribute('name');
 		$alias  = $node->getAttribute('alias');
@@ -68,6 +93,11 @@ class Table {
 		return $xref_table;
 	}
 
+	/**
+	 * @param string $name Table name
+	 * @param string $module Module name
+	 * @return object Table object
+	 */
 	public static function getInstance($name, $module = null) {
 		if (!isset(self::$_tables[$name])) {
 			$name = strtolower($name);
@@ -151,6 +181,12 @@ class Table {
 		return @self::$_tables[$name];
 	}
 
+	/**
+	 * Retrieves cached metadata about foreign-key relationships on the named
+	 * table. Metadata is removed from cache after retrieval.
+	 * @param string $table Table name
+	 * @return array Foreign-key metadata
+	 */
 	public static function getRefs($table) {
 		if (array_key_exists($table, self::$_refs)) {
 			$refs = self::$_refs[$table];
@@ -163,6 +199,12 @@ class Table {
 		return array();
 	}
 
+	/**
+	 * Retrieves cached metadata about cross-reference relationships on the
+	 * named table.
+	 * @param string $table Table name
+	 * @return array Cross-reference metadata
+	 */
 	public static function getXRefs($table) {
 		if (array_key_exists($table, self::$_xref_tables)) {
 			return self::$_xref_tables[$table];
@@ -177,21 +219,64 @@ class Table {
 		return array();
 	}
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_delegate = null;
 
-	protected $_name   = null;
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_name = null;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_prefix = null;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_suffix = null;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_module = null;
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_table_name = null;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_table_meta = array();
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_field_meta = array();
 
-	protected $_table_refs  = array();
-	protected $_table_revs  = array();
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_table_refs = array();
+
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_table_revs = array();
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_table_xrefs = array();
 
+	/**
+	 * @param object $config AccessObject
+	 */
 	public function __construct($config) {
 		$type = 'Plutonium\\Database\\' . $config->driver . '\\Delegate';
 
@@ -307,6 +392,9 @@ class Table {
 		}
 	}
 
+	/**
+	 * Creates table and cross-reference structures.
+	 */
 	public function create() {
 		if (!$this->_delegate->exists() && !$this->_delegate->create()) {
 			$message = self::getInstance()->getErrorMsg();
@@ -316,24 +404,54 @@ class Table {
 		foreach (self::getXRefs($this->name) as $xref) $xref->create();
 	}
 
+	/**
+	 * Constructs a formal Row object from the given data.
+	 * @param array $data key-value pairs for record
+	 * @param array $xref_data data for cross-referenced records
+	 * @return object Row object
+	 */
 	public function make($data = null, $xref_data = null) {
 		return new Row($this, $data, $xref_data);
 	}
 
+	/**
+	 * Attempts to retrieve records matching the given parameters.
+	 * @param array $args OPTIONAL Fields and values to match
+	 * @param array $sort OPTIONAL Fields to sort by
+	 * @param integer $limit OPTIONAL Maximum number or records to return
+	 * @param integer $offset OPTIONAL Number of leading records to ignore
+	 * @return array Row objects
+	 */
 	public function find($args = null, $sort = null, $limit = 0, $offset = 0) {
 		return $this->_delegate->select($args, $sort, $limit, $offset);
 	}
 
+	/**
+	 * Attempts to retrieve cross-referenced records matching the given
+	 * parameters.
+	 * @param string $xref Cross-referenced table name
+	 * @param array $args OPTIONAL Fields and values to match
+	 */
 	public function find_xref($xref, $args = null) {
 		return $this->_delegate->select_xref($this->table_xrefs[$xref], $args);
 	}
 
+	/**
+	 * Attempts to insert or update a record.
+	 * @param object $row Row object
+	 * @return boolean TRUE on sucess, FALSE on failure
+	 */
 	public function save($row) {
 		return is_null($row->id)
 			 ? $this->_delegate->insert($row)
 			 : $this->_delegate->update($row);
 	}
 
+	/**
+	 * Attempts to delete a record.
+	 * @param mixed $id Primary key value
+	 * @return boolean TRUE on sucess, FALSE on failure
+	 */
 	public function delete($id) {
 		return $this->_delegate->delete($id);
 	}
