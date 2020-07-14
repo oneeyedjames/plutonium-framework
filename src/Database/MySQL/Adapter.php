@@ -1,9 +1,15 @@
 <?php
+/**
+ * @package plutonium\database\mysql
+ */
 
 namespace Plutonium\Database\MySQL;
 
 use Plutonium\Database\AbstractAdapter;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Adapter extends AbstractAdapter {
 	public function connect() {
 		if (is_null($this->_connection)) {

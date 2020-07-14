@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\application
+ */
 
 namespace Plutonium\Application;
 
@@ -9,13 +12,33 @@ use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
+/**
+ * @property-read string $path File path for this component
+ * @property-read string $resource The active resource name
+ * @property-read object $request The active Request object
+ * @property-read object $application The active Application object
+ * @property-read string $name The component name
+ */
 class Module extends ApplicationComponent implements Executable {
+	/**
+	 * @ignore internal variable
+	 */
 	protected static $_path = null;
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected static $_default_resource = null;
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected static $_locator = null;
 
+	/**
+	 * Returns an ApplicationComponentLocator for modules.
+	 * @return object ApplicationComponentLocator
+	 */
 	public static function getLocator() {
 		if (is_null(self::$_locator))
 			self::$_locator = new ApplicationComponentLocator('modules');
@@ -23,6 +46,10 @@ class Module extends ApplicationComponent implements Executable {
 		return self::$_locator;
 	}
 
+	/**
+	 * Returns the file path for modules.
+	 * @return string Absolute file path
+	 */
 	public static function getPath() {
 		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
 			self::$_path = realpath(PU_PATH_BASE . '/modules');
@@ -30,6 +57,11 @@ class Module extends ApplicationComponent implements Executable {
 		return self::$_path;
 	}
 
+	/**
+	 * Returns metadata about the named module.
+	 * @param string $name Component name
+	 * @return object AccessObject of metadata
+	 */
 	public static function getMetadata($name) {
 		$name = strtolower($name);
 		$file = self::getPath() . DS . $name . DS . 'module.php';
@@ -65,6 +97,13 @@ class Module extends ApplicationComponent implements Executable {
 		return $meta;
 	}
 
+	/**
+	 * Returns a new Module object. Base class is used if no matching custom
+	 * class can be found.
+	 * @param object $application The active Application object
+	 * @param string $name Component name
+	 * @return object Module object
+	 */
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
 		$phar = self::getPath() . DS . $name . '.phar';
@@ -78,18 +117,44 @@ class Module extends ApplicationComponent implements Executable {
 		return Loader::getClass([$phar, $file], $type, __CLASS__, $args);
 	}
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_resource = null;
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_router = null;
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_controller = null;
-	protected $_models     = array();
-	protected $_view       = null;
 
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_models = array();
+
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_view = null;
+
+	/**
+	 * Expected args
+	 *   - name: component name
+	 *   - application: active Application object
+	 * @param object $args AccessObject
+	 */
 	public function __construct($args) {
 		parent::__construct('module', $args);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'path':
@@ -103,6 +168,9 @@ class Module extends ApplicationComponent implements Executable {
 		}
 	}
 
+	/**
+	 * Creates database record for module and tables for resources.
+	 */
 	public function install() {
 		$table = Table::getInstance('modules');
 
@@ -148,10 +216,16 @@ class Module extends ApplicationComponent implements Executable {
 		}
 	}
 
+	/**
+	 * Does not do anything yet.
+	 */
 	public function uninstall() {
 		// TODO method stub
 	}
 
+	/**
+	 * Performs any initialization prior to execution.
+	 */
 	public function initialize() {
 		switch ($this->request->method) {
 			case 'POST':
@@ -178,21 +252,38 @@ class Module extends ApplicationComponent implements Executable {
 		$this->application->broadcastEvent('mod_init', $this);
 	}
 
+	/**
+	 * Executes the action named in the HTTP request and sends HTTP redirect
+	 * header if redirect URL is set.
+	 */
 	public function execute() {
 		$this->getController()->execute();
 		$this->application->broadcastEvent('mod_exec', $this);
 	}
 
+	/**
+	 * Renders the module and returns output.
+	 * @return string Rendered module output
+	 */
 	public function render() {
 		$output = $this->getView()->render();
 		$this->application->broadcastEvent('mod_render', $this);
 		return $output;
 	}
 
+	/**
+	 * Translates text according to the acive Locale object.
+	 * @param string $text Original text
+	 * @return string Translated text
+	 */
 	public function localize($text) {
 		return $this->application->locale->localize($text);
 	}
 
+	/**
+	 * Returns the active Router object.
+	 * @return object Router object
+	 */
 	public function getRouter() {
 		if (is_null($this->_router)) {
 			$type = ucfirst($this->name) . 'Router';
@@ -206,6 +297,10 @@ class Module extends ApplicationComponent implements Executable {
 		return $this->_router;
 	}
 
+	/**
+	 * Returns the active Controller object.
+	 * @return object Controller object
+	 */
 	public function getController() {
 		if (is_null($this->_controller)) {
 			$name = strtolower($this->_resource);
@@ -226,6 +321,11 @@ class Module extends ApplicationComponent implements Executable {
 		return $this->_controller;
 	}
 
+	/**
+	 * Returns the named Model object.
+	 * @param string $name OPTIONAL Resource name
+	 * @return object Model object
+	 */
 	public function getModel($name = null) {
 		$name = strtolower(is_null($name) ? $this->_resource : $name);
 
@@ -247,6 +347,10 @@ class Module extends ApplicationComponent implements Executable {
 		return $this->_models[$name];
 	}
 
+	/**
+	 * Returns the active View object.
+	 * @return object View object
+	 */
 	public function getView() {
 		if (is_null($this->_view)) {
 			$name = strtolower($this->_resource);
@@ -267,6 +371,10 @@ class Module extends ApplicationComponent implements Executable {
 		return $this->_view;
 	}
 
+	/**
+	 * Returns a URL for the current request.
+	 * @return string URL string
+	 */
 	public function getPermalink() {
 		$request = $this->application->request;
 		$config  = $this->application->config->system;

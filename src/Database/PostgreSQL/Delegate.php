@@ -1,9 +1,15 @@
 <?php
+/**
+ * @package plutonium\database\postgresql
+ */
 
 namespace Plutonium\Database\PostgreSQL;
 
 use Plutonium\Database\AbstractDelegate;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Delegate extends AbstractDelegate {
 	public function exists() {
 		$table = $this->quoteSymbol('pg_class');

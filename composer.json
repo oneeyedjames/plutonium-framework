@@ -9,9 +9,7 @@
 	],
 	"require": {},
 	"require-dev": {
-		"task/cli": "^0.3.0",
-		"task/task": "^0.6.0",
-		"task/watch": "^0.2.0",
+		"phpdocumentor/phpdocumentor": "^2.9",
 		"phpunit/phpunit": "^7.5",
 		"mikey179/vfsstream": "^1.6"
 	},
@@ -28,14 +26,8 @@
 		"test": [
 			"phpunit"
 		],
-		"build": [
-			"task build"
-		],
-		"clean": [
-			"task clean"
-		],
-		"watch": [
-			"task watch"
+		"doc": [
+			"phpdoc"
 		]
 	}
 }

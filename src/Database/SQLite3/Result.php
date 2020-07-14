@@ -1,9 +1,15 @@
 <?php
+/**
+ * @package plutonium\database\sqlite3
+ */
 
 namespace Plutonium\Database\SQLite3;
 
 use Plutonium\Database\AbstractResult;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Result extends AbstractResult {
 	public function getNumFields() {
 		return $this->_result->numColumns();

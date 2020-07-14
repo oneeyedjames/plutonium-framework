@@ -1,9 +1,15 @@
 <?php
+/**
+ * @package plutonium\database\postgresql
+ */
 
 namespace Plutonium\Database\PostgreSQL;
 
 use Plutonium\Database\SeekableResult;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Result extends SeekableResult {
 	public function getNumFields() {
 		return pg_num_fields($this->_result);

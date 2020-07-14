@@ -1,9 +1,15 @@
 <?php
+/**
+ * @package plutonium\database\mysql
+ */
 
 namespace Plutonium\Database\MySQL;
 
 use Plutonium\Database\SeekableResult;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Result extends SeekableResult {
 	public function getNumFields() {
 		return mysql_num_fields($this->_result);

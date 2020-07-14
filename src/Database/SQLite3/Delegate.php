@@ -1,9 +1,15 @@
 <?php
+/**
+ * @package plutonium\database\sqlite3
+ */
 
 namespace Plutonium\Database\SQLite3;
 
 use Plutonium\Database\AbstractDelegate;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Delegate extends AbstractDelegate {
 	public function exists() {
 		$field1 = $this->quoteSymbol('type');
