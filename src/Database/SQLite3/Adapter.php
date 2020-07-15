@@ -1,9 +1,15 @@
 <?php
+/**
+ * @package plutonium\database\sqlite3
+ */
 
 namespace Plutonium\Database\SQLite3;
 
 use Plutonium\Database\AbstractAdapter;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Adapter extends AbstractAdapter {
 	public function connect() {
 		$this->_connection = new SQLite3($this->_config->dbfile);

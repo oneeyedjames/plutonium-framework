@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database\mysql
+ */
 
 namespace Plutonium\Database\MySQL;
 
@@ -6,6 +9,9 @@ use Plutonium\AccessObject;
 
 use Plutonium\Database\AbstractDelegate;
 
+/**
+ * @ignore vendor-specific implementation
+ */
 class Delegate extends AbstractDelegate {
 	public function exists() {
 		$sql = "SHOW TABLES LIKE $this->table_name";

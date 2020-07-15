@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\http
+ */
 
 namespace Plutonium\Http;
 
@@ -6,17 +9,38 @@ use Plutonium\AccessObject;
 use Plutonium\Accessible;
 
 class Request implements Accessible {
+	/**
+	 * @ignore internal variable
+	 */
 	protected static $_method_map = array(
 		'GET'  => array('HEAD', 'OPTIONS'),
 		'POST' => array('PUT', 'DELETE')
 	);
 
+	/**
+	 * Determines whether the given HTTP method can be treated as another
+	 * alternative method. For example, can a POST be treated as a PUT.
+	 * @param string $method Actual HTTP method
+	 * @param string $alias Aliased HTTP method
+	 * @return boolean Whether HTTP method can be treated as alternative
+	 */
 	protected static function isMapped($method, $alias) {
 		return in_array($method, self::$_method_map[$alias]);
 	}
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_uri    = null;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_method = null;
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_hashes = array();
 
 	public function __construct() {
@@ -117,6 +141,9 @@ class Request implements Accessible {
 	// 	return $result;
 	// }
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		switch ($key) {
 			case 'uri':
@@ -128,6 +155,9 @@ class Request implements Accessible {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		switch ($key) {
 			case 'uri':
@@ -139,6 +169,9 @@ class Request implements Accessible {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __isset($key) {
 		switch ($key) {
 			case 'uri':
@@ -149,6 +182,9 @@ class Request implements Accessible {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __unset($key) {
 		switch ($key) {
 			case 'uri':
@@ -160,26 +196,61 @@ class Request implements Accessible {
 		}
 	}
 
+	/**
+	 * Determines if the named key is set in the given hash.
+	 * @param string $key Unique key
+	 * @param string $hash OPTIONAL Hash name
+	 * @return boolean Whether the key is set
+	 */
 	public function has($key, $hash = 'request') {
 		return isset($this->_hashes[$hash][$key]);
 	}
 
+	/**
+	 * Retrieves the named key-value pair from the given hash. Default value is
+	 * returned if key is not set in hash.
+	 * @param string $key Unique key
+	 * @param mixed $default OPTIONAL Default value for key
+	 * @param string $hash OPTIONAL Hash name
+	 * @return mixed Value for key
+	 */
 	public function get($key, $default = null, $hash = 'request') {
 		return $this->has($key, $hash) ? $this->_hashes[$hash][$key] : $default;
 	}
 
+	/**
+	 * Creates or updates the named key-value pair in the given hash.
+	 * @param string $key Unique key
+	 * @param mixed $value OPTIONAL value for key
+	 * @param string $hash OPTIONAL Hash name
+	 */
 	public function set($key, $value = null, $hash = 'request') {
 		$this->_hashes[$hash][$key] = $value;
 	}
 
+	/**
+	 * Creates the named key-value pair in the given hash if it does not exist.
+	 * @param string $key Unique key
+	 * @param mixed $value OPTIONAL value for key
+	 * @param string $hash OPTIONAL Hash name
+	 */
 	public function def($key, $value = null, $hash = 'request') {
 		if (!$this->has($key, $hash)) $this->set($key, $value, $hash);
 	}
 
+	/**
+	 * Removes the named key-value pair from the given hash.
+	 * @param string $key Unique key
+	 * @param string $hash OPTIONAL Hash name
+	 */
 	public function del($key, $hash = 'request') {
 		unset($this->_hashes[$hash][$key]);
 	}
 
+	/**
+	 * Returns all key-value pairs in the given hash as an array.
+	 * @return array Key-value pairs from hash, NULL if hash does not exist
+	 */
 	public function toArray($hash = 'request') {
 		return isset($this->_hashes[$hash]) ? $this->_hashes[$hash] : null;
 	}

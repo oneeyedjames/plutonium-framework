@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package plutonium\database
+ */
 
 namespace Plutonium\Database;
 
@@ -7,14 +10,41 @@ use function Plutonium\Functions\is_assoc;
 use Plutonium\AccessObject;
 
 class Row {
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_table = null;
-	protected $_data  = array();
-	protected $_refs  = array();
-	protected $_revs  = array();
+
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_data = array();
+
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_refs = array();
+
+	/**
+	 * @ignore internal variable
+	 */
+	protected $_revs = array();
+
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_xrefs = array();
 
+	/**
+	 * @ignore internal variable
+	 */
 	protected $_xref_data = null;
 
+	/**
+	 * @param object $table Table object for this record
+	 * @param mixed $data Array or AccessObject of record data
+	 * @param array $xref_data Cross-reference data
+	 */
 	public function __construct($table, $data = null, $xref_data = null) {
 		$this->_table = $table;
 		$this->_data  = array_fill_keys($table->field_names, null);
@@ -30,6 +60,9 @@ class Row {
 			$this->_bind_xref($xref_data);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __get($key) {
 		if (array_key_exists($key, $this->_data)) {
 			return $this->_data[$key];
@@ -93,6 +126,9 @@ class Row {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __set($key, $value) {
 		if (array_key_exists($key, $this->_data)) {
 			$this->_data[$key] = $value;
@@ -112,15 +148,24 @@ class Row {
 		}
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __isset($key) {
 		return array_key_exists($key, $this->_data);
 	}
 
+	/**
+	 * @ignore magic method
+	 */
 	public function __unset($key) {
 		unset($this->_data[$key]);
 	}
 
-	// TODO work out fetch on cross-reference
+	/**
+	 * TODO work out fetch on cross-reference
+	 * @ignore magic method
+	 */
 	public function __call($name, $args) {
 		if (array_key_exists($name, $this->_xrefs)) {
 			$xref = $this->_table->table_xrefs[$name];
@@ -143,11 +188,18 @@ class Row {
 		return null;
 	}
 
+	/**
+	 * Binds the given data to this record.
+	 * @param mixed $data Array or AccessObject
+	 */
 	public function bind($data) {
 		if (is_assoc($data) || $data instanceof AccessObject)
 			foreach ($data as $key => $value) $this->$key = $value;
 	}
 
+	/**
+	 * @ignore internal method
+	 */
 	protected function _bind_xref($xref_data) {
 		if (is_assoc($xref_data)) {
 			foreach ($xref_data as $xref => $data) {
@@ -156,18 +208,34 @@ class Row {
 		}
 	}
 
+	/**
+	 * Attempts to insert or update this record.
+	 * @return boolean TRUE on sucess, FALSE on failure
+	 */
 	public function save() {
 		return $this->_table->save($this);
 	}
 
+	/**
+	 * Attempts to delete this record.
+	 * @return boolean TRUE on sucess, FALSE on failure
+	 */
 	public function delete() {
 		return $this->_table->delete($this->id);
 	}
 
+	/**
+	 * Returns this record data as an array.
+	 * @return array Record data
+	 */
 	public function toArray() {
 		return $this->_data;
 	}
 
+	/**
+	 * Returns this record data as an object.
+	 * @return object Record data
+	 */
 	public function toObject() {
 		return (object) $this->_data;
 	}
