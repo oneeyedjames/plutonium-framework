@@ -49,12 +49,6 @@ class Model {
 	public function validate(&$data) {
 		$table = $this->getTable();
 
-		if (in_array('created', $table->field_names) &&
-			in_array('updated', $table->field_names)) {
-			$data['updated'] = gmdate('Y-m-d H:i:s', time());
-			if (empty($data['id'])) $data['created'] = $data['updated'];
-		}
-
 		foreach (array_keys($table->table_refs) as $ref_name) {
 			if (isset($data[$ref_name])) {
 				$data[$ref_name . '_id'] = intval($data[$ref_name]);
