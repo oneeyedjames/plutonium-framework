@@ -21,6 +21,9 @@
 			<file>test/Http/ResponseTest.php</file>
 			<file>test/Http/UrlTest.php</file>
 			<file>test/Http/JwtTest.php</file>
+			<file>test/Http/BasicAuthenticatorTest.php</file>
+			<file>test/Http/BearerAuthenticatorTest.php</file>
+			<file>test/Http/CookieAuthenticatorTest.php</file>
 
 			<file>test/Application/ApplicationComponentLocatorTest.php</file>
 			<file>test/Application/ThemeTest.php</file>

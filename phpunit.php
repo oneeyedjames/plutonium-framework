@@ -21,6 +21,8 @@ define('LS', PHP_EOL);
 define('BS', '\\');
 define('FS', '/');
 
+require_once realpath(__DIR__ . '/vendor/autoload.php');
+
 define('PU_PATH_BASE', 'vfs://plutonium');
 define('PU_PATH_LIB',  realpath(__DIR__ . '/src'));
 

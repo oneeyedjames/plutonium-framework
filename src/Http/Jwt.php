@@ -86,7 +86,7 @@ class Jwt {
 			case 'payload': return $this->_payload;
 			case 'signature': return $this->_signature;
 			case 'expired':
-				if ($time = $this->_payload['exp'])
+				if ($time = @$this->_payload['exp'])
 					return $time < time();
 
 				return false;

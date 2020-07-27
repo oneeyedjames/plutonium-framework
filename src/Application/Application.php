@@ -70,6 +70,10 @@ class Application implements Executable {
 	 */
 	protected $_widgets = array();
 
+	protected $_authenticators = [];
+
+	protected $_identity = null;
+
 	/**
 	 * @ignore internal variable
 	 */
@@ -235,6 +239,26 @@ class Application implements Executable {
 		$this->response->setThemeOutput($this->theme->render());
 
 		echo $this->document->render();
+	}
+
+	/**
+	 * @param object $authenticator A concrete authenticator object
+	 */
+	public function addAuthenticator($authenticator) {
+		$this->_authenticators[] = $authenticator;
+	}
+
+	/**
+	 * @return mixed User identity or FALSE on failure
+	 */
+	public function authenticate() {
+		foreach ($this->_authenticators as $authenticator) {
+			if ($identity = $authenticator->authenticate()) {
+				return $identity;
+			}
+		}
+
+		return false;
 	}
 
 	/**

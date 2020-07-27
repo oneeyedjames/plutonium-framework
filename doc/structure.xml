@@ -3452,7 +3452,7 @@ class can be found.</description>
       <error line="13" code="PPC:ERR-50005">No summary for class \Plutonium\Database\MySQLi\Delegate</error>
     </parse_markers>
   </file>
-  <file path="Globalization/Locale.php" generated-path="Globalization.Locale.html" hash="d6f434f394534712ec19522636748fc8" package="plutonium\globalization">
+  <file path="Globalization/Locale.php" generated-path="Globalization.Locale.html" hash="dfde5356d858425835baafc8689d6fa0" package="plutonium\globalization">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -3728,7 +3728,7 @@ namespace.</description>
       <error line="8" code="PPC:ERR-50005">No summary for class \Plutonium\Parser\LocaleParser</error>
     </parse_markers>
   </file>
-  <file path="Http/Jwt.php" generated-path="Http.Jwt.html" hash="d1ffe7e199fdacfc433918737f86b4be" package="plutonium\http">
+  <file path="Http/Jwt.php" generated-path="Http.Jwt.html" hash="688c33145d03ea2694aa8e4d787fb9ca" package="plutonium\http">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -5143,7 +5143,7 @@ returned if the key is not set.</description>
       <error line="65" code="PPC:ERR-50008">No summary for method stripSymbol()</error>
     </parse_markers>
   </file>
-  <file path="Application/Application.php" generated-path="Application.Application.html" hash="9a5d425631a983029801290da8bac851" package="plutonium\application">
+  <file path="Application/Application.php" generated-path="Application.Application.html" hash="2c1601ee2bdc522a130b0ee66e382695" package="plutonium\application">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -5166,6 +5166,24 @@ returned if the key is not set.</description>
         <long-description></long-description>
         <tag name="package" line="30" description="plutonium\application"/>
       </docblock>
+      <property static="false" visibility="protected" namespace="Plutonium\Application" line="73" package="plutonium\application">
+        <name>$_authenticators</name>
+        <full_name>\Plutonium\Application\Application::$_authenticators</full_name>
+        <default>array()</default>
+        <docblock line="73">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+      </property>
+      <property static="false" visibility="protected" namespace="Plutonium\Application" line="75" package="plutonium\application">
+        <name>$_identity</name>
+        <full_name>\Plutonium\Application\Application::$_identity</full_name>
+        <default>null</default>
+        <docblock line="75">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+      </property>
       <method final="false" abstract="false" static="true" visibility="public" namespace="Plutonium\Application" line="41" package="plutonium\application">
         <name>getPath</name>
         <full_name>\Plutonium\Application\Application::getPath()</full_name>
@@ -5177,13 +5195,13 @@ returned if the key is not set.</description>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="101" package="plutonium\application">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="105" package="plutonium\application">
         <name>__construct</name>
         <full_name>\Plutonium\Application\Application::__construct()</full_name>
-        <docblock line="101">
+        <docblock line="105">
           <description></description>
           <long-description></long-description>
-          <tag name="param" line="101" description="&lt;p&gt;AccessObject containing configuration settings&lt;/p&gt;" type="object" variable="$config">
+          <tag name="param" line="105" description="&lt;p&gt;AccessObject containing configuration settings&lt;/p&gt;" type="object" variable="$config">
             <type>object</type>
           </tag>
         </docblock>
@@ -5193,34 +5211,61 @@ returned if the key is not set.</description>
           <type>object</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="215" package="plutonium\application">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="219" package="plutonium\application">
         <name>initialize</name>
         <full_name>\Plutonium\Application\Application::initialize()</full_name>
-        <docblock line="215">
+        <docblock line="219">
           <description>Initializes application and its components.</description>
           <long-description></long-description>
           <tag name="inherited_from" description="\Plutonium\Executable::initialize()" refers="\Plutonium\Executable::initialize()" link="/classes/Plutonium.Executable.html#method_initialize"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="223" package="plutonium\application">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="227" package="plutonium\application">
         <name>execute</name>
         <full_name>\Plutonium\Application\Application::execute()</full_name>
-        <docblock line="223">
+        <docblock line="227">
           <description>Executes application and its components. Output is streamed to STDOUT.</description>
           <long-description></long-description>
           <tag name="inherited_from" description="\Plutonium\Executable::execute()" refers="\Plutonium\Executable::execute()" link="/classes/Plutonium.Executable.html#method_execute"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="246" package="plutonium\application">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="247" package="plutonium\application">
+        <name>addAuthenticator</name>
+        <full_name>\Plutonium\Application\Application::addAuthenticator()</full_name>
+        <docblock line="247">
+          <description></description>
+          <long-description></long-description>
+          <tag name="param" line="247" description="&lt;p&gt;A concrete authenticator object&lt;/p&gt;" type="object" variable="$authenticator">
+            <type>object</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$authenticator</name>
+          <default></default>
+          <type>object</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="254" package="plutonium\application">
+        <name>authenticate</name>
+        <full_name>\Plutonium\Application\Application::authenticate()</full_name>
+        <docblock line="254">
+          <description></description>
+          <long-description></long-description>
+          <tag name="return" line="254" description="User identity or FALSE on failure" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="270" package="plutonium\application">
         <name>addWidget</name>
         <full_name>\Plutonium\Application\Application::addWidget()</full_name>
-        <docblock line="246">
+        <docblock line="270">
           <description>Adds the named widget to the named theme location.</description>
           <long-description></long-description>
-          <tag name="param" line="246" description="&lt;p&gt;Name of the theme location&lt;/p&gt;" type="string" variable="$location">
+          <tag name="param" line="270" description="&lt;p&gt;Name of the theme location&lt;/p&gt;" type="string" variable="$location">
             <type>string</type>
           </tag>
-          <tag name="param" line="246" description="&lt;p&gt;Name of the widget&lt;/p&gt;" type="string" variable="$name">
+          <tag name="param" line="270" description="&lt;p&gt;Name of the widget&lt;/p&gt;" type="string" variable="$name">
             <type>string</type>
           </tag>
         </docblock>
@@ -5235,13 +5280,13 @@ returned if the key is not set.</description>
           <type>string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="255" package="plutonium\application">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="279" package="plutonium\application">
         <name>addEventListener</name>
         <full_name>\Plutonium\Application\Application::addEventListener()</full_name>
-        <docblock line="255">
+        <docblock line="279">
           <description>Adds an application-wide event listener.</description>
           <long-description></long-description>
-          <tag name="param" line="255" description="&lt;p&gt;An instance of Plutonium\Event\Listener&lt;/p&gt;" type="object" variable="$listener">
+          <tag name="param" line="279" description="&lt;p&gt;An instance of Plutonium\Event\Listener&lt;/p&gt;" type="object" variable="$listener">
             <type>object</type>
           </tag>
         </docblock>
@@ -5251,16 +5296,16 @@ returned if the key is not set.</description>
           <type>object</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="265" package="plutonium\application">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Application" line="289" package="plutonium\application">
         <name>broadcastEvent</name>
         <full_name>\Plutonium\Application\Application::broadcastEvent()</full_name>
-        <docblock line="265">
+        <docblock line="289">
           <description>Broadcasts an application-wide event.</description>
           <long-description></long-description>
-          <tag name="param" line="265" description="&lt;p&gt;Event name&lt;/p&gt;" type="string" variable="$event">
+          <tag name="param" line="289" description="&lt;p&gt;Event name&lt;/p&gt;" type="string" variable="$event">
             <type>string</type>
           </tag>
-          <tag name="param" line="265" description="&lt;p&gt;OPTIONAL event data&lt;/p&gt;" type="mixed" variable="$data">
+          <tag name="param" line="289" description="&lt;p&gt;OPTIONAL event data&lt;/p&gt;" type="mixed" variable="$data">
             <type>mixed</type>
           </tag>
         </docblock>
@@ -5414,7 +5459,11 @@ returned if the key is not set.</description>
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
       <error line="30" code="PPC:ERR-50005">No summary for class \Plutonium\Application\Application</error>
-      <error line="101" code="PPC:ERR-50008">No summary for method __construct()</error>
+      <error line="105" code="PPC:ERR-50008">No summary for method __construct()</error>
+      <error line="247" code="PPC:ERR-50008">No summary for method addAuthenticator()</error>
+      <error line="254" code="PPC:ERR-50008">No summary for method authenticate()</error>
+      <error line="73" code="PPC:ERR-50007">No summary for property $_authenticators</error>
+      <error line="75" code="PPC:ERR-50007">No summary for property $_identity</error>
     </parse_markers>
   </file>
   <file path="FilterObject.php" generated-path="FilterObject.html" hash="8a972e108aec9641f69f980fa3e25cc6" package="plutonium">
@@ -9071,6 +9120,540 @@ parameters.</description>
       <error line="22" code="PPC:ERR-50005">No summary for class \Plutonium\Database\Table</error>
       <error line="101" code="PPC:ERR-50008">No summary for method getInstance()</error>
       <error line="280" code="PPC:ERR-50008">No summary for method __construct()</error>
+    </parse_markers>
+  </file>
+  <file path="Http/CookieAuthenticator.php" generated-path="Http.CookieAuthenticator.html" hash="5e71cb9dbe8fd1893ab6abca349a6b23" package="plutonium\http">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+      <tag name="package" line="0" description="plutonium\http"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Plutonium\Http" line="12" package="plutonium\http">
+      <extends>\Plutonium\Http\BearerAuthenticator</extends>
+      <name>CookieAuthenticator</name>
+      <full_name>\Plutonium\Http\CookieAuthenticator</full_name>
+      <docblock line="12">
+        <description></description>
+        <long-description></long-description>
+        <tag name="package" line="12" description="plutonium\http"/>
+        <tag name="inherited_from" description="\Plutonium\Http\BearerAuthenticator" refers="\Plutonium\Http\BearerAuthenticator" link="/classes/Plutonium.Http.BearerAuthenticator.html"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="22" package="plutonium\http">
+        <name>__construct</name>
+        <full_name>\Plutonium\Http\CookieAuthenticator::__construct()</full_name>
+        <docblock line="22">
+          <description></description>
+          <long-description></long-description>
+          <tag name="param" line="22" description="&lt;p&gt;JWT signing key&lt;/p&gt;" type="string" variable="$secret">
+            <type>string</type>
+          </tag>
+          <tag name="param" line="22" description="&lt;p&gt;Cookie name&lt;/p&gt;" type="string" variable="$cookie">
+            <type>string</type>
+          </tag>
+          <tag name="inherited_from" description="\Plutonium\Http\BearerAuthenticator::__construct()" refers="\Plutonium\Http\BearerAuthenticator::__construct()" link="/classes/Plutonium.Http.BearerAuthenticator.html#method___construct"/>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$secret</name>
+          <default></default>
+          <type>string</type>
+        </argument>
+        <argument line="0" by_reference="false">
+          <name>$cookie</name>
+          <default></default>
+          <type>string</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="32" package="plutonium\http">
+        <name>getCredential</name>
+        <full_name>\Plutonium\Http\CookieAuthenticator::getCredential()</full_name>
+        <docblock line="32">
+          <description>Returns JWT object.</description>
+          <long-description></long-description>
+          <tag name="return" line="32" description="JWT object" type="object">
+            <type>object</type>
+          </tag>
+          <tag name="inherited_from" description="\Plutonium\Http\BearerAuthenticator::getCredential()" refers="\Plutonium\Http\BearerAuthenticator::getCredential()" link="/classes/Plutonium.Http.BearerAuthenticator.html#method_getCredential"/>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="21" package="plutonium\http">
+        <name>__construct</name>
+        <full_name>\Plutonium\Http\BearerAuthenticator::__construct()</full_name>
+        <docblock line="21">
+          <description></description>
+          <long-description></long-description>
+          <tag name="param" line="21" description="&lt;p&gt;JWT signing key&lt;/p&gt;" type="string" variable="$secret">
+            <type>string</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$secret</name>
+          <default></default>
+          <type>string</type>
+        </argument>
+        <inherited_from>\Plutonium\Http\BearerAuthenticator</inherited_from>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="Plutonium\Http" line="50" package="plutonium\http">
+        <name>getCredential</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::getCredential()</full_name>
+        <docblock line="50">
+          <description>Returns the scheme-specific user credential from the current request.</description>
+          <long-description></long-description>
+          <tag name="return" line="50" description="Scheme-specific user credential" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="Plutonium\Http" line="57" package="plutonium\http">
+        <name>getIdentity</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::getIdentity()</full_name>
+        <docblock line="57">
+          <description>Locates a user for the given credential.</description>
+          <long-description></long-description>
+          <tag name="param" line="57" description="&lt;p&gt;Scheme-specific user credential&lt;/p&gt;" type="mixed" variable="$credential">
+            <type>mixed</type>
+          </tag>
+          <tag name="return" line="57" description="Unique user identifier, NULL on failure" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$credential</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="34" package="plutonium\http">
+        <name>authenticate</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::authenticate()</full_name>
+        <docblock line="34">
+          <description>Returns the authenticated user identifier, or FALSE on failure</description>
+          <long-description></long-description>
+          <tag name="return" line="34" description="Unique user identifier" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <property final="false" static="false" visibility="public" line="12">
+        <name>$identity</name>
+        <default/>
+        <docblock>
+          <description>Unique user identifier</description>
+          <long-description/>
+          <tag name="var" description="&lt;p&gt;Unique user identifier&lt;/p&gt;" type="mixed" line="12">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag name="magic" line="12"/>
+          <tag name="property-read" line="12" description="Unique user identifier" type="mixed" variable="$identity">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="12">
+        <name>$authenticated</name>
+        <default/>
+        <docblock>
+          <description>Whether use is authenticated</description>
+          <long-description/>
+          <tag name="var" description="&lt;p&gt;Whether use is authenticated&lt;/p&gt;" type="boolean" line="12">
+            <type by_reference="false">boolean</type>
+          </tag>
+          <tag name="magic" line="12"/>
+          <tag name="property-read" line="12" description="Whether use is authenticated" type="boolean" variable="$authenticated">
+            <type>boolean</type>
+          </tag>
+        </docblock>
+      </property>
+    </class>
+    <parse_markers>
+      <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
+      <error line="12" code="PPC:ERR-50005">No summary for class \Plutonium\Http\CookieAuthenticator</error>
+      <error line="22" code="PPC:ERR-50008">No summary for method __construct()</error>
+    </parse_markers>
+  </file>
+  <file path="Http/AbstractAuthenticator.php" generated-path="Http.AbstractAuthenticator.html" hash="eb5db8d5b984ae58a03958f4465935ee" package="plutonium\http">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+      <tag name="package" line="0" description="plutonium\http"/>
+    </docblock>
+    <class final="false" abstract="true" namespace="Plutonium\Http" line="12" package="plutonium\http">
+      <extends/>
+      <name>AbstractAuthenticator</name>
+      <full_name>\Plutonium\Http\AbstractAuthenticator</full_name>
+      <docblock line="12">
+        <description></description>
+        <long-description></long-description>
+        <tag name="package" line="12" description="plutonium\http"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="34" package="plutonium\http">
+        <name>authenticate</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::authenticate()</full_name>
+        <docblock line="34">
+          <description>Returns the authenticated user identifier, or FALSE on failure</description>
+          <long-description></long-description>
+          <tag name="return" line="34" description="Unique user identifier" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="Plutonium\Http" line="50" package="plutonium\http">
+        <name>getCredential</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::getCredential()</full_name>
+        <docblock line="50">
+          <description>Returns the scheme-specific user credential from the current request.</description>
+          <long-description></long-description>
+          <tag name="return" line="50" description="Scheme-specific user credential" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="Plutonium\Http" line="57" package="plutonium\http">
+        <name>getIdentity</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::getIdentity()</full_name>
+        <docblock line="57">
+          <description>Locates a user for the given credential.</description>
+          <long-description></long-description>
+          <tag name="param" line="57" description="&lt;p&gt;Scheme-specific user credential&lt;/p&gt;" type="mixed" variable="$credential">
+            <type>mixed</type>
+          </tag>
+          <tag name="return" line="57" description="Unique user identifier, NULL on failure" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$credential</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+      <property final="false" static="false" visibility="public" line="12">
+        <name>$identity</name>
+        <default/>
+        <docblock>
+          <description>Unique user identifier</description>
+          <long-description/>
+          <tag name="var" description="&lt;p&gt;Unique user identifier&lt;/p&gt;" type="mixed" line="12">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag name="magic" line="12"/>
+          <tag name="property-read" line="12" description="Unique user identifier" type="mixed" variable="$identity">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="12">
+        <name>$authenticated</name>
+        <default/>
+        <docblock>
+          <description>Whether use is authenticated</description>
+          <long-description/>
+          <tag name="var" description="&lt;p&gt;Whether use is authenticated&lt;/p&gt;" type="boolean" line="12">
+            <type by_reference="false">boolean</type>
+          </tag>
+          <tag name="magic" line="12"/>
+          <tag name="property-read" line="12" description="Whether use is authenticated" type="boolean" variable="$authenticated">
+            <type>boolean</type>
+          </tag>
+        </docblock>
+      </property>
+    </class>
+    <parse_markers>
+      <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
+      <error line="12" code="PPC:ERR-50005">No summary for class \Plutonium\Http\AbstractAuthenticator</error>
+    </parse_markers>
+  </file>
+  <file path="Http/BasicAuthenticator.php" generated-path="Http.BasicAuthenticator.html" hash="551486239c594a017a4eda6e78390c9f" package="plutonium\http">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+      <tag name="package" line="0" description="plutonium\http"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Plutonium\Http" line="12" package="plutonium\http">
+      <extends>\Plutonium\Http\AbstractAuthenticator</extends>
+      <name>BasicAuthenticator</name>
+      <full_name>\Plutonium\Http\BasicAuthenticator</full_name>
+      <docblock line="12">
+        <description></description>
+        <long-description></long-description>
+        <tag name="package" line="12" description="plutonium\http"/>
+        <tag name="inherited_from" description="\Plutonium\Http\AbstractAuthenticator" refers="\Plutonium\Http\AbstractAuthenticator" link="/classes/Plutonium.Http.AbstractAuthenticator.html"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="24" package="plutonium\http">
+        <name>__construct</name>
+        <full_name>\Plutonium\Http\BasicAuthenticator::__construct()</full_name>
+        <docblock line="24">
+          <description>Callback must accept two string arguments:
+  - $username
+  - $password</description>
+          <long-description></long-description>
+          <tag name="param" line="24" description="" type="callable" variable="$func">
+            <type>callable</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$func</name>
+          <default></default>
+          <type>callable</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="32" package="plutonium\http">
+        <name>getCredential</name>
+        <full_name>\Plutonium\Http\BasicAuthenticator::getCredential()</full_name>
+        <docblock line="32">
+          <description>Returns username and password in associative array.</description>
+          <long-description></long-description>
+          <tag name="return" line="32" description="Username and password" type="array">
+            <type>array</type>
+          </tag>
+          <tag name="inherited_from" description="\Plutonium\Http\AbstractAuthenticator::getCredential()" refers="\Plutonium\Http\AbstractAuthenticator::getCredential()" link="/classes/Plutonium.Http.AbstractAuthenticator.html#method_getCredential"/>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="50" package="plutonium\http">
+        <name>getIdentity</name>
+        <full_name>\Plutonium\Http\BasicAuthenticator::getIdentity()</full_name>
+        <docblock line="50">
+          <description>Locates a user for the given username and password.</description>
+          <long-description></long-description>
+          <tag name="param" line="50" description="&lt;p&gt;Username and password&lt;/p&gt;" type="array" variable="$credential">
+            <type>array</type>
+          </tag>
+          <tag name="return" line="50" description="Unique user identifier" type="mixed">
+            <type>mixed</type>
+          </tag>
+          <tag name="inherited_from" description="\Plutonium\Http\AbstractAuthenticator::getIdentity()" refers="\Plutonium\Http\AbstractAuthenticator::getIdentity()" link="/classes/Plutonium.Http.AbstractAuthenticator.html#method_getIdentity"/>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$credential</name>
+          <default></default>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="34" package="plutonium\http">
+        <name>authenticate</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::authenticate()</full_name>
+        <docblock line="34">
+          <description>Returns the authenticated user identifier, or FALSE on failure</description>
+          <long-description></long-description>
+          <tag name="return" line="34" description="Unique user identifier" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="Plutonium\Http" line="50" package="plutonium\http">
+        <name>getCredential</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::getCredential()</full_name>
+        <docblock line="50">
+          <description>Returns the scheme-specific user credential from the current request.</description>
+          <long-description></long-description>
+          <tag name="return" line="50" description="Scheme-specific user credential" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="Plutonium\Http" line="57" package="plutonium\http">
+        <name>getIdentity</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::getIdentity()</full_name>
+        <docblock line="57">
+          <description>Locates a user for the given credential.</description>
+          <long-description></long-description>
+          <tag name="param" line="57" description="&lt;p&gt;Scheme-specific user credential&lt;/p&gt;" type="mixed" variable="$credential">
+            <type>mixed</type>
+          </tag>
+          <tag name="return" line="57" description="Unique user identifier, NULL on failure" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$credential</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <property final="false" static="false" visibility="public" line="12">
+        <name>$identity</name>
+        <default/>
+        <docblock>
+          <description>Unique user identifier</description>
+          <long-description/>
+          <tag name="var" description="&lt;p&gt;Unique user identifier&lt;/p&gt;" type="mixed" line="12">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag name="magic" line="12"/>
+          <tag name="property-read" line="12" description="Unique user identifier" type="mixed" variable="$identity">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="12">
+        <name>$authenticated</name>
+        <default/>
+        <docblock>
+          <description>Whether use is authenticated</description>
+          <long-description/>
+          <tag name="var" description="&lt;p&gt;Whether use is authenticated&lt;/p&gt;" type="boolean" line="12">
+            <type by_reference="false">boolean</type>
+          </tag>
+          <tag name="magic" line="12"/>
+          <tag name="property-read" line="12" description="Whether use is authenticated" type="boolean" variable="$authenticated">
+            <type>boolean</type>
+          </tag>
+        </docblock>
+      </property>
+    </class>
+    <parse_markers>
+      <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
+      <error line="12" code="PPC:ERR-50005">No summary for class \Plutonium\Http\BasicAuthenticator</error>
+    </parse_markers>
+  </file>
+  <file path="Http/BearerAuthenticator.php" generated-path="Http.BearerAuthenticator.html" hash="a9a6c7ec3be6a280fb962195b9006dac" package="plutonium\http">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+      <tag name="package" line="0" description="plutonium\http"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Plutonium\Http" line="12" package="plutonium\http">
+      <extends>\Plutonium\Http\AbstractAuthenticator</extends>
+      <name>BearerAuthenticator</name>
+      <full_name>\Plutonium\Http\BearerAuthenticator</full_name>
+      <docblock line="12">
+        <description></description>
+        <long-description></long-description>
+        <tag name="package" line="12" description="plutonium\http"/>
+        <tag name="inherited_from" description="\Plutonium\Http\AbstractAuthenticator" refers="\Plutonium\Http\AbstractAuthenticator" link="/classes/Plutonium.Http.AbstractAuthenticator.html"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="21" package="plutonium\http">
+        <name>__construct</name>
+        <full_name>\Plutonium\Http\BearerAuthenticator::__construct()</full_name>
+        <docblock line="21">
+          <description></description>
+          <long-description></long-description>
+          <tag name="param" line="21" description="&lt;p&gt;JWT signing key&lt;/p&gt;" type="string" variable="$secret">
+            <type>string</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$secret</name>
+          <default></default>
+          <type>string</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="29" package="plutonium\http">
+        <name>getCredential</name>
+        <full_name>\Plutonium\Http\BearerAuthenticator::getCredential()</full_name>
+        <docblock line="29">
+          <description>Returns JWT object.</description>
+          <long-description></long-description>
+          <tag name="return" line="29" description="JWT object" type="object">
+            <type>object</type>
+          </tag>
+          <tag name="inherited_from" description="\Plutonium\Http\AbstractAuthenticator::getCredential()" refers="\Plutonium\Http\AbstractAuthenticator::getCredential()" link="/classes/Plutonium.Http.AbstractAuthenticator.html#method_getCredential"/>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="44" package="plutonium\http">
+        <name>getIdentity</name>
+        <full_name>\Plutonium\Http\BearerAuthenticator::getIdentity()</full_name>
+        <docblock line="44">
+          <description>Validates the JWT and returns the subject.</description>
+          <long-description></long-description>
+          <tag name="param" line="44" description="&lt;p&gt;JWT object&lt;/p&gt;" type="array" variable="$credential">
+            <type>array</type>
+          </tag>
+          <tag name="return" line="44" description="Unique user identifier" type="mixed">
+            <type>mixed</type>
+          </tag>
+          <tag name="inherited_from" description="\Plutonium\Http\AbstractAuthenticator::getIdentity()" refers="\Plutonium\Http\AbstractAuthenticator::getIdentity()" link="/classes/Plutonium.Http.AbstractAuthenticator.html#method_getIdentity"/>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$credential</name>
+          <default></default>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Plutonium\Http" line="34" package="plutonium\http">
+        <name>authenticate</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::authenticate()</full_name>
+        <docblock line="34">
+          <description>Returns the authenticated user identifier, or FALSE on failure</description>
+          <long-description></long-description>
+          <tag name="return" line="34" description="Unique user identifier" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="Plutonium\Http" line="50" package="plutonium\http">
+        <name>getCredential</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::getCredential()</full_name>
+        <docblock line="50">
+          <description>Returns the scheme-specific user credential from the current request.</description>
+          <long-description></long-description>
+          <tag name="return" line="50" description="Scheme-specific user credential" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="Plutonium\Http" line="57" package="plutonium\http">
+        <name>getIdentity</name>
+        <full_name>\Plutonium\Http\AbstractAuthenticator::getIdentity()</full_name>
+        <docblock line="57">
+          <description>Locates a user for the given credential.</description>
+          <long-description></long-description>
+          <tag name="param" line="57" description="&lt;p&gt;Scheme-specific user credential&lt;/p&gt;" type="mixed" variable="$credential">
+            <type>mixed</type>
+          </tag>
+          <tag name="return" line="57" description="Unique user identifier, NULL on failure" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$credential</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <inherited_from>\Plutonium\Http\AbstractAuthenticator</inherited_from>
+      </method>
+      <property final="false" static="false" visibility="public" line="12">
+        <name>$identity</name>
+        <default/>
+        <docblock>
+          <description>Unique user identifier</description>
+          <long-description/>
+          <tag name="var" description="&lt;p&gt;Unique user identifier&lt;/p&gt;" type="mixed" line="12">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag name="magic" line="12"/>
+          <tag name="property-read" line="12" description="Unique user identifier" type="mixed" variable="$identity">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="12">
+        <name>$authenticated</name>
+        <default/>
+        <docblock>
+          <description>Whether use is authenticated</description>
+          <long-description/>
+          <tag name="var" description="&lt;p&gt;Whether use is authenticated&lt;/p&gt;" type="boolean" line="12">
+            <type by_reference="false">boolean</type>
+          </tag>
+          <tag name="magic" line="12"/>
+          <tag name="property-read" line="12" description="Whether use is authenticated" type="boolean" variable="$authenticated">
+            <type>boolean</type>
+          </tag>
+        </docblock>
+      </property>
+    </class>
+    <parse_markers>
+      <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
+      <error line="12" code="PPC:ERR-50005">No summary for class \Plutonium\Http\BearerAuthenticator</error>
+      <error line="21" code="PPC:ERR-50008">No summary for method __construct()</error>
     </parse_markers>
   </file>
   <package name="global" full_name="global"/>
