@@ -69,7 +69,7 @@ class Locale {
 
 		$this->_phrases = [];
 
-		$this->_loadPath(PU_PATH_BASE . DS . 'application' . DS . 'locales');
+		$this->load(null, 'application');
 	}
 
 	/**
@@ -120,6 +120,10 @@ class Locale {
 		$type = strtolower($type);
 
 		switch ($type) {
+			case 'application':
+				$path = PU_PATH_BASE . DS . 'application' . DS . 'locales';
+				$this->_loadPath($path);
+				break;
 			case 'themes':
 			case 'modules':
 			case 'widgets':

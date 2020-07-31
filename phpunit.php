@@ -43,17 +43,32 @@ use Plutonium\AccessObject;
 class ComponentTestCase extends TestCase {
 	protected function setUp() {
 		$this->directory = vfsStream::setup('/plutonium', 644, [
+			'application' => [
+				'locales' => [
+					'en.xml' => '<trans type="application" name="pu" lang="en">'
+						. '<phrase key="hello_world" value="Hello, App!"/></trans>',
+					'en-US.xml' => '<trans type="application" name="pu" lang="en-US"/>'
+				]
+			],
 			'themes' => [
 				'light' => [
 					'theme.php' => '<?php',
 					'layouts' => [
 						'default.html.php' => 'default layout'
+					],
+					'locales' => [
+						'en.xml' => '<trans type="theme" name="light" lang="en">'
+							. '<phrase key="hello_world" value="Hello, Theme!"/></trans>'
 					]
 				],
 				'dark' => [
 					'theme.php' => '<?php',
 					'layouts' => [
 						'default.html.php' => 'default layout'
+					],
+					'locales' => [
+						'en.xml' => '<trans type="theme" name="darkxs" lang="en">'
+							. '<phrase key="hello_world" value="Hello, Theme!"/></trans>'
 					]
 				]
 			],
@@ -62,6 +77,10 @@ class ComponentTestCase extends TestCase {
 					'widget.php' => '<?php',
 					'layouts' => [
 						'default.html.php' => 'default layout'
+					],
+					'locales' => [
+						'en.xml' => '<trans type="widget" name="calendar" lang="en">'
+							. '<phrase key="hello_world" value="Hello, Widget!"/></trans>'
 					]
 				]
 			],
@@ -81,6 +100,10 @@ class ComponentTestCase extends TestCase {
 								'default.html.php' => 'post default layout'
 							]
 						]
+					],
+					'locales' => [
+						'en.xml' => '<trans type="module" name="blog" lang="en">'
+							. '<phrase key="hello_world" value="Hello, Module!"/></trans>',
 					]
 				]
 			]
