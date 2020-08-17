@@ -42,7 +42,7 @@ function array_peek(&$array) {
 }
 
 /**
- * Returns  whehter hte given variable is an object implementing the Traversable
+ * Returns whether the given variable is an object implementing the Traversable
  * interface.
  * @param mixed $var
  * @return boolean

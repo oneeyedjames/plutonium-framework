@@ -2,9 +2,14 @@
 
 use PHPUnit\Framework\TestCase;
 
-use Plutonium\ArrayLike;
+use Plutonium\Collection\ArrayLike;
 
 class ArrayLikeTest extends TestCase {
+	const IMMUTABLE_ERROR = 'Cannot set value on immutable collection.';
+
+	private $errno;
+	private $error;
+
 	/*
 	 * Tests that ArrayAccess interface is properly implemented.
 	 *
@@ -28,6 +33,44 @@ class ArrayLikeTest extends TestCase {
 		$this->assertEquals(0, count($object));
 		$this->assertFalse(isset($object['foo']));
 		$this->assertNull($object['foo']);
+	}
+
+	public function testReadonlySet() {
+		$object = new ArrayLikeObject([], true);
+
+		$this->assertEquals(0, count($object));
+		$this->assertFalse(isset($object['foo']));
+		$this->assertNull($object['foo']);
+
+		set_error_handler($this, E_USER_ERROR);
+
+		$object['foo'] = 'bar';
+
+		$this->assertEquals(E_USER_ERROR, $this->errno);
+		$this->assertEquals(self::IMMUTABLE_ERROR, $this->error);
+
+		$this->assertEquals(0, count($object));
+		$this->assertFalse(isset($object['foo']));
+		$this->assertNull($object['foo']);
+	}
+
+	public function testReadonlyUnset() {
+		$object = new ArrayLikeObject(['foo' => 'bar'], true);
+
+		$this->assertEquals(1, count($object));
+		$this->assertTrue(isset($object['foo']));
+		$this->assertEquals('bar', $object['foo']);
+
+		set_error_handler($this, E_USER_ERROR);
+
+		$object['foo'] = 'bar';
+
+		$this->assertEquals(E_USER_ERROR, $this->errno);
+		$this->assertEquals(self::IMMUTABLE_ERROR, $this->error);
+
+		$this->assertEquals(1, count($object));
+		$this->assertTrue(isset($object['foo']));
+		$this->assertEquals('bar', $object['foo']);
 	}
 
 	/*
@@ -120,13 +163,21 @@ class ArrayLikeTest extends TestCase {
 		$this->assertTrue(is_array($data));
 		$this->assertSame($vars, $data);
 	}
+
+	public function __invoke($errno, $error) {
+		$this->errno = $errno;
+		$this->error = $error;
+
+		return true;
+	}
 }
 
 class ArrayLikeObject
 implements \ArrayAccess, \Iterator, \Countable, \JsonSerializable {
-	use Plutonium\ArrayLike;
+	use ArrayLike;
 
-	public function __construct($data = []) {
-		$this->_vars = self::normalize($data);
+	public function __construct($data = [], $readonly = false) {
+		$this->_vars = $data;
+		$this->_readonly = $readonly;
 	}
 }

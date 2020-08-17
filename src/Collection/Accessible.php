@@ -6,7 +6,7 @@
 namespace Plutonium;
 
 /**
- * Standardized interface for collections of key-value pairs
+ * Read-only interface for collections of key-value pairs
  */
 interface Accessible {
 	/**
@@ -24,24 +24,4 @@ interface Accessible {
 	 * @return mixed Value associated with key, if set, default otherwise
 	 */
 	public function get($key, $default = null);
-
-	/**
-	 * Adds or updates a key-value pair in the collection.
-	 * @param string $key Unique key
-	 * @param mixed $value Value to associate with key
-	 */
-	public function set($key, $value = null);
-
-	/**
-	 * Adds a key-value pair to the collection ONLY IF the key is not set.
-	 * @param string $key Unique key
-	 * @param mixed $value Value to associate with key
-	 */
-	public function def($key, $value = null);
-
-	/**
-	 * Removes the specified key-value pair from the collection.
-	 * @param string $key Unique key
-	 */
-	public function del($key);
 }

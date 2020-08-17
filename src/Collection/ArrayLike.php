@@ -11,6 +11,7 @@ use function Plutonium\Functions\is_traversable;
  * Satisfies Interfaces:
  *   - ArrayAccess
  *   - Iterator
+ *   - Traversable
  *   - Countable
  *   - JsonSerializable
  */
