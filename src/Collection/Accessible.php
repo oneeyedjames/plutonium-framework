@@ -3,7 +3,7 @@
  * @package plutonium
  */
 
-namespace Plutonium;
+namespace Plutonium\Collection;
 
 /**
  * Read-only interface for collections of key-value pairs

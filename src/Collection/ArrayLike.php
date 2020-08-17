@@ -3,7 +3,7 @@
  * @package plutonium
  */
 
-namespace Plutonium;
+namespace Plutonium\Collection;
 
 use function Plutonium\Functions\is_traversable;
 
@@ -16,6 +16,8 @@ use function Plutonium\Functions\is_traversable;
  *   - JsonSerializable
  */
 trait ArrayLike {
+	private static $_immutable = 'Cannot set value on immutable collection.';
+
 	public static function normalize($data) {
 		if (is_traversable($data)) {
 			return iterator_to_array($data);
@@ -27,6 +29,8 @@ trait ArrayLike {
 
 		return [];
 	}
+
+	protected $_readonly = false;
 
 	/**
 	 * @ignore internal variable
@@ -45,6 +49,9 @@ trait ArrayLike {
 	 * @ignore library interface method
 	 */
 	public function offsetSet($key, $value) {
+		if ($this->_readonly)
+			return trigger_error(self::$_immutable, E_USER_ERROR);
+
 		$this->_vars[$key] = $value;
 	}
 
@@ -59,6 +66,9 @@ trait ArrayLike {
 	 * @ignore library interface method
 	 */
 	public function offsetUnset($key) {
+		if ($this->_readonly)
+			return trigger_error(self::$_immutable, E_USER_ERROR);
+
 		if (isset($this->_vars[$key]))
 			unset($this->_vars[$key]);
 	}
