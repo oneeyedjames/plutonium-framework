@@ -1,6 +1,6 @@
 <?php
 /**
- * @package plutonium
+ * @package plutonium\collection
  */
 
 namespace Plutonium\Collection;
@@ -10,10 +10,7 @@ use function Plutonium\Functions\is_traversable;
 /**
  * Satisfies Interfaces:
  *   - ArrayAccess
- *   - Iterator
- *   - Traversable
- *   - Countable
- *   - JsonSerializable
+ *   - Collection
  */
 trait ArrayLike {
 	private static $_immutable = 'Cannot set value on immutable collection.';

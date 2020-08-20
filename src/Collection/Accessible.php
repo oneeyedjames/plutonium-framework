@@ -1,6 +1,6 @@
 <?php
 /**
- * @package plutonium
+ * @package plutonium\collection
  */
 
 namespace Plutonium\Collection;

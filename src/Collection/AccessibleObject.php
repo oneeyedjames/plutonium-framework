@@ -1,6 +1,6 @@
 <?php
 /**
- * @package plutonium
+ * @package plutonium\collection
  */
 
 namespace Plutonium\Collection;
@@ -16,8 +16,7 @@ namespace Plutonium\Collection;
  *
  * Objects can also be used in foreach loops and passed to the count() function.
  */
-class AccessibleObject
-implements Accessible, \ArrayAccess, \Iterator, \Countable, \JsonSerializable {
+class AccessibleObject implements Accessible, Collection, \ArrayAccess {
 	use ArrayLike;
 
 	/**
