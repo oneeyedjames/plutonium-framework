@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\AccessibleCollection;
 use Plutonium\Application\Theme;
 
 class ThemeTest extends ComponentTestCase {
@@ -37,7 +37,7 @@ class ThemeTest extends ComponentTestCase {
 	}
 
 	protected function createTheme($layout = 'default', $format = 'html') {
-		return new Theme(new AccessObject([
+		return new Theme(new AccessibleCollection([
 			'name' => 'Light',
 			'application' => $this->createApplication($layout, $format)
 		]));

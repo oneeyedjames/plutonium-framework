@@ -5,10 +5,9 @@
 
 namespace Plutonium\Http;
 
-use Plutonium\AccessObject;
-use Plutonium\Accessible;
+use Plutonium\Collection\Mutable;
 
-class Request implements Accessible {
+class Request implements Mutable {
 	/**
 	 * @ignore internal variable
 	 */

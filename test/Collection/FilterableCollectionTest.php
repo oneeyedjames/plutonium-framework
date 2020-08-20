@@ -2,14 +2,14 @@
 
 use PHPUnit\Framework\TestCase;
 
-use Plutonium\FilterObject;
+use Plutonium\Collection\FilterableCollection;
 
-class FilterObjectTest extends TestCase {
+class FilterableCollectionTest extends TestCase {
 	/*
 	 * Tests that type-casting getter methods are properly implemented.
 	 */
 	public function testType() {
-		$object = new FilterObject(array(
+		$object = new FilterableCollection(array(
 			'zero'  => 0,
 			'one'   => 1,
 			'array' => array(1, 2, 3)
@@ -41,7 +41,7 @@ class FilterObjectTest extends TestCase {
 	 * Tests that string-filtering getter methods are properly implemented.
 	 */
 	public function testString() {
-		$object = new FilterObject(array(
+		$object = new FilterableCollection(array(
 			'value' => 'FooBar123@#!'
 		));
 

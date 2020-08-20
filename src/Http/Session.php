@@ -5,9 +5,9 @@
 
 namespace Plutonium\Http;
 
-use Plutonium\Accessible;
+use Plutonium\Collection\Mutable;
 
-class Session implements Accessible {
+class Session implements Mutable {
 	/**
 	 * @ignore internal variable
 	 */

@@ -15,6 +15,7 @@ function is_assoc($var) {
 
 	return (bool) count(array_filter(array_keys($var), 'is_string'));
 }
+
 /**
  * Returns whether the given variable is an array containing only keys 'min'
  * and/or 'max'.
@@ -38,4 +39,14 @@ function is_range($var) {
 function array_peek(&$array) {
 	$values = array_values($array);
 	return $values[count($array) - 1];
+}
+
+/**
+ * Returns whether the given variable is an object implementing the Traversable
+ * interface.
+ * @param mixed $var
+ * @return boolean
+ */
+function is_traversable($var) {
+	return is_object($var) && ($var instanceof \Traversable);
 }

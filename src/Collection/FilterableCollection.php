@@ -3,7 +3,7 @@
  * @package plutonium
  */
 
-namespace Plutonium;
+namespace Plutonium\Collection;
 
 use Plutonium\Filter\TypeFilter;
 use Plutonium\Filter\StringFilter;
@@ -11,7 +11,7 @@ use Plutonium\Filter\StringFilter;
 /**
  * Extension of AccessObject with type-casting convenience methods.
  */
-class FilterObject extends AccessObject {
+class FilterableCollection extends MutableCollection {
 	/**
 	 * @ignore internal variable
 	 */

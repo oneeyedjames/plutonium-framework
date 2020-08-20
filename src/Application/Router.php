@@ -5,7 +5,7 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\MutableCollection;
 
 class Router {
 	/**
@@ -23,10 +23,10 @@ class Router {
 	/**
 	 * Parses the requested resource, id, and layout from the given URL path.
 	 * @param string $path Request URL path
-	 * @return object AccessObject of request parameters
+	 * @return object MutableCollection of request parameters
 	 */
 	public function match($path) {
-		$vars = new AccessObject();
+		$vars = new MutableCollection();
 
 		$path = trim($path, FS);
 		$path = empty($path) ? array() : explode(FS, $path);
@@ -50,7 +50,7 @@ class Router {
 
 	/**
 	 * Constructs a URL string for the given request parameters
-	 * @param object $args AccessObject of request parameters
+	 * @param object $args MutableCollection of request parameters
 	 * @return string URL string
 	 */
 	public function build($args) {

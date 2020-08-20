@@ -5,12 +5,12 @@
 
 namespace Plutonium\Http;
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\MutableCollection;
 
 /**
  * @property-read string $query URL query string
  */
-class Url extends AccessObject {
+class Url extends MutableCollection {
 	/**
 	 * @ignore interal variable
 	 */
@@ -66,63 +66,42 @@ class Url extends AccessObject {
 	}
 
 	/**
-	 * Determines if the named query parameter is set.
-	 * @param string $key Parameter name
-	 * @return boolean Whether the parameter is set
+	 * @ignore interface method
 	 */
-	public function has($key) {
-		switch ($key) {
-			case 'query': return true;
-			default: return parent::has($key);
-		}
-	}
-
-	/**
-	 * Retrieves the named query parameter. Default value is returned if
-	 * parameter is not set.
-	 * @param string $key Parameter name
-	 * @param mixed $default OPTIONAL Default parameter value
-	 * @return mixed Parameter value
-	 */
-	public function get($key, $default = null) {
+	public function offsetGet($key) {
 		switch ($key) {
 			case 'query': return self::buildQuery($this->_vars);
-			default: return parent::get($key, $default);
+			default: return parent::offsetGet($key);
 		}
 	}
 
 	/**
-	 * Creates or updates the named query parameter.
-	 * @param string $key Parameter name
-	 * @param mixed $value OPTIONAL Parameter value
+	 * @ignore interface method
 	 */
-	public function set($key, $value = null) {
-		switch ($key) {
-			case 'query': trigger_error("Cannot write to readonly parameter: $key", E_USER_WARNING);
-			default: return parent::set($key, $value);
-		}
-	}
-
-	/**
-	 * Creates the named query parameter if it is not already set.
-	 * @param string $key Parameter name
-	 * @param mixed $value OPTIONAL Parameter value
-	 */
-	public function def($key, $value = null) {
+	public function offsetSet($key, $value) {
 		switch ($key) {
 			case 'query': return;
-			default: return parent::def($key, $value);
+			default: return parent::offsetSet($key, $value);
 		}
 	}
 
 	/**
-	 * Removes the named query parameter.
-	 * @param string $key Parameter name
+	 * @ignore interface method
 	 */
-	public function del($key) {
+	public function offsetExists($key) {
+		switch ($key) {
+			case 'query': return true;
+			default: return parent::offsetExists($key);
+		}
+	}
+
+	/**
+	 * @ignore interface method
+	 */
+	public function offsetUnset($key) {
 		switch ($key) {
 			case 'query': return;
-			default: return parent::del($key);
+			default: return parent::offsetUnset($key);
 		}
 	}
 

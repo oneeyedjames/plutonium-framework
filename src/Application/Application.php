@@ -6,7 +6,7 @@
 namespace Plutonium\Application;
 
 use Plutonium\Executable;
-use Plutonium\AccessObject;
+use Plutonium\Collection\MutableCollection;
 
 use Plutonium\Event\Broadcaster;
 
@@ -17,7 +17,7 @@ use Plutonium\Http\Response;
 use Plutonium\Globalization\Locale;
 
 /**
- * @property-read object $config AccessObject containing configuration settings
+ * @property-read object $config MutableCollection containing configuration settings
  * @property-read object $theme The active Theme object
  * @property-read object $module The active Module object
  * @property-read array $widgets An array of active Widget objects
@@ -96,7 +96,7 @@ class Application implements Executable {
 	protected $_locale = null;
 
 	/**
-	 * @param object $config AccessObject containing configuration settings
+	 * @param object $config MutableCollection containing configuration settings
 	 */
 	public function __construct($config) {
 		$this->_config = $config;
@@ -187,7 +187,7 @@ class Application implements Executable {
 		if (is_null($this->_document) && !is_null($config)) {
 			$format = !is_null($request) ? $request->get('format', 'html') : 'html';
 
-			$args = new AccessObject(array(
+			$args = new MutableCollection(array(
 				'application' => $this,
 				'locale'      => $config->locale,
 				'timezone'    => $config->timezone

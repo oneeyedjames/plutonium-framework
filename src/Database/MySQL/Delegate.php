@@ -5,7 +5,7 @@
 
 namespace Plutonium\Database\MySQL;
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\MutableCollection;
 
 use Plutonium\Database\AbstractDelegate;
 
@@ -27,7 +27,7 @@ class Delegate extends AbstractDelegate {
 	}
 
 	public function create() {
-		$sql = "CREATE TABLE IF NOT EXISTS $this->table_name (\n";
+		// $sql = "CREATE TABLE IF NOT EXISTS $this->table_name (\n";
 
 		$lines = array();
 
@@ -52,7 +52,7 @@ class Delegate extends AbstractDelegate {
 			$lines[] = "$field $type";
 
 			if ($field_meta->index || $field_meta->unique) {
-				$indexes[] = new AccessObject(array(
+				$indexes[] = new MutableCollection(array(
 					'name'   => $field_meta->name,
 					'unique' => $field_meta->unique
 				));
