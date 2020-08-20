@@ -6,6 +6,7 @@
 
 			<file>test/FunctionsTest.php</file>
 			<file>test/LoaderTest.php</file>
+			<file>test/ExceptionTest.php</file>
 
 			<file>test/Collection/ArrayLikeTest.php</file>
 			<file>test/Collection/AccessibleCollectionTest.php</file>
