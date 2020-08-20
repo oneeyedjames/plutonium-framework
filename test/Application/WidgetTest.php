@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\AccessibleObject;
 use Plutonium\Application\Widget;
 
 class WidgetTest extends ComponentTestCase {
@@ -37,7 +37,7 @@ class WidgetTest extends ComponentTestCase {
 	}
 
 	protected function createWidget($layout = 'default', $format = 'html') {
-		return new Widget(new AccessObject([
+		return new Widget(new AccessibleObject([
 			'name' => 'Calendar',
 			'application' => $this->createApplication($layout, $format)
 		]));

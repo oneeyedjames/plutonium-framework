@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\AccessibleObject;
 use Plutonium\Application\Module;
 
 class ModuleTest extends ComponentTestCase {
@@ -50,7 +50,7 @@ class ModuleTest extends ComponentTestCase {
 		$app = $this->createApplication($layout);
 		$app->request->resource = $resource;
 
-		return new Module(new AccessObject([
+		return new Module(new AccessibleObject([
 			'name' => 'blog',
 			'application' => $app
 		]));

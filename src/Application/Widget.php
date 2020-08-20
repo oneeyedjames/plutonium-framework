@@ -165,7 +165,7 @@ class Widget extends ApplicationComponent {
 
 		if (empty($widgets)) {
 			$meta = new AccessObject(self::getMetadata($this->name));
-			$meta->def('package', ucfirst($this->name) . ' Module');
+			$meta->def('package', ucfirst($this->name) . ' Widget');
 
 			$table->make(array(
 				'name'    => $meta['package'],

@@ -214,7 +214,7 @@ class Theme extends ApplicationComponent {
 
 		if (empty($themes)) {
 			$meta = new AccessObject(self::getMetadata($this->name));
-			$meta->def('package', ucfirst($this->name) . ' Module');
+			$meta->def('package', ucfirst($this->name) . ' Theme');
 
 			$table->make(array(
 				'name'    => $meta['package'],

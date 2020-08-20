@@ -6,7 +6,6 @@
 
 			<file>test/FunctionsTest.php</file>
 			<file>test/LoaderTest.php</file>
-			<file>test/AccessObjectTest.php</file>
 			<file>test/FilterObjectTest.php</file>
 
 			<file>test/Collection/ArrayLike.php</file>
