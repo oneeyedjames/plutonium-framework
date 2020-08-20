@@ -15,12 +15,6 @@ spl_autoload_register(function ($class) {
 	if (is_file($path)) require_once $path;
 });
 
-define('DS', DIRECTORY_SEPARATOR);
-define('PS', PATH_SEPARATOR);
-define('LS', PHP_EOL);
-define('BS', '\\');
-define('FS', '/');
-
 define('PU_PATH_BASE', 'vfs://plutonium');
 define('PU_PATH_LIB',  realpath(__DIR__ . '/src'));
 
