@@ -11,7 +11,7 @@ use Plutonium\Filter\StringFilter;
 /**
  * Extension of AccessObject with type-casting convenience methods.
  */
-class FilterableObject extends MutableObject {
+class FilterableCollection extends MutableCollection {
 	/**
 	 * @ignore internal variable
 	 */

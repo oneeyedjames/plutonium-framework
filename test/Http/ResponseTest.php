@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use Plutonium\Collection\AccessibleObject;
+use Plutonium\Collection\AccessibleCollection;
 use Plutonium\Http\Response;
 
 class ResponseTest extends TestCase {
@@ -10,7 +10,7 @@ class ResponseTest extends TestCase {
 	 * Tests that module output is properly formatted.
 	 */
 	public function testModule() {
-		$args = new AccessibleObject(array(
+		$args = new AccessibleCollection(array(
 			'module_start' => '<article>',
 			'module_close' => '</article>'
 		));
@@ -27,7 +27,7 @@ class ResponseTest extends TestCase {
 	 * Tests that widget output is properly formatted.
 	 */
 	public function testWidget() {
-		$args = new AccessibleObject(array(
+		$args = new AccessibleCollection(array(
 			'widget_start' => '<aside>',
 			'widget_delim' => '<hr>',
 			'widget_close' => '</aside>'

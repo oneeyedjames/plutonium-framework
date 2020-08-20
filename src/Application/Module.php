@@ -7,7 +7,7 @@ namespace Plutonium\Application;
 
 use Plutonium\Executable;
 use Plutonium\Renderable;
-use Plutonium\Collection\MutableObject;
+use Plutonium\Collection\MutableCollection;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
@@ -60,7 +60,7 @@ class Module extends ApplicationComponent implements Executable {
 	/**
 	 * Returns metadata about the named module.
 	 * @param string $name Component name
-	 * @return object MutableObject of metadata
+	 * @return object MutableCollection of metadata
 	 */
 	public static function getMetadata($name) {
 		$name = strtolower($name);
@@ -109,7 +109,7 @@ class Module extends ApplicationComponent implements Executable {
 		$phar = self::getPath() . DS . $name . '.phar';
 		$file = self::getPath() . DS . $name . DS . 'module.php';
 		$type = ucfirst($name) . 'Module';
-		$args = new MutableObject(array(
+		$args = new MutableCollection(array(
 			'application' => $application,
 			'name'        => $name
 		));
@@ -146,7 +146,7 @@ class Module extends ApplicationComponent implements Executable {
 	 * Expected args
 	 *   - name: component name
 	 *   - application: active Application object
-	 * @param object $args MutableObject
+	 * @param object $args MutableCollection
 	 */
 	public function __construct($args) {
 		parent::__construct('module', $args);
@@ -177,7 +177,7 @@ class Module extends ApplicationComponent implements Executable {
 		$modules = $table->find(['slug' => $this->name]);
 
 		if (empty($modules)) {
-			$meta = new MutableObject(self::getMetadata($this->name));
+			$meta = new MutableCollection(self::getMetadata($this->name));
 			$meta->def('package', ucfirst($this->name) . ' Module');
 
 			$table->make(array(
@@ -309,7 +309,7 @@ class Module extends ApplicationComponent implements Executable {
 			$file = $this->path . DS . $path;
 			$phar = $this->path . '.phar';
 
-			$args = new MutableObject(array(
+			$args = new MutableCollection(array(
 				'module' => $this,
 				'name'   => $name
 			));
@@ -335,7 +335,7 @@ class Module extends ApplicationComponent implements Executable {
 			$file = $this->path . DS . $path;
 			$phar = $this->path . '.phar';
 
-			$args = new MutableObject(array(
+			$args = new MutableCollection(array(
 				'module' => $this,
 				'name'   => $name
 			));
@@ -359,7 +359,7 @@ class Module extends ApplicationComponent implements Executable {
 			$file = $this->path . DS . $path;
 			$phar = $this->path . '.phar';
 
-			$args = new MutableObject(array(
+			$args = new MutableCollection(array(
 				'module' => $this,
 				'name'   => $name
 			));

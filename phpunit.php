@@ -38,7 +38,7 @@ class LocaleMock {
 
 use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
-use Plutonium\Collection\MutableObject;
+use Plutonium\Collection\MutableCollection;
 
 class ComponentTestCase extends TestCase {
 	protected function setUp() {
@@ -117,7 +117,7 @@ class ComponentTestCase extends TestCase {
 	protected function createApplication($layout = 'default', $format = 'html') {
 		$app = new ApplicationMock;
 		$app->locale = new LocaleMock;
-		$app->request = new MutableObject(compact('layout', 'format'));
+		$app->request = new MutableCollection(compact('layout', 'format'));
 
 		return $app;
 	}

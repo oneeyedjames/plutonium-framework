@@ -8,7 +8,7 @@ namespace Plutonium\Database;
 use function Plutonium\Functions\is_assoc;
 
 use Plutonium\Collection\Collection;
-use Plutonium\Collection\MutableObject;
+use Plutonium\Collection\MutableCollection;
 
 class Row {
 	/**
@@ -43,7 +43,7 @@ class Row {
 
 	/**
 	 * @param object $table Table object for this record
-	 * @param mixed $data Array or MutableObject of record data
+	 * @param mixed $data Array or MutableCollection of record data
 	 * @param array $xref_data Cross-reference data
 	 */
 	public function __construct($table, $data = null, $xref_data = null) {
@@ -53,7 +53,7 @@ class Row {
 		$this->_revs  = array_fill_keys(array_keys($table->table_revs), null);
 		$this->_xrefs = array_fill_keys(array_keys($table->table_xrefs), null);
 
-		$this->_xref_data = new MutableObject();
+		$this->_xref_data = new MutableCollection();
 
 		$this->bind($data);
 

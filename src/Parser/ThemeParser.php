@@ -5,7 +5,7 @@
 
 namespace Plutonium\Parser;
 
-use Plutonium\Collection\AccessibleObject;
+use Plutonium\Collection\AccessibleCollection;
 use Plutonium\Application\Widget;
 
 class ThemeParser extends AbstractParser {
@@ -22,7 +22,7 @@ class ThemeParser extends AbstractParser {
 	 * @param array $args Tag attributes
 	 */
 	public function moduleTag($args) {
-		$out_args = new AccessibleObject(array(
+		$out_args = new AccessibleCollection(array(
 			'module_start' => $this->application->theme->module_start,
 			'module_close' => $this->application->theme->module_close
 		));
@@ -38,7 +38,7 @@ class ThemeParser extends AbstractParser {
 	 * @param array $args Tag attributes
 	 */
 	public function widgetsTag($args) {
-		$out_args = new AccessibleObject(array(
+		$out_args = new AccessibleCollection(array(
 			'widget_start' => $this->application->theme->widget_start,
 			'widget_close' => $this->application->theme->widget_close,
 			'widget_delim' => $this->application->theme->widget_delim

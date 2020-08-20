@@ -16,7 +16,7 @@ namespace Plutonium\Collection;
  *
  * Objects can also be used in foreach loops and passed to the count() function.
  */
-class AccessibleObject implements Accessible, Collection, \ArrayAccess {
+class AccessibleCollection implements Accessible, Collection, \ArrayAccess {
 	use ArrayLike;
 
 	/**

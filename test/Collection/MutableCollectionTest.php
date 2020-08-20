@@ -2,11 +2,11 @@
 
 use PHPUnit\Framework\TestCase;
 
-use Plutonium\Collection\MutableObject;
+use Plutonium\Collection\MutableCollection;
 
-class MutableObjectTest extends TestCase {
+class MutableCollectionTest extends TestCase {
 	public function setUp() {
-		$this->obj = new MutableObject(['foo' => 'bar']);
+		$this->obj = new MutableCollection(['foo' => 'bar']);
 	}
 
 	public function tearDown() {

@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use Plutonium\Collection\AccessibleObject;
+use Plutonium\Collection\AccessibleCollection;
 use Plutonium\Http\Request;
 
 class RequestTest extends TestCase {
@@ -14,7 +14,7 @@ class RequestTest extends TestCase {
 
 		$_SERVER['HTTP_HOST'] = 'plutonium.local';
 
-		$this->config = new AccessibleObject(array(
+		$this->config = new AccessibleCollection(array(
 			'system' => array(
 				'hostname' => 'plutonium.local'
 			)

@@ -5,7 +5,7 @@
 
 namespace Plutonium\Globalization;
 
-use Plutonium\Collection\AccessibleObject;
+use Plutonium\Collection\AccessibleCollection;
 
 use function Plutonium\Functions\filepath;
 
@@ -23,10 +23,10 @@ class Locale {
 	/**
 	 * Parses a locale string into its languag and country components.
 	 * @param string $localse Locale string
-	 * @return object AccessibleObject containing language and country
+	 * @return object AccessibleCollection containing language and country
 	 */
 	public static function parse($locale) {
-		if ($locale instanceof AccessibleObject)
+		if ($locale instanceof AccessibleCollection)
 			return $locale;
 
 		if (is_string($locale)) {
@@ -38,7 +38,7 @@ class Locale {
 			}
 		}
 
-		return is_array($locale) ? new AccessibleObject($locale) : null;
+		return is_array($locale) ? new AccessibleCollection($locale) : null;
 	}
 
 	/**
@@ -57,13 +57,13 @@ class Locale {
 	protected $_phrases;
 
 	/**
-	 * @param mixed $config Locale name or AccessibleObject containing language
+	 * @param mixed $config Locale name or AccessibleCollection containing language
 	 * and country
 	 */
 	public function __construct($config) {
 		$config = self::parse($config);
 
-		if ($config instanceof AccessibleObject) {
+		if ($config instanceof AccessibleCollection) {
 			$this->_language = strtolower($config->language);
 			$this->_country  = strtoupper($config->country);
 		}

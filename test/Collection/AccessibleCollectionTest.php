@@ -2,11 +2,11 @@
 
 use PHPUnit\Framework\TestCase;
 
-use Plutonium\Collection\AccessibleObject;
+use Plutonium\Collection\AccessibleCollection;
 
-class AccessibleObjectTest extends TestCase {
+class AccessibleCollectionTest extends TestCase {
 	public function setUp() {
-		$this->obj = new AccessibleObject(['foo' => 'bar']);
+		$this->obj = new AccessibleCollection(['foo' => 'bar']);
 
 		set_error_handler($this);
 	}

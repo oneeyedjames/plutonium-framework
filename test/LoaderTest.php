@@ -13,7 +13,7 @@ class LoaderTest extends TestCase {
 
 		$this->assertContains(PU_PATH_LIB, Loader::getPaths());
 
-		$this->assertTrue(Loader::import('\Plutonium\Collection\AccessibleObject'));
+		$this->assertTrue(Loader::import('\Plutonium\Collection\AccessibleCollection'));
 		$this->assertTrue(interface_exists('\Plutonium\Collection\Accessible', false));
 	}
 }

@@ -31,7 +31,7 @@ class Model {
 	 * Expected args
 	 *   - name: resource name
 	 *   - module: active Module object
-	 * @param object $args MutableObject
+	 * @param object $args MutableCollection
 	 */
 	public function __construct($args) {
 		$this->_name   = $args->name;

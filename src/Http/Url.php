@@ -5,12 +5,12 @@
 
 namespace Plutonium\Http;
 
-use Plutonium\Collection\MutableObject;
+use Plutonium\Collection\MutableCollection;
 
 /**
  * @property-read string $query URL query string
  */
-class Url extends MutableObject {
+class Url extends MutableCollection {
 	/**
 	 * @ignore interal variable
 	 */

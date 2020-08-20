@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\Collection\AccessibleObject;
+use Plutonium\Collection\AccessibleCollection;
 use Plutonium\Globalization\Locale;
 
 class LocaleTest extends ComponentTestCase {
@@ -43,14 +43,14 @@ class LocaleTest extends ComponentTestCase {
 	 * Tests that locale objects are properly interpreted.
 	 */
 	public function testParseObject() {
-		$locale = Locale::parse(new AccessibleObject([
+		$locale = Locale::parse(new AccessibleCollection([
 			'language' => 'en'
 		]));
 
 		$this->assertEquals('en', $locale->language);
 		$this->assertEmpty($locale->country);
 
-		$locale = Locale::parse(new AccessibleObject([
+		$locale = Locale::parse(new AccessibleCollection([
 			'language' => 'en',
 			'country'  => 'us'
 		]));

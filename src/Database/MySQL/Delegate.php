@@ -5,7 +5,7 @@
 
 namespace Plutonium\Database\MySQL;
 
-use Plutonium\Collection\MutableObject;
+use Plutonium\Collection\MutableCollection;
 
 use Plutonium\Database\AbstractDelegate;
 
@@ -52,7 +52,7 @@ class Delegate extends AbstractDelegate {
 			$lines[] = "$field $type";
 
 			if ($field_meta->index || $field_meta->unique) {
-				$indexes[] = new MutableObject(array(
+				$indexes[] = new MutableCollection(array(
 					'name'   => $field_meta->name,
 					'unique' => $field_meta->unique
 				));

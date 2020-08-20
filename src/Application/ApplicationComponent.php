@@ -16,7 +16,7 @@ abstract class ApplicationComponent extends Component {
 
 	/**
 	 * @param string $type The component type
-	 * @param object $args MutableObject containing name and application object
+	 * @param object $args MutableCollection containing name and application object
 	 */
 	public function __construct($type, $args) {
 		parent::__construct($args->name);

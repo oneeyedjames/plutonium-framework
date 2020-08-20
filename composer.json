@@ -15,12 +15,13 @@
 	},
 	"autoload": {
 		"files": [
-			"src/Collection/Accessible.php",
-			"src/Collection/Mutable.php",
 			"src/Executable.php",
 			"src/Installable.php",
 			"src/Renderable.php",
-			"src/Loader.php"
+			"src/Loader.php",
+			"src/Collection/Collection.php",
+			"src/Collection/Accessible.php",
+			"src/Collection/Mutable.php"
 		]
 	},
 	"scripts": {

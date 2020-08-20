@@ -16,7 +16,7 @@ namespace Plutonium\Collection;
  *
  * Objects can also be used in foreach loops and passed to the count() function.
  */
-class MutableObject extends AccessibleObject implements Mutable {
+class MutableCollection extends AccessibleCollection implements Mutable {
 	/**
 	 * @param mixed Array or Collection of key-value pairs
 	 */
