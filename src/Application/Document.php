@@ -5,11 +5,11 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\MutableObject;
 use Plutonium\Loader;
 use Plutonium\Renderable;
 
-abstract class Document extends AccessObject implements Renderable {
+abstract class Document extends MutableObject implements Renderable {
 	/**
 	 * @ignore internal variable
 	 */
@@ -30,7 +30,7 @@ abstract class Document extends AccessObject implements Renderable {
 	 * Returns a new Document object. Base class is used if no matching custom
 	 * class can be found.
 	 * @param string $format Document format
-	 * @param object $args AccessObject of constructor args
+	 * @param object $args MutableObject of constructor args
 	 * @return object Document object
 	 */
 	public static function newInstance($format, $args) {
@@ -54,7 +54,7 @@ abstract class Document extends AccessObject implements Renderable {
 	/**
 	 * Expected args
 	 *   - application: active Application object
-	 * @param object $args AccessObject
+	 * @param object $args MutableObject
 	 */
 	public function __construct($args) {
 		$this->_application = $args->application;

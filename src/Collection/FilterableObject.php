@@ -5,13 +5,15 @@
 
 namespace Plutonium;
 
+use Plutonium\Collection\MutableObject;
+
 use Plutonium\Filter\TypeFilter;
 use Plutonium\Filter\StringFilter;
 
 /**
  * Extension of AccessObject with type-casting convenience methods.
  */
-class FilterObject extends AccessObject {
+class FilterableObject extends MutableObject {
 	/**
 	 * @ignore internal variable
 	 */

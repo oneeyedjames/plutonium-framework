@@ -21,7 +21,7 @@ abstract class AbstractAdapter {
 	 *   - driver: vendor name
 	 *   - other constructor args
 	 * Singleton method to initialize named concrete adapter class.
-	 * @param object $config AccessObject
+	 * @param object $config MutableObject
 	 * @return object Global concrete Adapter object
 	 */
 	public static function getInstance($config = null) {
@@ -44,7 +44,7 @@ abstract class AbstractAdapter {
 	protected $_connection = null;
 
 	/**
-	 * @param object $config AccessObject
+	 * @param object $config MutableObject
 	 */
 	protected function __construct($config) {
 		$this->_config = $config;

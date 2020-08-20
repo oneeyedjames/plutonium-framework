@@ -5,7 +5,6 @@
 
 namespace Plutonium\Http;
 
-use Plutonium\AccessObject;
 use Plutonium\Collection\Mutable;
 
 class Request implements Mutable {

@@ -8,7 +8,7 @@ namespace Plutonium\Parser;
 class UtilityParser extends AbstractParser {
 	/**
 	 * @param object $application The active Application object
-	 * @param object $args AccessObject containing timezone
+	 * @param object $args AccessibleObject containing timezone
 	 */
 	public function __construct($application, $args) {
 		parent::__construct($application);

@@ -5,7 +5,7 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\MutableObject;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
@@ -37,7 +37,7 @@ class Widget extends ApplicationComponent {
 	/**
 	 * Returns metadata about the named widget.
 	 * @param string $name Component name
-	 * @return object AccessObject of metadata
+	 * @return object MutableObject of metadata
 	 */
 	public static function getMetadata($name) {
 		$file = self::getLocator()->getFile($name, 'widget.php');
@@ -88,7 +88,7 @@ class Widget extends ApplicationComponent {
 
 		$name = strtolower($name);
 		$type = ucfirst($name) . 'Widget';
-		$args = new AccessObject(array(
+		$args = new MutableObject(array(
 			'application' => $application,
 			'name' => $name
 		));
@@ -120,7 +120,7 @@ class Widget extends ApplicationComponent {
 	 * Expected args
 	 *   - name: component name
 	 *   - application: active Application object
-	 * @param object $args AccessObject
+	 * @param object $args MutableObject
 	 */
 	public function __construct($args) {
 		parent::__construct('widget', $args);
@@ -164,7 +164,7 @@ class Widget extends ApplicationComponent {
 		$widgets = $table->find(['slug' => $this->name]);
 
 		if (empty($widgets)) {
-			$meta = new AccessObject(self::getMetadata($this->name));
+			$meta = new MutableObject(self::getMetadata($this->name));
 			$meta->def('package', ucfirst($this->name) . ' Widget');
 
 			$table->make(array(

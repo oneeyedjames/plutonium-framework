@@ -37,7 +37,7 @@ class Controller implements Executable {
 	 * Expected args
 	 *   - name: resource name
 	 *   - module: active Module object
-	 * @param object $args AccessObject
+	 * @param object $args MutableObject
 	 */
 	public function __construct($args) {
 		$this->_name   = $args->name;

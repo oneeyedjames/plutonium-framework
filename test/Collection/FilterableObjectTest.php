@@ -2,9 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 
-use Plutonium\FilterObject;
+use Plutonium\Collection\FilterableObject;
 
-class FilterObjectTest extends TestCase {
+class FilterableObjectTest extends TestCase {
 	/*
 	 * Tests that type-casting getter methods are properly implemented.
 	 */

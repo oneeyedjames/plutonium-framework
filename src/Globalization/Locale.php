@@ -23,7 +23,7 @@ class Locale {
 	/**
 	 * Parses a locale string into its languag and country components.
 	 * @param string $localse Locale string
-	 * @return object AccessObject containing language and country
+	 * @return object AccessibleObject containing language and country
 	 */
 	public static function parse($locale) {
 		if ($locale instanceof AccessibleObject)
@@ -57,7 +57,8 @@ class Locale {
 	protected $_phrases;
 
 	/**
-	 * @param mixed $config Locale name or AccessObject of language and country
+	 * @param mixed $config Locale name or AccessibleObject containing language
+	 * and country
 	 */
 	public function __construct($config) {
 		$config = self::parse($config);

@@ -5,7 +5,7 @@
 
 namespace Plutonium\Database;
 
-use Plutonium\AccessObject;
+use Plutonium\Collection\MutableObject;
 use Plutonium\Application\Application;
 use Plutonium\Application\Module;
 
@@ -39,7 +39,7 @@ class Table {
 	 * Builds cross-reference metadata from XML definition.
 	 * @param object $node DOMNode object
 	 * @param object $xpath DOMXPath object
-	 * @param object $cfg AccessObject
+	 * @param object $cfg MutableObject
 	 * @return object Table object
 	 */
 	protected static function buildXRefTable($node, $xpath, &$cfg) {
@@ -52,19 +52,19 @@ class Table {
 		if (empty($alias))  $alias  = $cfg->name;
 		if (empty($prefix)) $prefix = $cfg->prefix;
 
-		$xref_cfg = new AccessObject(array(
+		$xref_cfg = new MutableObject(array(
 			'driver'     => $cfg->driver,
 			'prefix'     => $cfg->prefix,
 			'suffix'     => 'xref',
 			'name'       => $alias . '_' . $name,
 			'timestamps' => $node->getAttribute('timestamps'),
 			'refs'       => array(
-				new AccessObject(array(
+				new MutableObject(array(
 					'name'   => $alias,
 					'table'  => $cfg->name,
 					'prefix' => $cfg->prefix
 				)),
-				new AccessObject(array(
+				new MutableObject(array(
 					'name'   => $name,
 					'table'  => $table,
 					'prefix' => $prefix
@@ -76,7 +76,7 @@ class Table {
 
 		$subnodes = $xpath->query('field', $node);
 		foreach ($subnodes as $subnode) {
-			$fields[] = new AccessObject(array(
+			$fields[] = new MutableObject(array(
 				'name' => $subnode->getAttribute('name'),
 				'type' => $subnode->getAttribute('type'),
 				'size' => $subnode->getAttribute('size')
@@ -111,7 +111,7 @@ class Table {
 			$file = $path . DS . 'models' . DS . $name . '.xml';
 
 			if (is_file($file)) {
-				$cfg = new AccessObject();
+				$cfg = new MutableObject();
 				$cfg->driver = AbstractAdapter::getInstance()->driver;
 
 				$doc = new DOMDocument();
@@ -136,7 +136,7 @@ class Table {
 
 				$nodes = $xpath->query('/table/field');
 				foreach ($nodes as $field) {
-					$fields[] = new AccessObject(array(
+					$fields[] = new MutableObject(array(
 						'name'   => $field->getAttribute('name'),
 						'type'   => $field->getAttribute('type'),
 						'size'   => $field->getAttribute('size'),
@@ -150,7 +150,7 @@ class Table {
 
 				$nodes = $xpath->query('/table/ref');
 				foreach ($nodes as $node) {
-					$ref = new AccessObject(array(
+					$ref = new MutableObject(array(
 						'name'   => $node->getAttribute('name'),
 						'table'  => $node->getAttribute('table'),
 						'prefix' => $node->getAttribute('prefix')
@@ -158,7 +158,7 @@ class Table {
 
 					$refs[] = $ref;
 
-					self::$_refs[$ref->table][$ref->alias] = new AccessObject(array(
+					self::$_refs[$ref->table][$ref->alias] = new MutableObject(array(
 						'table' => $cfg->name,
 						'alias' => $ref->name
 					));
@@ -275,7 +275,7 @@ class Table {
 	protected $_table_xrefs = array();
 
 	/**
-	 * @param object $config AccessObject
+	 * @param object $config MutableObject
 	 */
 	public function __construct($config) {
 		$type = 'Plutonium\\Database\\' . $config->driver . '\\Delegate';
@@ -298,12 +298,12 @@ class Table {
 
 		$this->_table_name = implode('_', $table_name);
 
-		$this->_table_meta = new AccessObject(array(
+		$this->_table_meta = new MutableObject(array(
 			'timestamps' => $config->timestamps == 'yes'
 		));
 
 		if ($config->suffix != 'xref') {
-			$this->_field_meta['id'] = new AccessObject(array(
+			$this->_field_meta['id'] = new MutableObject(array(
 				'name'     => 'id',
 				'type'     => 'int',
 				'null'     => false,
@@ -317,7 +317,7 @@ class Table {
 
 			$field_name = $ref->name . '_id';
 
-			$this->_field_meta[$field_name] = new AccessObject(array(
+			$this->_field_meta[$field_name] = new MutableObject(array(
 				'name'     => $field_name,
 				'type'     => 'int',
 				'null'     => false,
@@ -328,13 +328,13 @@ class Table {
 		}
 
 		if ($config->timestamps == 'yes') {
-			$this->_field_meta['created'] = new AccessObject(array(
+			$this->_field_meta['created'] = new MutableObject(array(
 				'name'    => 'created',
 				'type'    => 'date',
 				'null'    => true
 			));
 
-			$this->_field_meta['updated'] = new AccessObject(array(
+			$this->_field_meta['updated'] = new MutableObject(array(
 				'name'    => 'updated',
 				'type'    => 'date',
 				'null'    => true
@@ -342,7 +342,7 @@ class Table {
 		}
 
 		foreach ($config->fields as $field) {
-			$this->_field_meta[$field->name] = new AccessObject(array(
+			$this->_field_meta[$field->name] = new MutableObject(array(
 				'name'     => $field->name,
 				'type'     => $field->type,
 				'size'     => $field->size,
