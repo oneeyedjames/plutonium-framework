@@ -1,5 +1,5 @@
 {
-	"name": "oneeyedjames/plutonium-library",
+	"name": "oneeyedjames/plutonium-framework",
 	"type": "library",
 	"authors": [
 		{
@@ -15,7 +15,8 @@
 	},
 	"autoload": {
 		"files": [
-			"src/Accessible.php",
+			"src/Collection/Accessible.php",
+			"src/Collection/Mutable.php",
 			"src/Executable.php",
 			"src/Installable.php",
 			"src/Renderable.php",

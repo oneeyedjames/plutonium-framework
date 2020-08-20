@@ -9,6 +9,10 @@
 			<file>test/AccessObjectTest.php</file>
 			<file>test/FilterObjectTest.php</file>
 
+			<file>test/Collection/ArrayLike.php</file>
+			<file>test/Collection/AccessibleObject.php</file>
+			<file>test/Collection/MutableObject.php</file>
+
 			<file>test/Globalization/LocaleTest.php</file>
 			<file>test/Utility/AddressTest.php</file>
 			<file>test/Error/ErrorHandlerTest.php</file>
