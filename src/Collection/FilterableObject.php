@@ -3,9 +3,7 @@
  * @package plutonium
  */
 
-namespace Plutonium;
-
-use Plutonium\Collection\MutableObject;
+namespace Plutonium\Collection;
 
 use Plutonium\Filter\TypeFilter;
 use Plutonium\Filter\StringFilter;

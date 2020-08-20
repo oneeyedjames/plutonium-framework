@@ -9,7 +9,7 @@ class FilterableObjectTest extends TestCase {
 	 * Tests that type-casting getter methods are properly implemented.
 	 */
 	public function testType() {
-		$object = new FilterObject(array(
+		$object = new FilterableObject(array(
 			'zero'  => 0,
 			'one'   => 1,
 			'array' => array(1, 2, 3)
@@ -41,7 +41,7 @@ class FilterableObjectTest extends TestCase {
 	 * Tests that string-filtering getter methods are properly implemented.
 	 */
 	public function testString() {
-		$object = new FilterObject(array(
+		$object = new FilterableObject(array(
 			'value' => 'FooBar123@#!'
 		));
 
