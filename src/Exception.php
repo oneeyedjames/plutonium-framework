@@ -13,7 +13,7 @@ class Exception extends \ErrorException implements \ArrayAccess, Collection {
 
 	public function __construct(
 		$message = '',
-		$code = -1,
+		$code = 0,
 		$severity = E_USER_ERROR,
 		$data = []
 	) {
@@ -25,7 +25,14 @@ class Exception extends \ErrorException implements \ArrayAccess, Collection {
 	 * @ignore magic method
 	 */
 	public function __get($key) {
-		return $this[$key];
+		switch ($key) {
+			case 'message':
+			case 'code':
+			case 'severity':
+			case 'file':
+			case 'line':
+				return $this->{$key};
+		}
 	}
 
 	/**
@@ -37,7 +44,7 @@ class Exception extends \ErrorException implements \ArrayAccess, Collection {
 	 * @ignore magic method
 	 */
 	public function __isset($key) {
-		return isset($this[$key]);
+		return in_array($key, ['message', 'code', 'severity', 'file', 'line']);
 	}
 
 	/**
